@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 export interface StatCard {
   id: string;
@@ -18,7 +19,8 @@ export interface StatCard {
       <div class="flex items-center justify-between mb-3">
         <div class="flex items-center space-x-2">
           <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" [innerHTML]="stat.icon">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <g [innerHTML]="getSafeIcon()"></g>
             </svg>
           </div>
           <div>
@@ -33,4 +35,10 @@ export interface StatCard {
 })
 export class StatsCardComponent {
   @Input() stat!: StatCard;
+
+  constructor(private sanitizer: DomSanitizer) {}
+
+  getSafeIcon(): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(this.stat.icon);
+  }
 }

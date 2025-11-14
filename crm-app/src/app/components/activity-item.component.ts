@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 export type ActivityType = 'completion' | 'start' | 'comment' | 'update';
 
@@ -26,7 +27,8 @@ export interface Activity {
         class="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center">
         <svg
           [ngStyle]="{'color': activity.iconColor}"
-          class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" [innerHTML]="activity.icon">
+          class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+          <g [innerHTML]="getSafeIcon()"></g>
         </svg>
       </div>
       <div class="flex-1">
@@ -42,4 +44,10 @@ export interface Activity {
 })
 export class ActivityItemComponent {
   @Input() activity!: Activity;
+
+  constructor(private sanitizer: DomSanitizer) {}
+
+  getSafeIcon(): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(this.activity.icon);
+  }
 }

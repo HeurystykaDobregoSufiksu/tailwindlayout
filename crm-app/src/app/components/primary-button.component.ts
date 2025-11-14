@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 export type ButtonSize = 'sm' | 'md' | 'lg';
 export type ButtonVariant = 'primary' | 'secondary' | 'outline';
@@ -30,7 +31,8 @@ export interface PrimaryButtonConfig {
         'opacity-50 cursor-not-allowed': config.disabled
       }"
       class="rounded-lg font-medium transition-all flex items-center justify-center space-x-2">
-      <svg *ngIf="config.icon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" [innerHTML]="config.icon">
+      <svg *ngIf="config.icon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <g [innerHTML]="getSafeIcon()"></g>
       </svg>
       <span>{{ config.label }}</span>
     </button>
@@ -39,6 +41,12 @@ export interface PrimaryButtonConfig {
 export class PrimaryButtonComponent {
   @Input() config!: PrimaryButtonConfig;
   @Output() buttonClick = new EventEmitter<PrimaryButtonConfig>();
+
+  constructor(private sanitizer: DomSanitizer) {}
+
+  getSafeIcon(): SafeHtml {
+    return this.config.icon ? this.sanitizer.bypassSecurityTrustHtml(this.config.icon) : '';
+  }
 
   onClick() {
     if (!this.config.disabled) {

@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 export type NotificationType = 'error' | 'warning' | 'info' | 'success';
 
@@ -41,7 +42,8 @@ export interface Notification {
               'text-blue-600 dark:text-blue-400': notification.type === 'info',
               'text-emerald-600 dark:text-emerald-400': notification.type === 'success'
             }"
-            class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" [innerHTML]="notification.icon">
+            class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+            <g [innerHTML]="getSafeIcon()"></g>
           </svg>
         </div>
         <div class="flex-1 min-w-0">
@@ -77,6 +79,12 @@ export interface Notification {
 export class NotificationCardComponent {
   @Input() notification!: Notification;
   @Output() notificationClick = new EventEmitter<Notification>();
+
+  constructor(private sanitizer: DomSanitizer) {}
+
+  getSafeIcon(): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(this.notification.icon);
+  }
 
   onNotificationClick() {
     this.notificationClick.emit(this.notification);
