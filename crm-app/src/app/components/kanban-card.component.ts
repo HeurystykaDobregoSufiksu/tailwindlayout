@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { BadgeComponent, BadgeConfig } from './badge.component';
 
 export type Priority = 'high' | 'medium' | 'low';
 export type TaskStatus = 'todo' | 'in-progress' | 'done';
@@ -21,7 +22,7 @@ export interface KanbanTask {
 
 @Component({
   selector: 'app-kanban-card',
-  imports: [CommonModule],
+  imports: [CommonModule, BadgeComponent],
   template: `
     <div
       (click)="onCardClick()"
@@ -33,15 +34,7 @@ export interface KanbanTask {
       class="group bg-white dark:bg-slate-800 rounded-lg p-4 shadow-sm hover:shadow-md cursor-pointer border transition-all duration-200">
       <div class="flex items-start justify-between mb-3">
         <div class="flex items-center gap-2">
-          <span
-            [ngClass]="{
-              'bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 border-red-200 dark:border-red-800': task.priority === 'high',
-              'bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-700': task.priority === 'medium',
-              'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-700': task.priority === 'low' || task.status === 'done'
-            }"
-            class="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium border">
-            {{ task.status === 'done' ? 'Ukończone' : (task.priority === 'high' ? 'Wysoki' : task.priority === 'medium' ? 'Średni' : 'Niski') }}
-          </span>
+          <app-badge [config]="getPriorityBadge()"></app-badge>
         </div>
         <button class="opacity-0 group-hover:opacity-100 p-1 hover:bg-slate-50 dark:hover:bg-slate-700 rounded transition-opacity">
           <svg class="w-4 h-4 text-slate-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -58,19 +51,13 @@ export interface KanbanTask {
 
       <!-- Progress Badge (only for in-progress tasks) -->
       <div *ngIf="task.status === 'in-progress' && task.progressTime" class="bg-blue-50/80 dark:bg-blue-900/30 border border-blue-200/50 dark:border-blue-700/50 rounded-md px-3 py-2 mb-3 flex items-center justify-between">
-        <div class="flex items-center space-x-2">
-          <div class="w-1.5 h-1.5 bg-blue-500 dark:bg-blue-400 rounded-full animate-pulse"></div>
-          <span class="text-xs text-blue-700 dark:text-blue-300 font-medium">W realizacji</span>
-        </div>
+        <app-badge [config]="getProgressBadge()"></app-badge>
         <span class="text-xs text-blue-600 dark:text-blue-400 font-mono font-medium">{{ task.progressTime }}</span>
       </div>
 
       <!-- Completion Badge (only for done tasks) -->
-      <div *ngIf="task.status === 'done'" class="bg-emerald-50/80 dark:bg-emerald-900/30 border border-emerald-200/50 dark:border-emerald-700/50 rounded-md px-3 py-2 mb-3 flex items-center space-x-2">
-        <svg class="w-3.5 h-3.5 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
-          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-        </svg>
-        <span class="text-xs text-emerald-700 font-medium">Ukończone pomyślnie</span>
+      <div *ngIf="task.status === 'done'" class="mb-3">
+        <app-badge [config]="getCompletionBadge()"></app-badge>
       </div>
 
       <div class="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-700" [class.border-slate-100]="task.status !== 'done'">
@@ -100,6 +87,49 @@ export interface KanbanTask {
 export class KanbanCardComponent {
   @Input() task!: KanbanTask;
   @Output() cardClick = new EventEmitter<KanbanTask>();
+
+  getPriorityBadge(): BadgeConfig {
+    if (this.task.status === 'done') {
+      return {
+        label: 'Ukończone',
+        variant: 'default',
+        color: 'emerald',
+        size: 'sm'
+      };
+    }
+
+    const priorityMap = {
+      high: { label: 'Wysoki', color: 'red' as const },
+      medium: { label: 'Średni', color: 'amber' as const },
+      low: { label: 'Niski', color: 'emerald' as const }
+    };
+
+    const priority = priorityMap[this.task.priority];
+    return {
+      label: priority.label,
+      variant: 'default',
+      color: priority.color,
+      size: 'sm'
+    };
+  }
+
+  getProgressBadge(): BadgeConfig {
+    return {
+      label: 'W realizacji',
+      variant: 'status',
+      color: 'blue',
+      animated: true
+    };
+  }
+
+  getCompletionBadge(): BadgeConfig {
+    return {
+      label: 'Ukończone pomyślnie',
+      variant: 'status',
+      color: 'emerald',
+      icon: '<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>'
+    };
+  }
 
   onCardClick() {
     this.cardClick.emit(this.task);

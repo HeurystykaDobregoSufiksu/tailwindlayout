@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { BadgeComponent, BadgeConfig } from './badge.component';
 
 export interface StatCard {
   id: string;
@@ -13,7 +14,7 @@ export interface StatCard {
 
 @Component({
   selector: 'app-stats-card',
-  imports: [CommonModule],
+  imports: [CommonModule, BadgeComponent],
   template: `
     <div [ngClass]="stat.gradient" class="rounded-xl p-4 text-white shadow-sm">
       <div class="flex items-center justify-between mb-3">
@@ -28,7 +29,7 @@ export interface StatCard {
             <p class="text-xs opacity-90">{{ stat.label }}</p>
           </div>
         </div>
-        <span class="text-xs bg-white/20 px-2.5 py-1 rounded-full font-medium">{{ stat.change }}</span>
+        <app-badge [config]="getChangeBadge()"></app-badge>
       </div>
     </div>
   `
@@ -40,5 +41,14 @@ export class StatsCardComponent {
 
   getSafeIcon(): SafeHtml {
     return this.sanitizer.bypassSecurityTrustHtml(this.stat.icon);
+  }
+
+  getChangeBadge(): BadgeConfig {
+    return {
+      label: this.stat.change,
+      variant: 'pill',
+      color: 'white',
+      size: 'sm'
+    };
   }
 }
