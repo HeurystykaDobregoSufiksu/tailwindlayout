@@ -1,0 +1,33 @@
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+export type IconButtonVariant = 'default' | 'theme';
+
+export interface IconButtonConfig {
+  id: string;
+  icon: string;
+  ariaLabel: string;
+  variant?: IconButtonVariant;
+}
+
+@Component({
+  selector: 'app-icon-button',
+  imports: [CommonModule],
+  template: `
+    <button
+      (click)="onClick()"
+      [attr.aria-label]="config.ariaLabel"
+      class="p-2 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 rounded-lg transition-all">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" [innerHTML]="config.icon">
+      </svg>
+    </button>
+  `
+})
+export class IconButtonComponent {
+  @Input() config!: IconButtonConfig;
+  @Output() buttonClick = new EventEmitter<IconButtonConfig>();
+
+  onClick() {
+    this.buttonClick.emit(this.config);
+  }
+}
