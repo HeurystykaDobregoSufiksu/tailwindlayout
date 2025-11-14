@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
@@ -11,6 +11,8 @@ import { CommonModule } from '@angular/common';
 export class App implements OnInit {
   isMobileMenuOpen = false;
   isDarkMode = false;
+
+  constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
     // Check for saved theme preference or default to light mode
@@ -33,16 +35,24 @@ export class App implements OnInit {
   }
 
   toggleTheme() {
+    console.log('Toggle theme called, current mode:', this.isDarkMode);
     this.isDarkMode = !this.isDarkMode;
+    console.log('New mode:', this.isDarkMode);
     this.applyTheme();
     localStorage.setItem('theme', this.isDarkMode ? 'dark' : 'light');
+    this.cdr.detectChanges();
   }
 
   private applyTheme() {
+    const htmlElement = document.documentElement;
+    console.log('Applying theme, dark mode:', this.isDarkMode);
+
     if (this.isDarkMode) {
-      document.documentElement.classList.add('dark');
+      htmlElement.classList.add('dark');
     } else {
-      document.documentElement.classList.remove('dark');
+      htmlElement.classList.remove('dark');
     }
+
+    console.log('HTML classes after apply:', htmlElement.classList.toString());
   }
 }
