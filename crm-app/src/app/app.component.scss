@@ -1,0 +1,24 @@
+// App component styles
+// Currently using Tailwind utility classes
+
+// Custom utility classes defined globally in styles.css
+.bg-pattern {
+  // Background pattern styles are applied inline
+}
+
+.sidebar-transition {
+  transition: transform 0.3s ease-in-out;
+}
+
+.no-scroll {
+  overflow: hidden;
+}
+
+.hide-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
+  }
+}
