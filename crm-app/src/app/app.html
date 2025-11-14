@@ -11,7 +11,7 @@
 
 <!-- Main Container -->
 <div class="relative z-10 p-2 sm:p-4 lg:p-6 bg-hero-gradient min-h-screen">
-  <div class="max-w-screen-2xl mx-auto">
+  <div class=" mx-auto">
     <div class="glass rounded-xl sm:rounded-2xl lg:rounded-3xl shadow-2xl overflow-hidden">
 
       <!-- Header -->
@@ -22,67 +22,7 @@
             <!-- Mobile Menu Toggle & Logo -->
             <div class="flex items-center space-x-3">
               <!-- Hamburger Menu (Mobile/Tablet) -->
-              <button (click)="toggleMobileMenu()" class="lg:hidden p-2 hover:bg-gray-100 rounded-lg">
-                <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
-              </button>
-
-              <!-- Logo -->
-              <div class="flex items-center space-x-2 sm:space-x-3">
-                <div class="w-8 h-8 sm:w-10 sm:h-10 bg-violet-purple rounded-lg sm:rounded-xl flex items-center justify-center shadow-lg">
-                  <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z"/>
-                  </svg>
-                </div>
-                <div class="hidden sm:block">
-                  <h1 class="text-lg sm:text-xl font-bold gradient-text">Enterprise CRM</h1>
-                  <p class="text-xs text-gray-500 hidden lg:block">Platforma zarządzania klientami</p>
-                </div>
-              </div>
-            </div>
-
-            <!-- Right Side Actions -->
-            <div class="flex items-center space-x-2 sm:space-x-4">
-              <!-- Search (Hidden on mobile, shown on tablet+) -->
-              <div class="hidden sm:block relative">
-                <input type="text" placeholder="Szukaj..." class="w-40 md:w-48 lg:w-64 px-3 py-1.5 lg:px-4 lg:py-2 pl-8 lg:pl-10 text-sm bg-gray-50 border border-gray-200 rounded-lg lg:rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent">
-                <svg class="absolute left-2 lg:left-3 top-2 lg:top-2.5 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                </svg>
-              </div>
-
-              <!-- Mobile Search Button -->
-              <button class="sm:hidden p-2 text-gray-600 hover:text-violet-600 hover:bg-violet-50 rounded-lg">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                </svg>
-              </button>
-
-              <!-- Notifications -->
-              <button class="relative p-2 text-gray-600 hover:text-violet-600 hover:bg-violet-50 rounded-lg lg:rounded-xl">
-                <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
-                </svg>
-                <span class="absolute top-1 right-1 w-2 h-2 sm:w-2.5 sm:h-2.5 bg-red-500 rounded-full"></span>
-                <span class="absolute top-1 right-1 w-2 h-2 sm:w-2.5 sm:h-2.5 bg-red-500 rounded-full animate-ping-slow"></span>
-              </button>
-
-              <!-- User Profile -->
-              <div class="flex items-center space-x-2 sm:space-x-3">
-                <div class="hidden sm:block text-right">
-                  <p class="text-xs sm:text-sm font-semibold text-gray-800">Jan Kowalski</p>
-                  <p class="text-xs text-gray-500 hidden lg:block">Doradca Klienta</p>
-                </div>
-                <div class="w-8 h-8 sm:w-10 sm:h-10 bg-violet-purple rounded-lg lg:rounded-xl flex items-center justify-center text-white font-semibold text-sm shadow-lg">
-                  JK
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Navigation Tabs (Horizontal scroll on mobile) -->
-          <nav class="flex space-x-1 mt-3 sm:mt-4 lg:mt-6 overflow-x-auto hide-scrollbar pb-2">
+              <nav class="flex space-x-1 mt-3 sm:mt-4 lg:mt-6 overflow-x-auto hide-scrollbar pb-2">
             <button class="flex items-center px-3 sm:px-4 py-2 sm:py-2.5 text-button text-white bg-violet-purple rounded-lg lg:rounded-xl shadow-lg whitespace-nowrap">
               <svg class="w-4 h-4 mr-1.5 sm:mr-2" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"/>
@@ -121,6 +61,34 @@
               Ustawienia
             </button>
           </nav>
+            </div>
+
+            <!-- Right Side Actions -->
+            <div class="flex items-center space-x-2 sm:space-x-4">
+              <!-- Search (Hidden on mobile, shown on tablet+) -->
+              
+              <!-- Notifications -->
+              <button class="relative p-2 text-gray-600 hover:text-violet-600 hover:bg-violet-50 rounded-lg lg:rounded-xl">
+                <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                </svg>
+                <span class="absolute top-1 right-1 w-2 h-2 sm:w-2.5 sm:h-2.5 bg-red-500 rounded-full"></span>
+                <span class="absolute top-1 right-1 w-2 h-2 sm:w-2.5 sm:h-2.5 bg-red-500 rounded-full animate-ping-slow"></span>
+              </button>
+
+              <!-- User Profile -->
+              <div class="flex items-center space-x-2 sm:space-x-3">
+                <div class="hidden sm:block text-right">
+                  <p class="text-xs sm:text-sm font-semibold text-gray-800">Jan Kowalski</p>
+                  <p class="text-xs text-gray-500 hidden lg:block">Doradca Klienta</p>
+                </div>
+                <div class="w-8 h-8 sm:w-10 sm:h-10 bg-violet-purple rounded-lg lg:rounded-xl flex items-center justify-center text-white font-semibold text-sm shadow-lg">
+                  JK
+                </div>
+              </div>
+            </div>
+          </div>
+ 
         </div>
       </header>
 
@@ -203,7 +171,7 @@
         </aside>
 
         <!-- Desktop Sidebar -->
-        <aside class="hidden lg:block w-80 bg-gradient-to-b from-white/70 to-gray-50/70 backdrop-blur-sm border-r border-gray-200/50 p-6 overflow-y-auto">
+        <aside class="hidden lg:block w-1/5 bg-gradient-to-b from-white/70 to-gray-50/70 backdrop-blur-sm border-r border-gray-200/50 p-6 overflow-y-auto">
           <!-- User Info Card -->
           <div class="bg-white rounded-2xl p-6 shadow-glass mb-6">
             <div class="flex flex-col items-center">
@@ -335,26 +303,7 @@
               </div>
             </div>
 
-            <!-- Filters (Mobile: Horizontal scroll) -->
-            <div class="flex items-center space-x-2 sm:space-x-3 overflow-x-auto hide-scrollbar pb-2">
-              <button class="px-3 sm:px-4 py-1.5 sm:py-2 bg-white border border-gray-200 rounded-lg text-button text-gray-700 hover:bg-gray-50 flex items-center space-x-1.5 sm:space-x-2 whitespace-nowrap">
-                <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
-                </svg>
-                <span>Filtruj</span>
-              </button>
-              <button class="px-3 sm:px-4 py-1.5 sm:py-2 bg-white border border-gray-200 rounded-lg text-button text-gray-700 hover:bg-gray-50 flex items-center space-x-1.5 sm:space-x-2 whitespace-nowrap">
-                <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-                </svg>
-                <span>Sortuj</span>
-              </button>
-              <div class="flex-1"></div>
-              <div class="hidden sm:flex items-center space-x-2 text-body-sm text-gray-500">
-                <span>Pokazuję</span>
-                <span class="font-semibold text-gray-700">4 zadania</span>
-              </div>
-            </div>
+  
           </div>
 
           <!-- Kanban Board -->
