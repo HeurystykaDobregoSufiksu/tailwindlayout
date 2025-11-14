@@ -182,102 +182,38 @@
         </aside>
 
         <!-- Desktop Sidebar -->
-        <aside class="hidden lg:block w-80 bg-white/40 dark:bg-slate-900/40 backdrop-blur-sm border-r border-slate-200/60 dark:border-slate-700/60 p-6 overflow-y-auto">
-          <!-- User Info Card -->
-          <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-100 dark:border-slate-700 mb-6">
-            <div class="flex flex-col items-center">
-              <div class="w-20 h-20 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-2xl flex items-center justify-center text-2xl font-bold text-white shadow-md mb-4 ring-4 ring-indigo-100">
-                JK
-              </div>
-              <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-1">Jan Kowalski</h3>
-              <p class="text-sm text-indigo-600 dark:text-indigo-400 font-medium mb-1">Doradca Klienta</p>
-              <p class="text-xs text-slate-500 dark:text-slate-400">Warszawa Centrum</p>
-
-              <!-- Stats -->
-              <div class="grid grid-cols-3 gap-4 mt-6 w-full">
-                <div class="text-center">
-                  <p class="text-2xl font-bold text-slate-800 dark:text-slate-100">24</p>
-                  <p class="text-xs text-slate-500 dark:text-slate-400">Klienci</p>
-                </div>
-                <div class="text-center border-x border-slate-100 dark:border-slate-700">
-                  <p class="text-2xl font-bold text-slate-800 dark:text-slate-100">4</p>
-                  <p class="text-xs text-slate-500 dark:text-slate-400">Zadania</p>
-                </div>
-                <div class="text-center">
-                  <p class="text-2xl font-bold text-emerald-600 dark:text-emerald-400">92%</p>
-                  <p class="text-xs text-slate-500 dark:text-slate-400">Wynik</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Quick Stats -->
-          <div class="grid grid-cols-1 gap-3 mb-6">
-            <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-4 text-white shadow-sm">
-              <div class="flex items-center justify-between mb-3">
-                <div class="flex items-center space-x-2">
-                  <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/>
-                    </svg>
-                  </div>
-                  <div>
-                    <p class="text-2xl font-bold">1,234</p>
-                    <p class="text-xs opacity-90">Sprzedaż miesięczna</p>
-                  </div>
-                </div>
-                <span class="text-xs bg-white/20 px-2.5 py-1 rounded-full font-medium">+12%</span>
-              </div>
-            </div>
-            <div class="bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl p-4 text-white shadow-sm">
-              <div class="flex items-center justify-between mb-3">
-                <div class="flex items-center space-x-2">
-                  <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                      <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
-                    </svg>
-                  </div>
-                  <div>
-                    <p class="text-2xl font-bold">432K</p>
-                    <p class="text-xs opacity-90">Przychody PLN</p>
-                  </div>
-                </div>
-                <span class="text-xs bg-white/20 px-2.5 py-1 rounded-full font-medium">+5%</span>
-              </div>
-            </div>
-          </div>
-
+        <aside class="hidden lg:block w-[480px] min-w-[400px] max-w-[520px] bg-white/40 dark:bg-slate-900/40 backdrop-blur-sm border-r border-slate-200/60 dark:border-slate-700/60 p-6 overflow-y-auto">
           <!-- Alerts Section -->
           <div class="mb-6">
-            <h4 class="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-3">Powiadomienia</h4>
+            <h4 class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wide mb-3">Powiadomienia</h4>
 
             <div class="space-y-3">
-              <div class="bg-red-50/80 border border-red-100 rounded-xl p-3 hover:bg-red-50 transition-all cursor-pointer">
+              <div class="bg-red-50/80 dark:bg-red-900/20 border border-red-100 dark:border-red-800/40 rounded-xl p-3 hover:bg-red-50 dark:hover:bg-red-900/30 transition-all cursor-pointer">
                 <div class="flex items-start space-x-3">
-                  <div class="flex-shrink-0 w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
-                    <svg class="w-4 h-4 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                  <div class="flex-shrink-0 w-8 h-8 bg-red-100 dark:bg-red-900/40 rounded-lg flex items-center justify-center">
+                    <svg class="w-4 h-4 text-red-600 dark:text-red-400" fill="currentColor" viewBox="0 0 20 20">
                       <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
                     </svg>
                   </div>
                   <div class="flex-1 min-w-0">
-                    <p class="text-sm font-semibold text-red-900 truncate">Pilny kontakt</p>
-                    <p class="text-xs text-red-700 mt-0.5">Klient wymaga kontaktu</p>
-                    <p class="text-xs text-red-500 mt-1">5 min temu</p>
+                    <p class="text-sm font-semibold text-red-900 dark:text-red-300 truncate">Pilny kontakt</p>
+                    <p class="text-xs text-red-700 dark:text-red-400 mt-0.5">Klient wymaga kontaktu</p>
+                    <p class="text-xs text-red-500 dark:text-red-500 mt-1">5 min temu</p>
                   </div>
                 </div>
               </div>
 
-              <div class="bg-amber-50/80 border border-amber-100 rounded-xl p-3 hover:bg-amber-50 transition-all cursor-pointer">
+              <div class="bg-amber-50/80 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-800/40 rounded-xl p-3 hover:bg-amber-50 dark:hover:bg-amber-900/30 transition-all cursor-pointer">
                 <div class="flex items-start space-x-3">
-                  <div class="flex-shrink-0 w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center">
-                    <svg class="w-4 h-4 text-amber-600" fill="currentColor" viewBox="0 0 20 20">
+                  <div class="flex-shrink-0 w-8 h-8 bg-amber-100 dark:bg-amber-900/40 rounded-lg flex items-center justify-center">
+                    <svg class="w-4 h-4 text-amber-600 dark:text-amber-400" fill="currentColor" viewBox="0 0 20 20">
                       <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
                     </svg>
                   </div>
                   <div class="flex-1 min-w-0">
-                    <p class="text-sm font-semibold text-amber-900 truncate">Nowa kampania</p>
-                    <p class="text-xs text-amber-700 mt-0.5">Rozpoczyna się jutro</p>
-                    <p class="text-xs text-amber-500 mt-1">1 godz. temu</p>
+                    <p class="text-sm font-semibold text-amber-900 dark:text-amber-300 truncate">Nowa kampania</p>
+                    <p class="text-xs text-amber-700 dark:text-amber-400 mt-0.5">Rozpoczyna się jutro</p>
+                    <p class="text-xs text-amber-500 dark:text-amber-500 mt-1">1 godz. temu</p>
                   </div>
                 </div>
               </div>
@@ -286,15 +222,15 @@
 
           <!-- Quick Actions -->
           <div>
-            <h4 class="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-3">Szybkie akcje</h4>
+            <h4 class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wide mb-3">Szybkie akcje</h4>
             <div class="space-y-2">
-              <button class="w-full bg-white hover:bg-indigo-50 border border-slate-200 hover:border-indigo-300 text-slate-700 hover:text-indigo-600 px-4 py-2.5 rounded-lg text-sm font-medium flex items-center space-x-2 transition-all">
+              <button class="w-full bg-white dark:bg-slate-800 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 border border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-600 text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 px-4 py-2.5 rounded-lg text-sm font-medium flex items-center space-x-2 transition-all">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                 </svg>
                 <span>Nowy klient</span>
               </button>
-              <button class="w-full bg-white hover:bg-indigo-50 border border-slate-200 hover:border-indigo-300 text-slate-700 hover:text-indigo-600 px-4 py-2.5 rounded-lg text-sm font-medium flex items-center space-x-2 transition-all">
+              <button class="w-full bg-white dark:bg-slate-800 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 border border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-600 text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 px-4 py-2.5 rounded-lg text-sm font-medium flex items-center space-x-2 transition-all">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
                 </svg>
@@ -374,28 +310,28 @@
                   </div>
                 </div>
 
-                <div class="group bg-white rounded-lg p-4 shadow-sm hover:shadow-md cursor-pointer border border-slate-200/50 hover:border-indigo-300 transition-all duration-200">
+                <div class="group bg-white dark:bg-slate-800 rounded-lg p-4 shadow-sm hover:shadow-md cursor-pointer border border-slate-200/50 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-600 transition-all duration-200">
                   <div class="flex items-start justify-between mb-3">
                     <div class="flex items-center gap-2">
-                      <span class="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-amber-50 text-amber-700 border border-amber-200">
+                      <span class="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-700">
                         Średni
                       </span>
                     </div>
-                    <button class="opacity-0 group-hover:opacity-100 p-1 hover:bg-slate-50 rounded transition-opacity">
-                      <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button class="opacity-0 group-hover:opacity-100 p-1 hover:bg-slate-50 dark:hover:bg-slate-700 rounded transition-opacity">
+                      <svg class="w-4 h-4 text-slate-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
                       </svg>
                     </button>
                   </div>
-                  <h4 class="text-sm font-semibold text-slate-900 mb-2">Weryfikacja dokumentów</h4>
-                  <p class="text-xs text-slate-600 mb-4 leading-relaxed">Sprawdzić kompletność dokumentów dla wniosku kredytowego</p>
+                  <h4 class="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-2">Weryfikacja dokumentów</h4>
+                  <p class="text-xs text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">Sprawdzić kompletność dokumentów dla wniosku kredytowego</p>
 
-                  <div class="flex items-center justify-between pt-3 border-t border-slate-100">
+                  <div class="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-700">
                     <div class="flex items-center space-x-2">
                       <div class="w-6 h-6 bg-gradient-to-br from-pink-500 to-pink-600 rounded-md flex items-center justify-center text-xs text-white font-medium">AK</div>
-                      <span class="text-xs text-slate-600 font-medium">Anna Kowalska</span>
+                      <span class="text-xs text-slate-600 dark:text-slate-300 font-medium">Anna Kowalska</span>
                     </div>
-                    <div class="flex items-center text-xs text-slate-500">
+                    <div class="flex items-center text-xs text-slate-500 dark:text-slate-400">
                       <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                       </svg>
@@ -509,40 +445,40 @@
           </div>
 
           <!-- Activity Timeline -->
-          <div class="hidden sm:block mt-8 bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-            <h3 class="text-lg font-bold text-slate-800 mb-5">Ostatnia aktywność</h3>
+          <div class="hidden sm:block mt-8 bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-100 dark:border-slate-700">
+            <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-5">Ostatnia aktywność</h3>
             <div class="space-y-4">
               <div class="flex items-start space-x-4">
-                <div class="flex-shrink-0 w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center">
-                  <svg class="w-5 h-5 text-indigo-600" fill="currentColor" viewBox="0 0 20 20">
+                <div class="flex-shrink-0 w-10 h-10 bg-indigo-100 dark:bg-indigo-900/30 rounded-xl flex items-center justify-center">
+                  <svg class="w-5 h-5 text-indigo-600 dark:text-indigo-400" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                   </svg>
                 </div>
                 <div class="flex-1">
-                  <p class="text-sm text-slate-800"><span class="font-semibold">Maria Nowak</span> zakończyła zadanie <span class="font-medium text-indigo-600">Założenie konta</span></p>
-                  <p class="text-xs text-slate-500 mt-1">2 godziny temu</p>
+                  <p class="text-sm text-slate-800 dark:text-slate-200"><span class="font-semibold">Maria Nowak</span> zakończyła zadanie <span class="font-medium text-indigo-600 dark:text-indigo-400">Założenie konta</span></p>
+                  <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">2 godziny temu</p>
                 </div>
               </div>
               <div class="flex items-start space-x-4">
-                <div class="flex-shrink-0 w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
-                  <svg class="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                <div class="flex-shrink-0 w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center">
+                  <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"/>
                   </svg>
                 </div>
                 <div class="flex-1">
-                  <p class="text-sm text-slate-800"><span class="font-semibold">Piotr Wiśniewski</span> rozpoczął zadanie <span class="font-medium text-blue-600">Spotkanie z klientem</span></p>
-                  <p class="text-xs text-slate-500 mt-1">4 godziny temu</p>
+                  <p class="text-sm text-slate-800 dark:text-slate-200"><span class="font-semibold">Piotr Wiśniewski</span> rozpoczął zadanie <span class="font-medium text-blue-600 dark:text-blue-400">Spotkanie z klientem</span></p>
+                  <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">4 godziny temu</p>
                 </div>
               </div>
               <div class="flex items-start space-x-4">
-                <div class="flex-shrink-0 w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center">
-                  <svg class="w-5 h-5 text-amber-600" fill="currentColor" viewBox="0 0 20 20">
+                <div class="flex-shrink-0 w-10 h-10 bg-amber-100 dark:bg-amber-900/30 rounded-xl flex items-center justify-center">
+                  <svg class="w-5 h-5 text-amber-600 dark:text-amber-400" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-3 3v-3H4a2 2 0 01-2-2V5z"/>
                   </svg>
                 </div>
                 <div class="flex-1">
-                  <p class="text-sm text-slate-800"><span class="font-semibold">Jan Nowak</span> dodał komentarz do <span class="font-medium text-amber-600">Oferta kredytu</span></p>
-                  <p class="text-xs text-slate-500 mt-1">5 godzin temu</p>
+                  <p class="text-sm text-slate-800 dark:text-slate-200"><span class="font-semibold">Jan Nowak</span> dodał komentarz do <span class="font-medium text-amber-600 dark:text-amber-400">Oferta kredytu</span></p>
+                  <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">5 godzin temu</p>
                 </div>
               </div>
             </div>
