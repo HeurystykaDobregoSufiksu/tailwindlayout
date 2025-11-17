@@ -1,7 +1,7 @@
 import { Component, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { BadgeComponent, BadgeConfig } from '../badge/badge.component';
+import { BadgeComponent } from '../badge/badge.component';
 
 export interface StatCard {
   id: string;
@@ -14,7 +14,7 @@ export interface StatCard {
 
 @Component({
   selector: 'app-stats-card',
-  imports: [CommonModule, BadgeComponent],
+  imports: [CommonModule],
   templateUrl: './stats-card.component.html',
   styleUrl: './stats-card.component.scss'
 })
@@ -27,7 +27,7 @@ export class StatsCardComponent {
     return this.sanitizer.bypassSecurityTrustHtml(this.stat.icon);
   }
 
-  getChangeBadge(): BadgeConfig {
+  getChangeBadge() {
     return {
       label: this.stat.change,
       variant: 'pill',

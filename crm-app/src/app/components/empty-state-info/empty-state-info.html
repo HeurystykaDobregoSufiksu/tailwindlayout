@@ -1,0 +1,13 @@
+<div class="border-2 rounded-lg flex flex-col items-center justify-center p-6 text-center border-dashed border-slate-300 dark:border-slate-700">
+  @if (icon()) {
+    <svg  class="p-2  w-24 h-24  text-slate-400 " fill="currentColor" viewBox="0 0 20 20">
+        <g  [innerHTML]="getSafeIcon()"></g>
+    </svg>
+  }
+  @if (header()) {
+    <p class="font-semibold text-2xl text-slate-600 dark:text-slate-200">{{header()}}</p>
+  }
+  @if (description()) {
+    <p class="mt-2 text-sm text-slate-600 dark:text-slate-200">{{description()}}</p>
+  }
+</div>

@@ -1,20 +1,11 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, Input, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 export type BadgeVariant = 'default' | 'pill' | 'status';
-export type BadgeColor = 'red' | 'amber' | 'emerald' | 'blue' | 'slate' | 'indigo' | 'white';
+export type BadgeColor = 'red' | 'amber' | 'emerald' | 'blue' | 'slate' | 'indigo' | 'white' | 'defaultLight' | 'defaultDark';
 export type BadgeSize = 'sm' | 'md' | 'lg';
 
-export interface BadgeConfig {
-  label: string;
-  variant?: BadgeVariant;
-  color?: BadgeColor;
-  size?: BadgeSize;
-  icon?: string;
-  iconPosition?: 'left' | 'right';
-  animated?: boolean;
-}
 
 @Component({
   selector: 'app-badge',
@@ -23,11 +14,20 @@ export interface BadgeConfig {
   styleUrl: './badge.component.scss'
 })
 export class BadgeComponent {
-  @Input() config!: BadgeConfig;
 
+  label = input.required<string>();
+  variant = input<BadgeVariant>();
+  firstName = input<string>();
+  color = input<string>();
+  size = input<string>();
+  icon = input<string>();
+  bold = input<boolean>();
+  iconPosition = input<string>();
+  animated = input<boolean>();
+  transparent = input<boolean>();
   private sanitizer = inject(DomSanitizer);
 
   getSafeIcon(): SafeHtml {
-    return this.config.icon ? this.sanitizer.bypassSecurityTrustHtml(this.config.icon) : '';
+    return this.icon() ? this.sanitizer.bypassSecurityTrustHtml(this.icon()??"") : '';
   }
 }

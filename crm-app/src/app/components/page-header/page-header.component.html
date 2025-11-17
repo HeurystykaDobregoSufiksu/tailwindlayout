@@ -11,10 +11,17 @@
       </app-button-group>
 
       @if (actionButton) {
-        <app-primary-button
-          [config]="actionButton"
-          (buttonClick)="onActionClick($event)">
-        </app-primary-button>
+        <app-button
+          [label]="actionButton.label"
+           [disabled]="actionButton.disabled??false"
+           [id]="actionButton.id"
+           [icon]="actionButton.icon"
+           [size]="actionButton.size??'md'"
+           [variant]="actionButton.variant??'primary'"
+           
+
+          (buttonClick)="onActionClick()">
+        </app-button>
       }
     </div>
   </div>

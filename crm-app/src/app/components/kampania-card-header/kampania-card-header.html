@@ -1,0 +1,29 @@
+<div class="rounded-lg border border-slate-300 dark:border-slate-700  flex flex-col justify-center p-6 text-center hover:bg-slate-100 dark:hover:bg-slate-800 hover:cursor-pointer">
+  <div class="flex pt-0 justify-between">
+     <span class="font-semibold text-lg text-slate-600 dark:text-slate-200">{{ title() }}</span>
+    <p class="text-2xl font-bold text-emerald-600/70 col-auto ">
+       
+      {{ progress() ?? 0 }}<span class="text-sm">%</span>
+      
+    </p>
+  </div>
+  <div class="flex mt-2 mb-2 gap-x-1">
+    <app-badge [variant]="'pill'" [color]="'slate'" [bold]="false" [label]="'marketing'" [size]="'sm'"></app-badge>
+     <app-badge [variant]="'pill'" [color]="'slate'" [bold]="false" [label]="'kredyt'" [size]="'sm'"></app-badge>
+      <app-badge [variant]="'pill'" [color]="'slate'" [bold]="false" [label]="'premiowana'" [size]="'sm'"></app-badge>
+  </div>
+  <div class="flex  pb-0 pt-0 justify-between" >
+   <div class="flex items-center text-xs text-slate-500 dark:text-slate-400">
+    <svg _ngcontent-ng-c2016405818="" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="w-3.5 h-3.5 mr-1"><path _ngcontent-ng-c2016405818="" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path><!--container--><!--container--></svg>
+    <span class="text-sm text-slate-500">01.01.2025</span>
+</div>
+   <div class="flex items-center text-xs text-slate-500 dark:text-slate-400">
+    <svg _ngcontent-ng-c2016405818="" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="w-3.5 h-3.5 mr-1"><path _ngcontent-ng-c2016405818="" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path><!--container--><!--container--></svg>
+    <span class="text-sm text-slate-500">31.12.2025</span>
+</div>
+   
+  </div>
+  <div
+    class="progressBar w-full border h-2 rounded-md bg-gradient-to-r from-indigo-600 from-0% via-indigo-500 via-70% to-transparent to-80%"
+  ></div>
+</div>

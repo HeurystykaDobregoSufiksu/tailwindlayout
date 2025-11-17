@@ -12,8 +12,11 @@ import { TopBarComponent } from './components/top-bar/top-bar.component';
 import { NavButton } from './components/nav-button/nav-button.component';
 import { IconButtonConfig } from './components/icon-button/icon-button.component';
 import { PageHeaderComponent } from './components/page-header/page-header.component';
-import { ButtonGroupOption } from './components/button-group/button-group.component';
-import { PrimaryButtonConfig } from './components/primary-button/primary-button.component';
+import { ButtonGroupOption, ButtonGroupComponent } from './components/button-group/button-group.component';
+import { ButtonConfig, ButtonComponent } from './components/button/button.component';
+import { BadgeComponent } from "./components/badge/badge.component";
+import { EmptyStateInfo } from "./components/empty-state-info/empty-state-info";
+import { KampaniaCardHeader } from "./components/kampania-card-header/kampania-card-header";
 
 @Component({
   selector: 'app-root',
@@ -25,18 +28,35 @@ import { PrimaryButtonConfig } from './components/primary-button/primary-button.
     QuickActionButtonComponent,
     KanbanColumnComponent,
     ActivityItemComponent,
-    StatsCardComponent,
     TopBarComponent,
-    PageHeaderComponent
-  ],
+    PageHeaderComponent,
+    ButtonGroupComponent,
+    ButtonComponent,
+    BadgeComponent,
+    EmptyStateInfo,
+    KampaniaCardHeader
+],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class App implements OnInit {
+navigate(_t25: NavButton) {
+throw new Error('Method not implemented.');
+}
+onOperatorChange(option: ButtonGroupOption) {
+this.operatorOptions.update(options =>
+      options.map(o => ({
+        ...o,
+        active: o.id === option.id
+      }))
+    );
+}
   // Signals for reactive state
   isMobileMenuOpen = signal(false);
   isDarkMode = signal(false);
-
+  startDate = signal(new Date);
+  randomArr = signal<string[]>(['dsa','sad','zxc','xzcv','dsa','sad','zxc','xzcv']);
+  btnConfig = signal<IconButtonConfig[]>([]);
   // Navigation buttons
   navButtons = signal<NavButton[]>([
     {
@@ -62,8 +82,8 @@ export class App implements OnInit {
     },
     {
       id: 'plans',
-      label: 'Plany',
-      icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>'
+      label: 'Plany marketingowe',
+      icon: '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"> <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5m.75-9 3-3 2.148 2.148A12.061 12.061 0 0 1 16.5 7.605" /> </svg>'
     },
     {
       id: 'settings',
@@ -91,6 +111,7 @@ export class App implements OnInit {
 
   // Page header config
   pageTitle = signal('Tablica Zadań');
+  
   pageSubtitle = signal('Zarządzaj swoimi zadaniami i projektami');
 
   // View options
@@ -99,16 +120,20 @@ export class App implements OnInit {
     { id: 'list', label: 'Lista', active: false },
     { id: 'calendar', label: 'Kalendarz', active: false }
   ]);
-
+ operatorOptions = signal<ButtonGroupOption[]>([
+    { id: 'operator', label: 'Operator', active: true },
+    { id: 'Dyrektor', label: 'Dyrektor', active: false },
+    { id: 'Centrala', label: 'Centrala', active: false }
+  ]);
   // Add task button
-  addTaskButton = computed<PrimaryButtonConfig>(() => ({
+  addTaskButton = computed<ButtonConfig>(() => ({
     id: 'add-task',
     label: 'Dodaj zadanie',
     icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>',
     variant: 'primary',
     size: 'md'
   }));
-
+ 
   // User data
   userInfo = signal<UserInfo>({
     initials: 'JK',
@@ -130,7 +155,7 @@ export class App implements OnInit {
       title: 'Pilny kontakt',
       message: 'Klient wymaga kontaktu',
       time: '5 min temu',
-      icon: '<path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>'
+      icon: '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"> <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" /> </svg>'
     },
     {
       id: '2',
@@ -138,7 +163,7 @@ export class App implements OnInit {
       title: 'Nowa kampania',
       message: 'Rozpoczyna się jutro',
       time: '1 godz. temu',
-      icon: '<path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>'
+      icon: '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"> <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" /> </svg>'
     }
   ]);
 
@@ -246,7 +271,7 @@ export class App implements OnInit {
       iconBg: '#ddd6fe',
       iconColor: '#7c3aed',
       targetColor: '#7c3aed',
-      icon: '<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>'
+      icon: '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"> <path stroke-linecap="round" stroke-linejoin="round" d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0 1 18 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3 1.5 1.5 3-3.75" /> </svg>'
     },
     {
       id: '2',
@@ -258,7 +283,7 @@ export class App implements OnInit {
       iconBg: '#bfdbfe',
       iconColor: '#2563eb',
       targetColor: '#2563eb',
-      icon: '<path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"/>'
+      icon: '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"> <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0M12 12.75h.008v.008H12v-.008Z" /> </svg>'
     },
     {
       id: '3',
@@ -270,7 +295,7 @@ export class App implements OnInit {
       iconBg: '#fde68a',
       iconColor: '#d97706',
       targetColor: '#d97706',
-      icon: '<path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-3 3v-3H4a2 2 0 01-2-2V5z"/>'
+      icon: '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"> <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" /> </svg>'
     }
   ]);
 
@@ -358,8 +383,8 @@ export class App implements OnInit {
     );
   }
 
-  onAddTaskClick(button: PrimaryButtonConfig) {
-    console.log('Add task clicked:', button);
+  onAddTaskClick() {
+    console.log('Add task clicked:');
   }
 
   onNotificationClick(notification: Notification) {

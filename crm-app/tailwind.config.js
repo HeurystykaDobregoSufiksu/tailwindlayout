@@ -225,6 +225,21 @@ module.exports = {
         '.hide-scrollbar::-webkit-scrollbar': {
           display: 'none',
         },
+        '.scrollbar-light::-webkit-scrollbar': {
+          width: '8px',
+        },
+        '.scrollbar-light::-webkit-scrollbar-track': {
+          background: '#f1f1f1',
+        },
+          '.scrollbar-light::-webkit-scrollbar-thumb': {
+          background: '#cbd5e1',
+        },
+        '.scrollbar-dark::-webkit-scrollbar-track': {
+          background: '#1E293B',
+        },
+          '.scrollbar-dark::-webkit-scrollbar-thumb': {
+          background: '#0F172A',
+        },
       }
       addUtilities(newUtilities)
     },
