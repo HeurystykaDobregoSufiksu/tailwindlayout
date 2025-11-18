@@ -4,15 +4,15 @@
       type="checkbox"
       [id]="id() || name()"
       [name]="name()"
-      [checked]="checked()"
-      [disabled]="disabled()"
-      [attr.aria-checked]="checked()"
+      [checked]="value()"
+      [disabled]="isDisabled()"
+      [attr.aria-checked]="value()"
       [attr.aria-label]="label() || 'Checkbox'"
       [class]="checkboxClasses()"
-      (change)="onChange()"
+      (change)="onCheckboxChange()"
     />
 
-    @if (checked()) {
+    @if (value()) {
       <svg
         [class]="checkIconClasses()"
         class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
@@ -24,7 +24,7 @@
       </svg>
     }
 
-    @if (indeterminate() && !checked()) {
+    @if (indeterminate() && !value()) {
       <svg
         [class]="checkIconClasses()"
         class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"

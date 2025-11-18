@@ -1,5 +1,6 @@
-import { Component, input, output, computed, ContentChildren, QueryList, AfterContentInit } from '@angular/core';
+import { Component, input, signal, computed, ContentChildren, QueryList, AfterContentInit, forwardRef, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { RadioButtonComponent } from './radio-button.component';
 
 export type RadioGroupOrientation = 'horizontal' | 'vertical';
@@ -8,17 +9,27 @@ export type RadioGroupOrientation = 'horizontal' | 'vertical';
   selector: 'app-radio-group',
   imports: [CommonModule],
   templateUrl: './radio-group.component.html',
-  styleUrl: './radio-group.component.scss'
+  styleUrl: './radio-group.component.scss',
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => RadioGroupComponent),
+      multi: true
+    }
+  ]
 })
-export class RadioGroupComponent implements AfterContentInit {
-  // Primitive inputs only
+export class RadioGroupComponent implements ControlValueAccessor, AfterContentInit {
+  // Primitive inputs only (non-form related)
   name = input.required<string>();
-  selectedValue = input<string>('');
   orientation = input<RadioGroupOrientation>('vertical');
-  disabled = input<boolean>(false);
 
-  // Outputs
-  valueChange = output<string>();
+  // Form control state
+  value = signal<string>('');
+  isDisabled = signal<boolean>(false);
+
+  // ControlValueAccessor callbacks
+  private onChange: (value: string) => void = () => {};
+  private onTouched: () => void = () => {};
 
   // Content projection
   @ContentChildren(RadioButtonComponent) radioButtons!: QueryList<RadioButtonComponent>;
@@ -30,6 +41,17 @@ export class RadioGroupComponent implements AfterContentInit {
     return `${baseClasses} ${orientationClasses}`;
   });
 
+  constructor() {
+    // Update radio buttons when value changes
+    effect(() => {
+      const currentValue = this.value();
+      const disabled = this.isDisabled();
+      this.radioButtons?.forEach((radio) => {
+        radio.updateFromGroup(currentValue, disabled);
+      });
+    });
+  }
+
   ngAfterContentInit(): void {
     // Subscribe to each radio button's selection
     this.radioButtons.forEach((radio) => {
@@ -38,20 +60,43 @@ export class RadioGroupComponent implements AfterContentInit {
       });
     });
 
-    // Set initial selection
+    // Set initial state for all radio buttons
     this.updateRadioButtons();
   }
 
   onRadioSelect(value: string): void {
-    this.valueChange.emit(value);
-    this.updateRadioButtons();
+    if (!this.isDisabled()) {
+      this.value.set(value);
+      this.onChange(value);
+      this.onTouched();
+      this.updateRadioButtons();
+    }
   }
 
   private updateRadioButtons(): void {
-    const selected = this.selectedValue();
-    this.radioButtons.forEach((radio) => {
-      // This is a workaround since we can't directly set signal inputs
-      // In a real app, you'd manage this differently
+    const selected = this.value();
+    const disabled = this.isDisabled();
+    this.radioButtons?.forEach((radio) => {
+      radio.updateFromGroup(selected, disabled);
     });
+  }
+
+  // ControlValueAccessor implementation
+  writeValue(value: string): void {
+    this.value.set(value ?? '');
+    this.updateRadioButtons();
+  }
+
+  registerOnChange(fn: (value: string) => void): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.isDisabled.set(isDisabled);
+    this.updateRadioButtons();
   }
 }

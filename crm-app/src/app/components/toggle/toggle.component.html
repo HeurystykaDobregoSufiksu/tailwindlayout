@@ -9,9 +9,9 @@
   <button
     type="button"
     role="switch"
-    [attr.aria-checked]="checked()"
+    [attr.aria-checked]="value()"
     [attr.aria-label]="label() || 'Toggle switch'"
-    [disabled]="disabled()"
+    [disabled]="isDisabled()"
     [class]="toggleClasses()"
     (click)="onToggle()"
   >

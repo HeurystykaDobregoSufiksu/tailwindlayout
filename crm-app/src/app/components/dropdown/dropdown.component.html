@@ -2,7 +2,7 @@
   <button
     type="button"
     [class]="buttonClasses()"
-    [disabled]="disabled()"
+    [disabled]="isDisabled()"
     (click)="toggleDropdown()"
     [attr.aria-expanded]="isOpen()"
     [attr.aria-haspopup]="true"

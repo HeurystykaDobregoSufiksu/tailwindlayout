@@ -2,7 +2,7 @@
   <button
     type="button"
     [class]="buttonClasses()"
-    [disabled]="disabled()"
+    [disabled]="isDisabled()"
     (click)="toggleDropdown()"
     [attr.aria-expanded]="isOpen()"
     [attr.aria-haspopup]="true"
@@ -13,7 +13,7 @@
       }
       <span class="text-left truncate flex-1">{{ displayLabel() }}</span>
 
-      @if (selectedValuesArray().length > 0 && !disabled()) {
+      @if (selectedValuesArray().length > 0 && !isDisabled()) {
         <button
           type="button"
           class="shrink-0 size-5 rounded-full hover:bg-ui-bg-secondary dark:hover:bg-ui-bg-secondary-dark flex items-center justify-center transition-colors-base"

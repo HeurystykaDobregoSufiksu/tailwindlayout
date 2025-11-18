@@ -1,5 +1,6 @@
-import { Component, input, output, computed } from '@angular/core';
+import { Component, input, signal, computed, forwardRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 export type CheckboxSize = 'sm' | 'md' | 'lg';
 
@@ -7,20 +8,30 @@ export type CheckboxSize = 'sm' | 'md' | 'lg';
   selector: 'app-checkbox',
   imports: [CommonModule],
   templateUrl: './checkbox.component.html',
-  styleUrl: './checkbox.component.scss'
+  styleUrl: './checkbox.component.scss',
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => CheckboxComponent),
+      multi: true
+    }
+  ]
 })
-export class CheckboxComponent {
-  // Primitive inputs only
-  checked = input<boolean>(false);
+export class CheckboxComponent implements ControlValueAccessor {
+  // Primitive inputs only (non-form related)
   indeterminate = input<boolean>(false);
-  disabled = input<boolean>(false);
   size = input<CheckboxSize>('md');
   label = input<string>('');
   name = input<string>('');
   id = input<string>('');
 
-  // Outputs
-  checkedChange = output<boolean>();
+  // Form control state
+  value = signal<boolean>(false);
+  isDisabled = signal<boolean>(false);
+
+  // ControlValueAccessor callbacks
+  private onChange: (value: boolean) => void = () => {};
+  private onTouched: () => void = () => {};
 
   // Computed values
   checkboxClasses = computed<string>(() => {
@@ -32,11 +43,11 @@ export class CheckboxComponent {
       lg: 'size-6'
     };
 
-    const stateClasses = this.checked() || this.indeterminate()
+    const stateClasses = this.value() || this.indeterminate()
       ? 'bg-brand-primary border-brand-primary'
       : 'bg-white dark:bg-ui-bg-primary-dark border-ui-border dark:border-ui-border-dark hover:border-brand-primary';
 
-    const disabledClasses = this.disabled()
+    const disabledClasses = this.isDisabled()
       ? 'opacity-50 cursor-not-allowed'
       : 'hover:border-brand-primary dark:hover:border-brand-primary';
 
@@ -52,7 +63,7 @@ export class CheckboxComponent {
       lg: 'text-lg'
     };
 
-    const disabledClasses = this.disabled() ? 'opacity-50' : 'cursor-pointer';
+    const disabledClasses = this.isDisabled() ? 'opacity-50' : 'cursor-pointer';
 
     return `${baseClasses} ${sizeClasses[this.size()]} ${disabledClasses}`;
   });
@@ -67,9 +78,29 @@ export class CheckboxComponent {
     return `text-white ${sizeClasses[this.size()]}`;
   });
 
-  onChange(): void {
-    if (!this.disabled()) {
-      this.checkedChange.emit(!this.checked());
+  onCheckboxChange(): void {
+    if (!this.isDisabled()) {
+      const newValue = !this.value();
+      this.value.set(newValue);
+      this.onChange(newValue);
+      this.onTouched();
     }
+  }
+
+  // ControlValueAccessor implementation
+  writeValue(value: boolean): void {
+    this.value.set(value ?? false);
+  }
+
+  registerOnChange(fn: (value: boolean) => void): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.isDisabled.set(isDisabled);
   }
 }

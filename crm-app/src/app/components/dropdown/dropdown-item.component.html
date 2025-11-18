@@ -2,7 +2,7 @@
   [class]="itemClasses()"
   (click)="onClick()"
   role="option"
-  [attr.aria-selected]="selected()"
+  [attr.aria-selected]="isSelected()"
   [attr.aria-disabled]="disabled()"
 >
   @if (icon()) {
@@ -10,7 +10,7 @@
   }
   <span class="flex-1 truncate">{{ label() }}</span>
 
-  @if (selected()) {
+  @if (isSelected()) {
     <svg class="size-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
     </svg>

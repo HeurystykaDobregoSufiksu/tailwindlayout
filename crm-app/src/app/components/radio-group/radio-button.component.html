@@ -5,15 +5,15 @@
       [id]="id() || value()"
       [name]="name()"
       [value]="value()"
-      [checked]="checked()"
-      [disabled]="disabled()"
-      [attr.aria-checked]="checked()"
+      [checked]="isChecked()"
+      [disabled]="isDisabled()"
+      [attr.aria-checked]="isChecked()"
       [attr.aria-label]="label() || value()"
       [class]="radioClasses()"
       (change)="onChange()"
     />
 
-    @if (checked()) {
+    @if (isChecked()) {
       <div
         [class]="dotClasses()"
         class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"

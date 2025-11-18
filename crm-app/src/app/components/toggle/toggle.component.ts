@@ -1,5 +1,6 @@
-import { Component, input, output, signal, computed, inject } from '@angular/core';
+import { Component, input, signal, computed, inject, forwardRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 export type ToggleSize = 'sm' | 'md' | 'lg';
@@ -8,21 +9,31 @@ export type ToggleSize = 'sm' | 'md' | 'lg';
   selector: 'app-toggle',
   imports: [CommonModule],
   templateUrl: './toggle.component.html',
-  styleUrl: './toggle.component.scss'
+  styleUrl: './toggle.component.scss',
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => ToggleComponent),
+      multi: true
+    }
+  ]
 })
-export class ToggleComponent {
-  // Primitive inputs only
-  checked = input<boolean>(false);
-  disabled = input<boolean>(false);
+export class ToggleComponent implements ControlValueAccessor {
+  // Primitive inputs only (non-form related)
   size = input<ToggleSize>('md');
   label = input<string>('');
   icon = input<string>('');
 
-  // Outputs
-  toggleChange = output<boolean>();
-
   // Internal state
   private sanitizer = inject(DomSanitizer);
+
+  // Form control state
+  value = signal<boolean>(false);
+  isDisabled = signal<boolean>(false);
+
+  // ControlValueAccessor callbacks
+  private onChange: (value: boolean) => void = () => {};
+  private onTouched: () => void = () => {};
 
   // Computed values
   safeIcon = computed<SafeHtml>(() => {
@@ -39,11 +50,11 @@ export class ToggleComponent {
       lg: 'h-7 w-14'
     };
 
-    const stateClasses = this.checked()
+    const stateClasses = this.value()
       ? 'bg-brand-primary'
       : 'bg-ui-border dark:bg-ui-border-dark';
 
-    const disabledClasses = this.disabled() ? 'opacity-50 cursor-not-allowed' : '';
+    const disabledClasses = this.isDisabled() ? 'opacity-50 cursor-not-allowed' : '';
 
     return `${baseClasses} ${sizeClasses[this.size()]} ${stateClasses} ${disabledClasses}`;
   });
@@ -57,7 +68,7 @@ export class ToggleComponent {
       lg: 'h-6 w-6'
     };
 
-    const positionClasses = this.checked()
+    const positionClasses = this.value()
       ? this.size() === 'sm' ? 'translate-x-4' : this.size() === 'lg' ? 'translate-x-7' : 'translate-x-5'
       : 'translate-x-0.5';
 
@@ -77,8 +88,28 @@ export class ToggleComponent {
   });
 
   onToggle(): void {
-    if (!this.disabled()) {
-      this.toggleChange.emit(!this.checked());
+    if (!this.isDisabled()) {
+      const newValue = !this.value();
+      this.value.set(newValue);
+      this.onChange(newValue);
+      this.onTouched();
     }
+  }
+
+  // ControlValueAccessor implementation
+  writeValue(value: boolean): void {
+    this.value.set(value ?? false);
+  }
+
+  registerOnChange(fn: (value: boolean) => void): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.isDisabled.set(isDisabled);
   }
 }

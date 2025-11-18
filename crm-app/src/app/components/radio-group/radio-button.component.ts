@@ -1,4 +1,4 @@
-import { Component, input, output, computed } from '@angular/core';
+import { Component, input, output, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 export type RadioSize = 'sm' | 'md' | 'lg';
@@ -13,11 +13,13 @@ export class RadioButtonComponent {
   // Primitive inputs only
   value = input.required<string>();
   name = input.required<string>();
-  checked = input<boolean>(false);
-  disabled = input<boolean>(false);
   size = input<RadioSize>('md');
   label = input<string>('');
   id = input<string>('');
+
+  // Internal state (managed by parent RadioGroupComponent)
+  isChecked = signal<boolean>(false);
+  isDisabled = signal<boolean>(false);
 
   // Outputs
   selected = output<string>();
@@ -32,11 +34,11 @@ export class RadioButtonComponent {
       lg: 'size-6'
     };
 
-    const stateClasses = this.checked()
+    const stateClasses = this.isChecked()
       ? 'bg-white border-brand-primary'
       : 'bg-white dark:bg-ui-bg-primary-dark border-ui-border dark:border-ui-border-dark';
 
-    const disabledClasses = this.disabled()
+    const disabledClasses = this.isDisabled()
       ? 'opacity-50 cursor-not-allowed'
       : 'hover:border-brand-primary dark:hover:border-brand-primary';
 
@@ -52,7 +54,7 @@ export class RadioButtonComponent {
       lg: 'text-lg'
     };
 
-    const disabledClasses = this.disabled() ? 'opacity-50' : 'cursor-pointer';
+    const disabledClasses = this.isDisabled() ? 'opacity-50' : 'cursor-pointer';
 
     return `${baseClasses} ${sizeClasses[this.size()]} ${disabledClasses}`;
   });
@@ -68,8 +70,14 @@ export class RadioButtonComponent {
   });
 
   onChange(): void {
-    if (!this.disabled()) {
+    if (!this.isDisabled()) {
       this.selected.emit(this.value());
     }
+  }
+
+  // Called by parent RadioGroupComponent to update state
+  updateFromGroup(selectedValue: string, groupDisabled: boolean): void {
+    this.isChecked.set(this.value() === selectedValue);
+    this.isDisabled.set(groupDisabled);
   }
 }

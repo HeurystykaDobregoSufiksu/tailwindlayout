@@ -1,16 +1,18 @@
 import {
   Component,
   input,
-  output,
   signal,
   computed,
   inject,
   HostListener,
   ContentChildren,
   QueryList,
-  AfterContentInit
+  AfterContentInit,
+  forwardRef,
+  effect
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { MultiSelectItemComponent } from './multi-select-item.component';
 
@@ -21,21 +23,31 @@ export type MultiSelectPosition = 'left' | 'right';
   selector: 'app-multi-select',
   imports: [CommonModule],
   templateUrl: './multi-select.component.html',
-  styleUrl: './multi-select.component.scss'
+  styleUrl: './multi-select.component.scss',
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => MultiSelectComponent),
+      multi: true
+    }
+  ]
 })
-export class MultiSelectComponent implements AfterContentInit {
-  // Primitive inputs only - comma-separated string for selected values
+export class MultiSelectComponent implements ControlValueAccessor, AfterContentInit {
+  // Primitive inputs only (non-form related)
   label = input<string>('Select options');
-  selectedValues = input<string>(''); // comma-separated values
   icon = input<string>('');
   size = input<MultiSelectSize>('md');
   position = input<MultiSelectPosition>('left');
-  disabled = input<boolean>(false);
   placeholder = input<string>('Select options');
   maxDisplayItems = input<number>(2);
 
-  // Outputs - emits comma-separated string
-  selectionChange = output<string>();
+  // Form control state - stores comma-separated string
+  value = signal<string>('');
+  isDisabled = signal<boolean>(false);
+
+  // ControlValueAccessor callbacks
+  private onChange: (value: string) => void = () => {};
+  private onTouched: () => void = () => {};
 
   // Internal state
   isOpen = signal(false);
@@ -51,7 +63,7 @@ export class MultiSelectComponent implements AfterContentInit {
   });
 
   selectedValuesArray = computed<string[]>(() => {
-    const values = this.selectedValues();
+    const values = this.value();
     return values ? values.split(',').map(v => v.trim()).filter(v => v) : [];
   });
 
@@ -66,7 +78,7 @@ export class MultiSelectComponent implements AfterContentInit {
 
     const stateClasses = 'bg-white dark:bg-ui-bg-primary-dark border-ui-border dark:border-ui-border-dark text-ui-text-primary dark:text-ui-text-primary-dark hover:border-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-2';
 
-    const disabledClasses = this.disabled() ? 'opacity-50 cursor-not-allowed' : '';
+    const disabledClasses = this.isDisabled() ? 'opacity-50 cursor-not-allowed' : '';
 
     return `${baseClasses} ${sizeClasses[this.size()]} ${stateClasses} ${disabledClasses}`;
   });
@@ -104,6 +116,16 @@ export class MultiSelectComponent implements AfterContentInit {
     return `${displayed.join(', ')} +${remaining} more`;
   });
 
+  constructor() {
+    // Update multi-select items when value changes
+    effect(() => {
+      const currentValues = this.selectedValuesArray();
+      this.selectItems?.forEach((item) => {
+        item.updateFromParent(currentValues);
+      });
+    });
+  }
+
   ngAfterContentInit(): void {
     // Subscribe to item selections
     this.selectItems?.forEach((item) => {
@@ -111,10 +133,13 @@ export class MultiSelectComponent implements AfterContentInit {
         this.onItemToggle(value);
       });
     });
+
+    // Set initial state for all items
+    this.updateSelectItems();
   }
 
   toggleDropdown(): void {
-    if (!this.disabled()) {
+    if (!this.isDisabled()) {
       this.isOpen.set(!this.isOpen());
     }
   }
@@ -123,26 +148,42 @@ export class MultiSelectComponent implements AfterContentInit {
     this.isOpen.set(false);
   }
 
-  onItemToggle(value: string): void {
-    const current = this.selectedValuesArray();
-    let updated: string[];
+  onItemToggle(toggledValue: string): void {
+    if (!this.isDisabled()) {
+      const current = this.selectedValuesArray();
+      let updated: string[];
 
-    if (current.includes(value)) {
-      // Remove value
-      updated = current.filter(v => v !== value);
-    } else {
-      // Add value
-      updated = [...current, value];
+      if (current.includes(toggledValue)) {
+        // Remove value
+        updated = current.filter(v => v !== toggledValue);
+      } else {
+        // Add value
+        updated = [...current, toggledValue];
+      }
+
+      // Update form control value as comma-separated string
+      const newValue = updated.join(',');
+      this.value.set(newValue);
+      this.onChange(newValue);
+      this.onTouched();
+      this.updateSelectItems();
     }
-
-    // Emit as comma-separated string
-    this.selectionChange.emit(updated.join(','));
   }
 
   clearSelection(): void {
-    if (!this.disabled()) {
-      this.selectionChange.emit('');
+    if (!this.isDisabled()) {
+      this.value.set('');
+      this.onChange('');
+      this.onTouched();
+      this.updateSelectItems();
     }
+  }
+
+  private updateSelectItems(): void {
+    const selected = this.selectedValuesArray();
+    this.selectItems?.forEach((item) => {
+      item.updateFromParent(selected);
+    });
   }
 
   @HostListener('document:click', ['$event'])
@@ -153,6 +194,24 @@ export class MultiSelectComponent implements AfterContentInit {
     if (!clickedInside && this.isOpen()) {
       this.closeDropdown();
     }
+  }
+
+  // ControlValueAccessor implementation
+  writeValue(value: string): void {
+    this.value.set(value ?? '');
+    this.updateSelectItems();
+  }
+
+  registerOnChange(fn: (value: string) => void): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.isDisabled.set(isDisabled);
   }
 
   private chevronIcon = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>';

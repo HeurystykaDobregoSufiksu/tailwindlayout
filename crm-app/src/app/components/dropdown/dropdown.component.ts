@@ -1,16 +1,18 @@
 import {
   Component,
   input,
-  output,
   signal,
   computed,
   inject,
   HostListener,
   ContentChildren,
   QueryList,
-  AfterContentInit
+  AfterContentInit,
+  forwardRef,
+  effect
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { DropdownItemComponent } from './dropdown-item.component';
 
@@ -21,20 +23,30 @@ export type DropdownPosition = 'left' | 'right';
   selector: 'app-dropdown',
   imports: [CommonModule],
   templateUrl: './dropdown.component.html',
-  styleUrl: './dropdown.component.scss'
+  styleUrl: './dropdown.component.scss',
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => DropdownComponent),
+      multi: true
+    }
+  ]
 })
-export class DropdownComponent implements AfterContentInit {
-  // Primitive inputs only
+export class DropdownComponent implements ControlValueAccessor, AfterContentInit {
+  // Primitive inputs only (non-form related)
   label = input<string>('Select option');
-  selectedValue = input<string>('');
   icon = input<string>('');
   size = input<DropdownSize>('md');
   position = input<DropdownPosition>('left');
-  disabled = input<boolean>(false);
   placeholder = input<string>('Select an option');
 
-  // Outputs
-  selectionChange = output<string>();
+  // Form control state
+  value = signal<string>('');
+  isDisabled = signal<boolean>(false);
+
+  // ControlValueAccessor callbacks
+  private onChange: (value: string) => void = () => {};
+  private onTouched: () => void = () => {};
 
   // Internal state
   isOpen = signal(false);
@@ -60,7 +72,7 @@ export class DropdownComponent implements AfterContentInit {
 
     const stateClasses = 'bg-white dark:bg-ui-bg-primary-dark border-ui-border dark:border-ui-border-dark text-ui-text-primary dark:text-ui-text-primary-dark hover:border-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-2';
 
-    const disabledClasses = this.disabled() ? 'opacity-50 cursor-not-allowed' : '';
+    const disabledClasses = this.isDisabled() ? 'opacity-50 cursor-not-allowed' : '';
 
     return `${baseClasses} ${sizeClasses[this.size()]} ${stateClasses} ${disabledClasses}`;
   });
@@ -71,7 +83,7 @@ export class DropdownComponent implements AfterContentInit {
   });
 
   displayLabel = computed<string>(() => {
-    const selected = this.selectedValue();
+    const selected = this.value();
     if (!selected) {
       return this.placeholder();
     }
@@ -81,6 +93,16 @@ export class DropdownComponent implements AfterContentInit {
     return selectedItem?.label() || selected;
   });
 
+  constructor() {
+    // Update dropdown items when value changes
+    effect(() => {
+      const currentValue = this.value();
+      this.dropdownItems?.forEach((item) => {
+        item.updateFromParent(currentValue);
+      });
+    });
+  }
+
   ngAfterContentInit(): void {
     // Subscribe to item selections
     this.dropdownItems?.forEach((item) => {
@@ -88,10 +110,13 @@ export class DropdownComponent implements AfterContentInit {
         this.onItemSelect(value);
       });
     });
+
+    // Set initial state for all items
+    this.updateDropdownItems();
   }
 
   toggleDropdown(): void {
-    if (!this.disabled()) {
+    if (!this.isDisabled()) {
       this.isOpen.set(!this.isOpen());
     }
   }
@@ -101,8 +126,20 @@ export class DropdownComponent implements AfterContentInit {
   }
 
   onItemSelect(value: string): void {
-    this.selectionChange.emit(value);
-    this.closeDropdown();
+    if (!this.isDisabled()) {
+      this.value.set(value);
+      this.onChange(value);
+      this.onTouched();
+      this.closeDropdown();
+      this.updateDropdownItems();
+    }
+  }
+
+  private updateDropdownItems(): void {
+    const selected = this.value();
+    this.dropdownItems?.forEach((item) => {
+      item.updateFromParent(selected);
+    });
   }
 
   @HostListener('document:click', ['$event'])
@@ -113,6 +150,24 @@ export class DropdownComponent implements AfterContentInit {
     if (!clickedInside && this.isOpen()) {
       this.closeDropdown();
     }
+  }
+
+  // ControlValueAccessor implementation
+  writeValue(value: string): void {
+    this.value.set(value ?? '');
+    this.updateDropdownItems();
+  }
+
+  registerOnChange(fn: (value: string) => void): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.isDisabled.set(isDisabled);
   }
 
   private chevronIcon = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>';

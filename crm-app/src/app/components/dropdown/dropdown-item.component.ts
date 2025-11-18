@@ -1,4 +1,4 @@
-import { Component, input, output, computed, inject } from '@angular/core';
+import { Component, input, output, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
@@ -14,7 +14,9 @@ export class DropdownItemComponent {
   label = input.required<string>();
   icon = input<string>('');
   disabled = input<boolean>(false);
-  selected = input<boolean>(false);
+
+  // Internal state (managed by parent DropdownComponent)
+  isSelected = signal<boolean>(false);
 
   // Outputs
   itemSelected = output<string>();
@@ -31,7 +33,7 @@ export class DropdownItemComponent {
   itemClasses = computed<string>(() => {
     const baseClasses = 'flex items-center gap-3 px-4 py-2 text-sm transition-colors-base cursor-pointer';
 
-    const stateClasses = this.selected()
+    const stateClasses = this.isSelected()
       ? 'bg-brand-primary text-white'
       : 'text-ui-text-primary dark:text-ui-text-primary-dark hover:bg-ui-bg-secondary dark:hover:bg-ui-bg-secondary-dark';
 
@@ -46,5 +48,10 @@ export class DropdownItemComponent {
     if (!this.disabled()) {
       this.itemSelected.emit(this.value());
     }
+  }
+
+  // Called by parent DropdownComponent to update state
+  updateFromParent(selectedValue: string): void {
+    this.isSelected.set(this.value() === selectedValue);
   }
 }
