@@ -1,0 +1,106 @@
+<div [ngClass]="getContainerClasses()">
+  <!-- Label -->
+  @if (label()) {
+    <label
+      [ngClass]="getLabelClasses()"
+      [attr.for]="id() || name()"
+    >
+      {{ label() }}<span class="text-status-error ml-0.5">{{ requiredAsterisk }}</span>
+    </label>
+  }
+
+  <!-- Input Wrapper with addons -->
+  <div [ngClass]="getInputWrapperClasses()">
+    <!-- Leading Addon (text) -->
+    @if (leadingAddon()) {
+      <div [ngClass]="getLeadingAddonClasses()">
+        {{ leadingAddon() }}
+      </div>
+    }
+
+    <!-- Leading Icon -->
+    @if (leadingIcon() && !leadingAddon()) {
+      <div [ngClass]="getIconClasses()" [innerHTML]="leadingIcon()"></div>
+    }
+
+    <!-- Input Field -->
+    <input
+      [ngClass]="getInputClasses()"
+      [type]="type()"
+      [placeholder]="placeholder()"
+      [disabled]="disabled()"
+      [required]="required()"
+      [name]="name()"
+      [id]="id() || name()"
+      [autocomplete]="autocomplete()"
+      [maxlength]="maxlength()"
+      [minlength]="minlength()"
+      [pattern]="pattern()"
+      [value]="value()"
+      (input)="onInputChange($event)"
+      (focus)="onFocus()"
+      (blur)="onBlur()"
+    />
+
+    <!-- Trailing Icon -->
+    @if (trailingIcon() && trailingDropdown().length === 0) {
+      <div [ngClass]="getIconClasses()" [innerHTML]="trailingIcon()"></div>
+    }
+
+    <!-- Trailing Dropdown -->
+    @if (trailingDropdown().length > 0) {
+      <div class="relative">
+        <button
+          type="button"
+          [ngClass]="getDropdownButtonClasses()"
+          [disabled]="disabled()"
+          (click)="toggleDropdown()"
+        >
+          <span class="text-sm">{{ selectedDropdownOption()?.label || 'Select' }}</span>
+          <svg
+            class="size-4 transition-transform duration-200"
+            [class.rotate-180]="isDropdownOpen()"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </button>
+
+        <!-- Dropdown Menu -->
+        @if (isDropdownOpen()) {
+          <div [ngClass]="getDropdownMenuClasses()">
+            @for (option of trailingDropdown(); track option.id) {
+              <button
+                type="button"
+                [ngClass]="getDropdownOptionClasses(option)"
+                (click)="selectDropdownOption(option)"
+              >
+                @if (option.icon) {
+                  <div [innerHTML]="option.icon" class="size-5"></div>
+                }
+                <span>{{ option.label }}</span>
+              </button>
+            }
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Help Text -->
+  @if (helpText() && !errorMessage()) {
+    <p [ngClass]="getHelpTextClasses()">
+      {{ helpText() }}
+    </p>
+  }
+
+  <!-- Error Message -->
+  @if (errorMessage()) {
+    <div [ngClass]="getErrorMessageClasses()">
+      <div [innerHTML]="getErrorIcon()"></div>
+      <span>{{ errorMessage() }}</span>
+    </div>
+  }
+</div>

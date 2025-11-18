@@ -22,6 +22,7 @@ import { DropdownOptionComponent } from "./components/dropdown-option/dropdown-o
 import { DashboardEventsComponent, Meeting } from "./components/dashboard-events/dashboard-events.component";
 import { CalendarDay } from "./components/calendar-widget/calendar-widget.component";
 import {ModalButton, StatusModalComponent} from './components/status-modal/status-modal.component';
+import { InputComponent, DropdownOption } from './components/input/input.component';
 
 @Component({
   selector: 'app-root',
@@ -41,7 +42,8 @@ import {ModalButton, StatusModalComponent} from './components/status-modal/statu
     EmptyStateInfo,
     KampaniaCardHeader,
     DashboardEventsComponent,
-    StatusModalComponent
+    StatusModalComponent,
+    InputComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
@@ -352,6 +354,42 @@ this.operatorOptions.update(options =>
   downloadIcon = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>';
   settingsIcon = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>';
   actionsIcon = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>';
+
+  // Input component demo data
+  inputValue = signal<string>('');
+  emailValue = signal<string>('');
+  searchValue = signal<string>('');
+  disabledValue = signal<string>('Cannot edit this');
+  errorInputValue = signal<string>('invalid@');
+
+  currencyOptions = signal<DropdownOption[]>([
+    {
+      id: 'usd',
+      label: 'USD',
+      value: 'usd',
+      icon: '<svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>'
+    },
+    {
+      id: 'eur',
+      label: 'EUR',
+      value: 'eur',
+      icon: '<svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.121 15.536c-1.171 1.952-3.07 1.952-4.242 0-1.172-1.953-1.172-5.119 0-7.072 1.171-1.952 3.07-1.952 4.242 0M8 10.5h4m-4 3h4m9-1.5a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>'
+    },
+    {
+      id: 'gbp',
+      label: 'GBP',
+      value: 'gbp',
+      icon: '<svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 9a2 2 0 10-4 0v5a2 2 0 01-2 2h6m-6-4h4m8 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>'
+    },
+    {
+      id: 'pln',
+      label: 'PLN',
+      value: 'pln'
+    }
+  ]);
+
+  searchIcon = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>';
+  mailIcon = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>';
 
   // Dashboard Events data
   upcomingMeetings = signal<Meeting[]>([

@@ -175,6 +175,121 @@
             }
           </div>
 
+          <!-- Input Components Showcase -->
+          <div class="mb-8 bg-white dark:bg-slate-800/50 rounded-2xl p-8 shadow-sm border border-slate-100 dark:border-slate-700">
+            <h2 class="text-2xl font-bold text-ui-text-primary dark:text-ui-text-primary-dark mb-6">Input Components Showcase</h2>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <!-- Basic Input with Label -->
+              <div>
+                <h3 class="text-lg font-semibold text-ui-text-primary dark:text-ui-text-primary-dark mb-4">Basic Input with Label</h3>
+                <app-input
+                  label="Full Name"
+                  placeholder="Enter your full name"
+                  [required]="true"
+                  (valueChange)="inputValue.set($event)"
+                />
+              </div>
+
+              <!-- Input with Label and Help Text -->
+              <div>
+                <h3 class="text-lg font-semibold text-ui-text-primary dark:text-ui-text-primary-dark mb-4">Input with Help Text</h3>
+                <app-input
+                  label="Email Address"
+                  type="email"
+                  placeholder="you@example.com"
+                  helpText="We'll never share your email with anyone else."
+                  [leadingIcon]="mailIcon"
+                  (valueChange)="emailValue.set($event)"
+                />
+              </div>
+
+              <!-- Input with Validation Error -->
+              <div>
+                <h3 class="text-lg font-semibold text-ui-text-primary dark:text-ui-text-primary-dark mb-4">Input with Validation Error</h3>
+                <app-input
+                  label="Username"
+                  placeholder="Choose a username"
+                  variant="error"
+                  errorMessage="This username is already taken"
+                  [value]="errorInputValue()"
+                  (valueChange)="errorInputValue.set($event)"
+                />
+              </div>
+
+              <!-- Disabled Input -->
+              <div>
+                <h3 class="text-lg font-semibold text-ui-text-primary dark:text-ui-text-primary-dark mb-4">Disabled Input</h3>
+                <app-input
+                  label="Account Status"
+                  [value]="disabledValue()"
+                  [disabled]="true"
+                  helpText="This field cannot be edited by users"
+                />
+              </div>
+
+              <!-- Input with Leading Add-on and Trailing Dropdown -->
+              <div class="lg:col-span-2">
+                <h3 class="text-lg font-semibold text-ui-text-primary dark:text-ui-text-primary-dark mb-4">Input with Leading Add-on and Trailing Dropdown</h3>
+                <app-input
+                  label="Price"
+                  type="number"
+                  placeholder="0.00"
+                  leadingAddon="$"
+                  [trailingDropdown]="currencyOptions()"
+                  helpText="Enter the price and select the currency"
+                />
+              </div>
+
+              <!-- Search Input with Icon -->
+              <div>
+                <h3 class="text-lg font-semibold text-ui-text-primary dark:text-ui-text-primary-dark mb-4">Search Input</h3>
+                <app-input
+                  type="search"
+                  placeholder="Search..."
+                  [leadingIcon]="searchIcon"
+                  size="lg"
+                  (valueChange)="searchValue.set($event)"
+                />
+              </div>
+
+              <!-- Small Size Input -->
+              <div>
+                <h3 class="text-lg font-semibold text-ui-text-primary dark:text-ui-text-primary-dark mb-4">Small Size Input</h3>
+                <app-input
+                  label="Tags"
+                  placeholder="Add tags"
+                  size="sm"
+                  helpText="Separate tags with commas"
+                />
+              </div>
+
+              <!-- Success State Input -->
+              <div>
+                <h3 class="text-lg font-semibold text-ui-text-primary dark:text-ui-text-primary-dark mb-4">Success State</h3>
+                <app-input
+                  label="Valid Email"
+                  type="email"
+                  value="user@example.com"
+                  variant="success"
+                  helpText="This email address is valid and available"
+                />
+              </div>
+
+              <!-- Warning State Input -->
+              <div>
+                <h3 class="text-lg font-semibold text-ui-text-primary dark:text-ui-text-primary-dark mb-4">Warning State</h3>
+                <app-input
+                  label="Password Strength"
+                  type="password"
+                  placeholder="Enter password"
+                  variant="warning"
+                  helpText="Password strength: Weak. Consider adding numbers and symbols."
+                />
+              </div>
+            </div>
+          </div>
+
           <!-- Dropdown Examples Section -->
           <div class="mb-8 hidden">
             <app-dashboard-events
