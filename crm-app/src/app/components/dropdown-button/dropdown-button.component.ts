@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 export type DropdownSize = 'sm' | 'md' | 'lg';
-export type DropdownVariant = 'primary' | 'secondary' | 'outline';
+export type DropdownVariant = 'primary' | 'secondary' | 'text';
 export type DropdownPosition = 'left' | 'right';
 
 @Component({
@@ -44,9 +44,9 @@ export class DropdownButtonComponent {
     };
 
     const variantClasses = {
-      primary: 'bg-brand-primary text-white hover:bg-brand-primary-dark shadow-button hover:shadow-button-hover',
-      secondary: 'bg-gray-200 dark:bg-gray-700 text-primary hover:bg-gray-300 dark:hover:bg-gray-600 shadow-button',
-      outline: 'border-2 border-default text-primary hover:bg-gray-100 dark:hover:bg-gray-800'
+      primary: 'bg-brand-gradient text-white hover:bg-brand-gradient shadow-button hover:shadow-button-hover',
+      secondary: 'border bg-white border-slate-200 dark:bg-state-900 dark:border-state-600 text-primary hover:bg-slate-50 dark:hover:bg-slate-800 shadow-button',
+      text: 'text-primary hover:font-semibold'
     };
 
     const disabledClasses = this.disabled ? 'opacity-50 cursor-not-allowed' : '';

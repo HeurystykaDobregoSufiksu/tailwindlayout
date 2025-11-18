@@ -5,13 +5,16 @@
     ' hover:border-blue-400 dark:hover:border-blue-600': task().status === 'in-progress',
     ' hover:border-emerald-300 dark:hover:border-emerald-600': task().status === 'done'
   }"
-  class="group relative border-slate-300/50 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800 rounded-card p-4 shadow-card hover:shadow-card-hover cursor-pointer border-2 border-dashed transition-base duration-200">
+  class="group relative border-slate-300/50 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800 rounded-card p-4  hover:shadow-card-hover cursor-pointer border-2 border-dashed transition-base duration-200">
 
   <button class="absolute right-2 opacity-0 group-hover:opacity-100 p-1 hover-bg rounded transition-opacity">
+        
+
     <svg class="size-icon-xs text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
     </svg>
   </button>
+
 
   <h4
     [ngClass]="{

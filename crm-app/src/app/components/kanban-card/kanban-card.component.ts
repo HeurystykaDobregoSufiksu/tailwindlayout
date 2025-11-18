@@ -1,7 +1,8 @@
 import { Component, Input, Output, EventEmitter, input, output, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BadgeColor, BadgeComponent } from '../badge/badge.component';
-
+import { DropdownButtonComponent } from '../dropdown-button/dropdown-button.component';
+import { DropdownOptionComponent } from '../dropdown-option/dropdown-option.component';
 export type Priority = 'high' | 'medium' | 'low';
 export type TaskStatus = 'todo' | 'in-progress' | 'done';
 
