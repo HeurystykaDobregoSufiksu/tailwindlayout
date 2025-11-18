@@ -1,6 +1,6 @@
 import { Component, input, output, signal, effect, forwardRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, Validator, AbstractControl, ValidationErrors } from '@angular/forms';
 
 export type InputSize = 'sm' | 'md' | 'lg';
 export type InputVariant = 'default' | 'success' | 'warning' | 'error';
@@ -29,10 +29,15 @@ export interface ButtonConfig {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => InputComponent),
       multi: true
+    },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => InputComponent),
+      multi: true
     }
   ]
 })
-export class InputComponent implements ControlValueAccessor {
+export class InputComponent implements ControlValueAccessor, Validator {
   // Inputs
   label = input<string>('');
   hiddenLabel = input<boolean>(false);
@@ -73,6 +78,7 @@ export class InputComponent implements ControlValueAccessor {
 
   // Internal state
   value = signal<string>('');
+  isDisabled = signal<boolean>(false);
   isFocused = signal<boolean>(false);
   isLeadingDropdownOpen = signal<boolean>(false);
   isTrailingDropdownOpen = signal<boolean>(false);
@@ -82,6 +88,7 @@ export class InputComponent implements ControlValueAccessor {
   // ControlValueAccessor implementation
   private onChange: (value: string) => void = () => {};
   private onTouched: () => void = () => {};
+  private onValidatorChange: () => void = () => {};
 
   constructor() {
     // Auto-select first dropdown option if available
@@ -113,7 +120,59 @@ export class InputComponent implements ControlValueAccessor {
   }
 
   setDisabledState(isDisabled: boolean): void {
-    // Disabled state is handled by input signal
+    this.isDisabled.set(isDisabled);
+  }
+
+  // Validator implementation
+  validate(control: AbstractControl): ValidationErrors | null {
+    const value = control.value || '';
+    const errors: ValidationErrors = {};
+
+    // Required validation
+    if (this.required() && !value) {
+      errors['required'] = true;
+    }
+
+    // Pattern validation
+    if (this.pattern() && value) {
+      const pattern = new RegExp(this.pattern());
+      if (!pattern.test(value)) {
+        errors['pattern'] = { requiredPattern: this.pattern(), actualValue: value };
+      }
+    }
+
+    // Minlength validation
+    if (this.minlength() && value.length < this.minlength()!) {
+      errors['minlength'] = { requiredLength: this.minlength(), actualLength: value.length };
+    }
+
+    // Maxlength validation
+    if (this.maxlength() && value.length > this.maxlength()!) {
+      errors['maxlength'] = { requiredLength: this.maxlength(), actualLength: value.length };
+    }
+
+    // Email validation for email type
+    if (this.type() === 'email' && value) {
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailPattern.test(value)) {
+        errors['email'] = true;
+      }
+    }
+
+    // URL validation for url type
+    if (this.type() === 'url' && value) {
+      try {
+        new URL(value);
+      } catch {
+        errors['url'] = true;
+      }
+    }
+
+    return Object.keys(errors).length > 0 ? errors : null;
+  }
+
+  registerOnValidatorChange(fn: () => void): void {
+    this.onValidatorChange = fn;
   }
 
   /**
@@ -145,10 +204,17 @@ export class InputComponent implements ControlValueAccessor {
   }
 
   /**
+   * Check if input is disabled (from either input signal or form control)
+   */
+  isInputDisabled(): boolean {
+    return this.disabled() || this.isDisabled();
+  }
+
+  /**
    * Toggle leading dropdown visibility
    */
   toggleLeadingDropdown(): void {
-    if (!this.disabled()) {
+    if (!this.isInputDisabled()) {
       this.isLeadingDropdownOpen.set(!this.isLeadingDropdownOpen());
       this.isTrailingDropdownOpen.set(false);
     }
@@ -158,7 +224,7 @@ export class InputComponent implements ControlValueAccessor {
    * Toggle trailing dropdown visibility
    */
   toggleTrailingDropdown(): void {
-    if (!this.disabled()) {
+    if (!this.isInputDisabled()) {
       this.isTrailingDropdownOpen.set(!this.isTrailingDropdownOpen());
       this.isLeadingDropdownOpen.set(false);
     }
@@ -186,7 +252,7 @@ export class InputComponent implements ControlValueAccessor {
    * Handle trailing button click
    */
   onButtonClick(): void {
-    if (!this.disabled()) {
+    if (!this.isInputDisabled()) {
       this.buttonClick.emit();
     }
   }
@@ -204,7 +270,7 @@ export class InputComponent implements ControlValueAccessor {
   getLabelClasses(): string {
     const baseClasses = 'block text-sm font-medium mb-1.5 transition-colors';
     const colorClasses = this.getVariantTextColor();
-    const disabledClasses = this.disabled() ? 'opacity-50 cursor-not-allowed' : '';
+    const disabledClasses = this.isInputDisabled() ? 'opacity-50 cursor-not-allowed' : '';
 
     return `${baseClasses} ${colorClasses} ${disabledClasses}`;
   }
@@ -214,9 +280,9 @@ export class InputComponent implements ControlValueAccessor {
    */
   getInputWrapperClasses(): string {
     const baseClasses = 'relative flex items-center rounded-input transition-all duration-200';
-    const focusClasses = this.isFocused() && !this.disabled() ? this.getFocusRingClasses() : '';
+    const focusClasses = this.isFocused() && !this.isInputDisabled() ? this.getFocusRingClasses() : '';
     const borderClasses = this.getBorderClasses();
-    const bgClasses = this.disabled()
+    const bgClasses = this.isInputDisabled()
       ? 'bg-ui-bg-tertiary dark:bg-ui-bg-tertiary-dark'
       : 'bg-ui-bg-primary dark:bg-ui-bg-primary-dark';
 
@@ -229,11 +295,11 @@ export class InputComponent implements ControlValueAccessor {
   getInputClasses(): string {
     const baseClasses = 'flex-1 outline-none bg-transparent transition-colors';
     const sizeClasses = this.getSizeClasses();
-    const textColor = this.disabled()
+    const textColor = this.isInputDisabled()
       ? 'text-ui-text-muted dark:text-ui-text-muted-dark'
       : 'text-ui-text-primary dark:text-ui-text-primary-dark';
     const placeholderClasses = 'placeholder:text-ui-text-muted dark:placeholder:text-ui-text-muted-dark';
-    const disabledClasses = this.disabled() ? 'cursor-not-allowed' : '';
+    const disabledClasses = this.isInputDisabled() ? 'cursor-not-allowed' : '';
     const paddingClasses = this.getPaddingClasses();
 
     return `${baseClasses} ${sizeClasses} ${textColor} ${placeholderClasses} ${disabledClasses} ${paddingClasses}`;
@@ -291,7 +357,7 @@ export class InputComponent implements ControlValueAccessor {
   getBorderClasses(): string {
     const baseClasses = 'border-2';
 
-    if (this.disabled()) {
+    if (this.isInputDisabled()) {
       return `${baseClasses} border-ui-border dark:border-ui-border-dark`;
     }
 
@@ -349,7 +415,7 @@ export class InputComponent implements ControlValueAccessor {
    */
   getHelpTextClasses(): string {
     const baseClasses = 'mt-1.5 text-sm';
-    const colorClasses = this.disabled()
+    const colorClasses = this.isInputDisabled()
       ? 'text-ui-text-muted dark:text-ui-text-muted-dark opacity-50'
       : 'text-ui-text-secondary dark:text-ui-text-secondary-dark';
 
@@ -369,7 +435,7 @@ export class InputComponent implements ControlValueAccessor {
   getLeadingAddonClasses(): string {
     const baseClasses = 'flex items-center px-3 text-ui-text-secondary dark:text-ui-text-secondary-dark border-r-2 border-ui-border dark:border-ui-border-dark';
     const sizeClasses = this.size() === 'sm' ? 'text-sm' : this.size() === 'lg' ? 'text-lg' : 'text-base';
-    const disabledClasses = this.disabled() ? 'opacity-50' : '';
+    const disabledClasses = this.isInputDisabled() ? 'opacity-50' : '';
 
     return `${baseClasses} ${sizeClasses} ${disabledClasses}`;
   }
@@ -380,7 +446,7 @@ export class InputComponent implements ControlValueAccessor {
   getTrailingAddonClasses(): string {
     const baseClasses = 'flex items-center px-3 text-ui-text-secondary dark:text-ui-text-secondary-dark border-l-2 border-ui-border dark:border-ui-border-dark';
     const sizeClasses = this.size() === 'sm' ? 'text-sm' : this.size() === 'lg' ? 'text-lg' : 'text-base';
-    const disabledClasses = this.disabled() ? 'opacity-50' : '';
+    const disabledClasses = this.isInputDisabled() ? 'opacity-50' : '';
 
     return `${baseClasses} ${sizeClasses} ${disabledClasses}`;
   }
@@ -391,7 +457,7 @@ export class InputComponent implements ControlValueAccessor {
   getIconClasses(): string {
     const baseClasses = 'flex items-center justify-center text-ui-text-muted dark:text-ui-text-muted-dark';
     const sizeClasses = this.size() === 'sm' ? 'size-4 mx-2' : this.size() === 'lg' ? 'size-6 mx-3' : 'size-5 mx-2.5';
-    const disabledClasses = this.disabled() ? 'opacity-50' : '';
+    const disabledClasses = this.isInputDisabled() ? 'opacity-50' : '';
 
     return `${baseClasses} ${sizeClasses} ${disabledClasses}`;
   }
@@ -401,7 +467,7 @@ export class InputComponent implements ControlValueAccessor {
    */
   getLeadingDropdownButtonClasses(): string {
     const baseClasses = 'flex items-center gap-2 px-3 py-2 border-r-2 border-ui-border dark:border-ui-border-dark transition-colors';
-    const hoverClasses = !this.disabled()
+    const hoverClasses = !this.isInputDisabled()
       ? 'hover:bg-ui-bg-secondary dark:hover:bg-ui-bg-secondary-dark cursor-pointer'
       : 'cursor-not-allowed opacity-50';
     const textClasses = 'text-ui-text-secondary dark:text-ui-text-secondary-dark';
@@ -414,7 +480,7 @@ export class InputComponent implements ControlValueAccessor {
    */
   getTrailingDropdownButtonClasses(): string {
     const baseClasses = 'flex items-center gap-2 px-3 py-2 border-l-2 border-ui-border dark:border-ui-border-dark transition-colors';
-    const hoverClasses = !this.disabled()
+    const hoverClasses = !this.isInputDisabled()
       ? 'hover:bg-ui-bg-secondary dark:hover:bg-ui-bg-secondary-dark cursor-pointer'
       : 'cursor-not-allowed opacity-50';
     const textClasses = 'text-ui-text-secondary dark:text-ui-text-secondary-dark';
@@ -427,7 +493,7 @@ export class InputComponent implements ControlValueAccessor {
    */
   getTrailingButtonClasses(): string {
     const baseClasses = 'flex items-center gap-2 px-3 py-2 border-l-2 border-ui-border dark:border-ui-border-dark transition-all duration-200';
-    const hoverClasses = !this.disabled()
+    const hoverClasses = !this.isInputDisabled()
       ? 'hover:bg-brand-primary hover:text-white hover:border-brand-primary cursor-pointer'
       : 'cursor-not-allowed opacity-50';
     const textClasses = 'text-ui-text-secondary dark:text-ui-text-secondary-dark';

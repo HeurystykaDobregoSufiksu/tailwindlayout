@@ -24,7 +24,7 @@
         <button
           type="button"
           [ngClass]="getLeadingDropdownButtonClasses()"
-          [disabled]="disabled()"
+          [disabled]="isInputDisabled()"
           (click)="toggleLeadingDropdown()"
         >
           <span class="text-sm">{{ selectedLeadingDropdownOption()?.label || 'Select' }}</span>
@@ -76,7 +76,7 @@
       [ngClass]="getInputClasses()"
       [type]="type()"
       [placeholder]="placeholder()"
-      [disabled]="disabled()"
+      [disabled]="isInputDisabled()"
       [required]="required()"
       [name]="name()"
       [id]="id() || name()"
@@ -107,7 +107,7 @@
       <button
         type="button"
         [ngClass]="getTrailingButtonClasses()"
-        [disabled]="disabled()"
+        [disabled]="isInputDisabled()"
         [attr.aria-label]="trailingButton()?.ariaLabel || trailingButton()?.label"
         (click)="onButtonClick()"
       >
@@ -126,7 +126,7 @@
         <button
           type="button"
           [ngClass]="getTrailingDropdownButtonClasses()"
-          [disabled]="disabled()"
+          [disabled]="isInputDisabled()"
           (click)="toggleTrailingDropdown()"
         >
           <span class="text-sm">{{ selectedTrailingDropdownOption()?.label || 'Select' }}</span>

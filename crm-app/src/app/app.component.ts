@@ -1,6 +1,7 @@
 import { Component, OnInit, signal, computed } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { UserInfoCardComponent, UserInfo } from './components/user-info-card/user-info-card.component';
 import { NotificationCardComponent, Notification } from './components/notification-card/notification-card.component';
 import { QuickActionButtonComponent, QuickAction } from './components/quick-action-button/quick-action-button.component';
@@ -29,6 +30,7 @@ import { InputComponent, DropdownOption, ButtonConfig } from './components/input
   imports: [
     RouterOutlet,
     CommonModule,
+    ReactiveFormsModule,
     UserInfoCardComponent,
     NotificationCardComponent,
     QuickActionButtonComponent,
@@ -49,17 +51,32 @@ import { InputComponent, DropdownOption, ButtonConfig } from './components/input
   styleUrl: './app.component.scss'
 })
 export class App implements OnInit {
-navigate(_t25: NavButton) {
-throw new Error('Method not implemented.');
-}
-onOperatorChange(option: ButtonGroupOption) {
-this.operatorOptions.update(options =>
+  constructor(private fb: FormBuilder) {
+    // Initialize reactive form
+    this.userForm = this.fb.group({
+      fullName: ['', [Validators.required, Validators.minLength(3)]],
+      email: ['', [Validators.required, Validators.email]],
+      phone: ['', [Validators.required, Validators.pattern(/^\+?[1-9]\d{1,14}$/)]],
+      website: ['', [Validators.required]],
+      age: ['', [Validators.required, Validators.min(18), Validators.max(120)]],
+      bio: ['', [Validators.maxLength(280)]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
+      confirmPassword: ['', [Validators.required]]
+    });
+  }
+
+  navigate(_t25: NavButton) {
+    throw new Error('Method not implemented.');
+  }
+
+  onOperatorChange(option: ButtonGroupOption) {
+    this.operatorOptions.update(options =>
       options.map(o => ({
         ...o,
         active: o.id === option.id
       }))
     );
-}
+  }
   // Signals for reactive state
   isMobileMenuOpen = signal(false);
   isDarkMode = signal(false);
@@ -405,6 +422,11 @@ this.operatorOptions.update(options =>
     ariaLabel: 'Send message'
   });
 
+  // Reactive Forms Demo
+  userForm!: FormGroup;
+  formSubmitted = signal<boolean>(false);
+  formData = signal<any>(null);
+
   // Dashboard Events data
   upcomingMeetings = signal<Meeting[]>([
     {
@@ -567,5 +589,81 @@ this.operatorOptions.update(options =>
 
   private performAction() {
 
+  }
+
+  // Reactive Forms Methods
+  onSubmitForm(): void {
+    this.formSubmitted.set(true);
+
+    if (this.userForm.valid) {
+      this.formData.set(this.userForm.value);
+      console.log('Form submitted successfully:', this.userForm.value);
+    } else {
+      console.log('Form is invalid:', this.userForm.errors);
+      this.markFormGroupTouched(this.userForm);
+    }
+  }
+
+  onResetForm(): void {
+    this.userForm.reset();
+    this.formSubmitted.set(false);
+    this.formData.set(null);
+  }
+
+  toggleFormDisabled(): void {
+    if (this.userForm.disabled) {
+      this.userForm.enable();
+    } else {
+      this.userForm.disable();
+    }
+  }
+
+  getFieldError(fieldName: string): string {
+    const field = this.userForm.get(fieldName);
+    if (!field || !field.errors || !field.touched) {
+      return '';
+    }
+
+    if (field.errors['required']) {
+      return 'This field is required';
+    }
+    if (field.errors['email']) {
+      return 'Please enter a valid email address';
+    }
+    if (field.errors['minlength']) {
+      return `Minimum length is ${field.errors['minlength'].requiredLength} characters`;
+    }
+    if (field.errors['maxlength']) {
+      return `Maximum length is ${field.errors['maxlength'].requiredLength} characters`;
+    }
+    if (field.errors['pattern']) {
+      return 'Please enter a valid format';
+    }
+    if (field.errors['min']) {
+      return `Minimum value is ${field.errors['min'].min}`;
+    }
+    if (field.errors['max']) {
+      return `Maximum value is ${field.errors['max'].max}`;
+    }
+
+    return 'Invalid value';
+  }
+
+  getFieldVariant(fieldName: string): 'default' | 'error' | 'success' {
+    const field = this.userForm.get(fieldName);
+    if (!field || !field.touched) {
+      return 'default';
+    }
+    return field.invalid ? 'error' : 'success';
+  }
+
+  private markFormGroupTouched(formGroup: FormGroup): void {
+    Object.keys(formGroup.controls).forEach(key => {
+      const control = formGroup.get(key);
+      control?.markAsTouched();
+      if (control instanceof FormGroup) {
+        this.markFormGroupTouched(control);
+      }
+    });
   }
 }

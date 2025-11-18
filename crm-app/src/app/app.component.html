@@ -437,6 +437,159 @@
             </div>
           </div>
 
+          <!-- Reactive Forms Demo -->
+          <div class="mb-8 bg-white dark:bg-slate-800/50 rounded-2xl p-8 shadow-sm border border-slate-100 dark:border-slate-700">
+            <div class="flex items-center justify-between mb-8">
+              <div>
+                <h2 class="text-2xl font-bold text-ui-text-primary dark:text-ui-text-primary-dark">Reactive Forms Integration</h2>
+                <p class="text-ui-text-secondary dark:text-ui-text-secondary-dark mt-2">Full ControlValueAccessor implementation with validation</p>
+              </div>
+              <button
+                type="button"
+                class="px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-ui-bg-secondary dark:bg-ui-bg-secondary-dark hover:bg-ui-bg-tertiary dark:hover:bg-ui-bg-tertiary-dark text-ui-text-primary dark:text-ui-text-primary-dark"
+                (click)="toggleFormDisabled()"
+              >
+                {{ userForm.disabled ? 'Enable Form' : 'Disable Form' }}
+              </button>
+            </div>
+
+            <form [formGroup]="userForm" (ngSubmit)="onSubmitForm()" class="space-y-6">
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Full Name -->
+                <app-input
+                  label="Full Name"
+                  placeholder="John Doe"
+                  formControlName="fullName"
+                  [required]="true"
+                  [minlength]="3"
+                  [variant]="getFieldVariant('fullName')"
+                  [errorMessage]="getFieldError('fullName')"
+                  helpText="Minimum 3 characters"
+                />
+
+                <!-- Email -->
+                <app-input
+                  label="Email Address"
+                  type="email"
+                  placeholder="john@example.com"
+                  formControlName="email"
+                  [required]="true"
+                  [leadingIcon]="mailIcon"
+                  [variant]="getFieldVariant('email')"
+                  [errorMessage]="getFieldError('email')"
+                  helpText="We'll send confirmation to this email"
+                />
+
+                <!-- Phone -->
+                <app-input
+                  label="Phone Number"
+                  type="tel"
+                  placeholder="+1234567890"
+                  formControlName="phone"
+                  [required]="true"
+                  [pattern]="'^\\+?[1-9]\\d{1,14}$'"
+                  [variant]="getFieldVariant('phone')"
+                  [errorMessage]="getFieldError('phone')"
+                  helpText="Include country code (e.g., +1)"
+                />
+
+                <!-- Website -->
+                <app-input
+                  label="Website URL"
+                  type="url"
+                  placeholder="example.com"
+                  formControlName="website"
+                  [required]="true"
+                  [leadingDropdown]="protocolOptions()"
+                  [variant]="getFieldVariant('website')"
+                  [errorMessage]="getFieldError('website')"
+                  helpText="Select protocol and enter domain"
+                />
+
+                <!-- Age -->
+                <app-input
+                  label="Age"
+                  type="number"
+                  placeholder="18"
+                  formControlName="age"
+                  [required]="true"
+                  trailingAddon="years"
+                  [variant]="getFieldVariant('age')"
+                  [errorMessage]="getFieldError('age')"
+                  helpText="Must be between 18 and 120"
+                />
+
+                <!-- Biography -->
+                <app-input
+                  label="Biography"
+                  placeholder="Tell us about yourself..."
+                  formControlName="bio"
+                  [maxlength]="280"
+                  cornerHint="Max 280 chars"
+                  [variant]="getFieldVariant('bio')"
+                  [errorMessage]="getFieldError('bio')"
+                  helpText="Brief description for your profile"
+                />
+
+                <!-- Password -->
+                <app-input
+                  label="Password"
+                  type="password"
+                  placeholder="Enter password"
+                  formControlName="password"
+                  [required]="true"
+                  [minlength]="8"
+                  [variant]="getFieldVariant('password')"
+                  [errorMessage]="getFieldError('password')"
+                  helpText="Minimum 8 characters"
+                />
+
+                <!-- Confirm Password -->
+                <app-input
+                  label="Confirm Password"
+                  type="password"
+                  placeholder="Confirm password"
+                  formControlName="confirmPassword"
+                  [required]="true"
+                  [variant]="getFieldVariant('confirmPassword')"
+                  [errorMessage]="getFieldError('confirmPassword')"
+                  helpText="Must match password"
+                />
+              </div>
+
+              <!-- Form Actions -->
+              <div class="flex items-center gap-4 pt-6 border-t border-ui-border dark:border-ui-border-dark">
+                <button
+                  type="submit"
+                  class="px-6 py-3 rounded-lg font-medium text-white bg-brand-primary hover:bg-brand-primary-dark transition-colors shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+                  [disabled]="userForm.disabled"
+                >
+                  Submit Form
+                </button>
+                <button
+                  type="button"
+                  class="px-6 py-3 rounded-lg font-medium border-2 border-ui-border dark:border-ui-border-dark hover:bg-ui-bg-secondary dark:hover:bg-ui-bg-secondary-dark text-ui-text-primary dark:text-ui-text-primary-dark transition-colors"
+                  (click)="onResetForm()"
+                >
+                  Reset Form
+                </button>
+                <div class="ml-auto text-sm text-ui-text-muted dark:text-ui-text-muted-dark">
+                  Form Status: <span [class.text-status-success]="userForm.valid" [class.text-status-error]="userForm.invalid && formSubmitted()">
+                    {{ userForm.valid ? 'Valid ✓' : 'Invalid ✗' }}
+                  </span>
+                </div>
+              </div>
+
+              <!-- Form Data Display -->
+              @if (formData()) {
+                <div class="mt-6 p-6 rounded-lg bg-status-success-light dark:bg-status-success-dark/30 border-2 border-status-success">
+                  <h3 class="text-lg font-semibold text-status-success mb-3">Form Submitted Successfully! 🎉</h3>
+                  <pre class="text-sm text-ui-text-primary dark:text-ui-text-primary-dark overflow-x-auto">{{ formData() | json }}</pre>
+                </div>
+              }
+            </form>
+          </div>
+
           <!-- Dropdown Examples Section -->
           <div class="mb-8 hidden">
             <app-dashboard-events
