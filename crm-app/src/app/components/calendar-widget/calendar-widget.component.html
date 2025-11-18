@@ -1,0 +1,75 @@
+<div class="flex flex-col gap-4">
+  <!-- Calendar Header -->
+  <div class="flex items-center justify-between px-2">
+    <!-- Previous Button -->
+    <button
+      type="button"
+      class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors-base text-secondary"
+      aria-label="Previous month"
+    >
+      <svg
+        class="size-icon-sm"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <g [innerHTML]="safeChevronLeft"></g>
+      </svg>
+    </button>
+
+    <!-- Month Name -->
+    <h3 class="text-lg font-bold text-primary">
+      {{ currentMonthName() }}
+    </h3>
+
+    <!-- Next Button -->
+    <button
+      type="button"
+      class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors-base text-secondary"
+      aria-label="Next month"
+    >
+      <svg
+        class="size-icon-sm"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <g [innerHTML]="safeChevronRight"></g>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Calendar Grid -->
+  <div>
+    <!-- Day Headers -->
+    <div class="grid grid-cols-7 gap-1 mb-2">
+      @for (header of dayHeaders; track header + $index) {
+        <div class="flex items-center justify-center h-8 text-xs font-medium text-secondary">
+          {{ header }}
+        </div>
+      }
+    </div>
+
+    <!-- Day Numbers -->
+    <div class="grid grid-cols-7 gap-1">
+      @for (day of days(); track $index) {
+        <button
+          type="button"
+          [ngClass]="getDayClasses(day.state)"
+        >
+          {{ day.day }}
+        </button>
+      }
+    </div>
+  </div>
+
+  <!-- Add Event Button -->
+  <button
+    type="button"
+    class="w-full bg-brand-primary hover:bg-brand-primary-dark text-white font-medium py-2.5 px-4 rounded-button transition-colors-base shadow-button hover:shadow-button-hover"
+  >
+    Add event
+  </button>
+</div>

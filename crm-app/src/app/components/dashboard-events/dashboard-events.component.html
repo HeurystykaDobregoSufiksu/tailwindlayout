@@ -1,0 +1,41 @@
+<div class="bg-card rounded-card shadow-card border border-default p-6">
+  <!-- Header -->
+  <h2 class="text-2xl font-bold text-primary mb-6">
+    Upcoming meetings
+  </h2>
+
+  <!-- Content Grid -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <!-- Left Section: Meeting List -->
+    <div class="flex flex-col">
+      @if (meetings().length > 0) {
+        @for (meeting of meetings(); track meeting.id) {
+          <app-meeting-row
+            [avatarUrl]="meeting.avatarUrl"
+            [personName]="meeting.personName"
+            [dateTimeLabel]="meeting.dateTimeLabel"
+            [locationLabel]="meeting.locationLabel"
+          />
+        }
+      } @else {
+        <div class="flex items-center justify-center py-12 text-center">
+          <p class="text-muted text-sm">No upcoming meetings scheduled</p>
+        </div>
+      }
+    </div>
+
+    <!-- Right Section: Calendar Widget -->
+    <div class="flex flex-col">
+      @if (calendarDays()) {
+        <app-calendar-widget
+          [currentMonthName]="currentMonthName()"
+          [days]="calendarDays()!"
+        />
+      } @else {
+        <app-calendar-widget
+          [currentMonthName]="currentMonthName()"
+        />
+      }
+    </div>
+  </div>
+</div>
