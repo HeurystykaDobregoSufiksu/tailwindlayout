@@ -1,0 +1,167 @@
+<div class="bg-gray-900 text-gray-100 p-6 rounded-lg">
+  <!-- Activity Timeline Section -->
+  <div class="space-y-6">
+    @for (item of activityItems(); track item.id) {
+      <div class="relative flex gap-4">
+        <!-- Timeline Line and Marker -->
+        <div class="relative flex flex-col items-center">
+          <!-- Top connecting line (hidden for first item) -->
+          @if (!$first) {
+            <div class="absolute top-0 w-0.5 h-4 bg-gray-700 -translate-y-full"></div>
+          }
+
+          <!-- Marker/Icon -->
+          @if (item.type === 'paid') {
+            <!-- Purple checkmark icon for paid status -->
+            <div
+              class="flex-shrink-0 w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center z-10"
+            >
+              <svg
+                class="w-5 h-5 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"
+                ></path>
+              </svg>
+            </div>
+          } @else if (item.type === 'comment' && item.actorProfileImage) {
+            <!-- Profile image for comments -->
+            <img
+              [src]="item.actorProfileImage"
+              [alt]="item.actorName"
+              class="flex-shrink-0 w-8 h-8 rounded-full object-cover z-10 ring-2 ring-gray-900"
+            />
+          } @else {
+            <!-- Default circular marker -->
+            <div class="flex-shrink-0 w-3 h-3 bg-gray-600 rounded-full z-10"></div>
+          }
+
+          <!-- Bottom connecting line (hidden for last item) -->
+          @if (!$last) {
+            <div class="w-0.5 flex-1 bg-gray-700 mt-1"></div>
+          }
+        </div>
+
+        <!-- Content Section -->
+        <div class="flex-1 pb-8">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              @if (item.type === 'comment') {
+                <!-- Comment Entry -->
+                <div class="bg-gray-800 rounded-lg p-3">
+                  <div class="text-sm">
+                    <span class="font-semibold text-gray-100">{{ item.actorName }}</span>
+                  </div>
+                  <p class="text-sm text-gray-300 mt-1">{{ item.commentText }}</p>
+                </div>
+              } @else {
+                <!-- Action Entry -->
+                <div class="text-sm text-gray-300">
+                  <span class="font-medium text-gray-100">{{ item.actorName }}</span>
+                  <span class="text-gray-400">{{ item.description }}</span>
+                </div>
+              }
+            </div>
+
+            <!-- Timestamp -->
+            <div class="text-xs text-gray-500 flex-shrink-0">{{ item.timestampDescription }}</div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- New Comment Input Section -->
+  <div class="mt-8 pt-6 border-t border-gray-800">
+    <div class="flex gap-3">
+      <!-- Current User Profile Image -->
+      <img
+        [src]="currentUserProfileImage()"
+        alt="Your profile"
+        class="flex-shrink-0 w-10 h-10 rounded-full object-cover"
+      />
+
+      <!-- Input Area -->
+      <div class="flex-1">
+        <div class="bg-gray-800 rounded-lg p-3 border border-gray-700 focus-within:border-gray-600">
+          <!-- Textarea -->
+          <textarea
+            [ngModel]="newCommentText()"
+            (ngModelChange)="onCommentTextChange($event)"
+            placeholder="Add your comment..."
+            rows="3"
+            class="w-full bg-transparent text-sm text-gray-100 placeholder-gray-500 resize-none focus:outline-none"
+          ></textarea>
+
+          <!-- Attachment and Emoji Icons -->
+          <div class="flex items-center gap-2 mt-2">
+            <!-- Attachment Icon Placeholder -->
+            <button
+              type="button"
+              class="text-gray-500 hover:text-gray-400 transition-colors"
+              aria-label="Attach file"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"
+                ></path>
+              </svg>
+            </button>
+
+            <!-- Emoji Icon Placeholder -->
+            <button
+              type="button"
+              class="text-gray-500 hover:text-gray-400 transition-colors"
+              aria-label="Add emoji"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                ></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="flex justify-end mt-3">
+          <button
+            type="button"
+            (click)="onSubmitComment()"
+            [disabled]="!isCommentValid"
+            [class.opacity-50]="!isCommentValid"
+            [class.cursor-not-allowed]="!isCommentValid"
+            class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:hover:bg-indigo-600 text-white text-sm font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-900"
+          >
+            Comment
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
