@@ -18,7 +18,7 @@ export class TopBarComponent {
   @Output() navButtonClick = new EventEmitter<NavButton>();
   @Output() mobileMenuClick = new EventEmitter<void>();
   @Output() themeToggle = new EventEmitter<void>();
-
+  @Output() showcaseToggle = new EventEmitter<void>();
   onNavButtonClick(button: NavButton) {
     this.navButtonClick.emit(button);
   }
@@ -29,5 +29,9 @@ export class TopBarComponent {
 
   onThemeToggle() {
     this.themeToggle.emit();
+  }
+
+  protected onShowcase() {
+    this.showcaseToggle.emit();
   }
 }

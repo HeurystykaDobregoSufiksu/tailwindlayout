@@ -15,6 +15,7 @@
         (navButtonClick)="onNavButtonClick($event)"
         (mobileMenuClick)="toggleMobileMenu()"
         (themeToggle)="toggleTheme()"
+        (showcaseToggle)="showcase.set(!showcase())"
       >
       </app-top-bar>
 
@@ -341,59 +342,6 @@
                 </div>
               </div>
 
-              <!-- State Variants Section -->
-              <div>
-                <h3 class="text-xl font-semibold text-ui-text-primary dark:text-ui-text-primary-dark mb-6 pb-2 border-b border-ui-border dark:border-ui-border-dark">State Variants</h3>
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                  <!-- Input with Validation Error -->
-                  <div>
-                    <h4 class="text-sm font-medium text-ui-text-secondary dark:text-ui-text-secondary-dark mb-3">Input with Validation Error</h4>
-                    <app-input
-                      label="Username"
-                      placeholder="Choose a username"
-                      variant="error"
-                      errorMessage="This username is already taken"
-                      [value]="errorInputValue()"
-                      (valueChange)="errorInputValue.set($event)"
-                    />
-                  </div>
-
-                  <!-- Success State -->
-                  <div>
-                    <h4 class="text-sm font-medium text-ui-text-secondary dark:text-ui-text-secondary-dark mb-3">Success State</h4>
-                    <app-input
-                      label="Valid Email"
-                      type="email"
-                      value="user@example.com"
-                      variant="success"
-                      helpText="This email address is valid and available"
-                    />
-                  </div>
-
-                  <!-- Warning State -->
-                  <div>
-                    <h4 class="text-sm font-medium text-ui-text-secondary dark:text-ui-text-secondary-dark mb-3">Warning State</h4>
-                    <app-input
-                      label="Password Strength"
-                      type="password"
-                      placeholder="Enter password"
-                      variant="warning"
-                      helpText="Password strength: Weak. Consider adding numbers and symbols."
-                    />
-                  </div>
-
-                  <!-- Disabled State -->
-                  <div>
-                    <h4 class="text-sm font-medium text-ui-text-secondary dark:text-ui-text-secondary-dark mb-3">Disabled State</h4>
-                    <app-input
-                      label="Account Status"
-                      [value]="disabledValue()"
-                      [disabled]="true"
-                      helpText="This field cannot be edited by users"
-                    />
-                  </div>
-                </div>
-              </div>
 
               <!-- Size Variants Section -->
               <div>

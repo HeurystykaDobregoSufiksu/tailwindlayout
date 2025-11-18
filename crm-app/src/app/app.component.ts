@@ -14,7 +14,7 @@ import { NavButton } from './components/nav-button/nav-button.component';
 import { IconButtonConfig } from './components/icon-button/icon-button.component';
 import { PageHeaderComponent } from './components/page-header/page-header.component';
 import { ButtonGroupOption, ButtonGroupComponent } from './components/button-group/button-group.component';
-import { ButtonConfig, ButtonComponent } from './components/button/button.component';
+import { ButtonComponent } from './components/button/button.component';
 import { BadgeComponent } from "./components/badge/badge.component";
 import { EmptyStateInfo } from "./components/empty-state-info/empty-state-info";
 import { KampaniaCardHeader } from "./components/kampania-card-header/kampania-card-header";
@@ -85,7 +85,7 @@ export class App implements OnInit {
   btnConfig = signal<IconButtonConfig[]>([]);
   // Navigation buttons
   isModalOpen = signal(false);
-
+  showcase= signal(false);
   modalButtons: ModalButton[] = [
     {
       id: 'confirm',
