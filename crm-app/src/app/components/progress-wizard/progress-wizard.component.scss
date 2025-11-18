@@ -1,0 +1,91 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.progress-wizard {
+  @apply transition-all duration-300;
+}
+
+.step-marker {
+  position: relative;
+  flex-shrink: 0;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  // Add subtle animation for current step
+  .step-content:has(.step-marker) {
+    animation: pulse-subtle 2s ease-in-out infinite;
+  }
+}
+
+// Smooth connector animation
+.step-connector {
+  @apply transition-all duration-500 ease-in-out;
+
+  &.bg-brand-primary {
+    animation: connectorGrow 0.5s ease-out;
+  }
+}
+
+// Subtle pulse animation for current step
+@keyframes pulse-subtle {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+
+// Connector growth animation
+@keyframes connectorGrow {
+  from {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+// Ensure proper layout for vertical orientation
+.progress-wizard.flex-col {
+  .step-container {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+// Hover effects
+.step-content {
+  cursor: default;
+
+  &:hover .step-marker {
+    transform: scale(1.05);
+  }
+}
+
+// Accessibility improvements
+.step-marker {
+  &:focus {
+    outline: 2px solid var(--brand-primary);
+    outline-offset: 2px;
+  }
+}
+
+// Dark mode specific adjustments
+:host-context(.dark) {
+  .step-marker {
+    &::before {
+      background: rgba(99, 102, 241, 0.1);
+    }
+  }
+}

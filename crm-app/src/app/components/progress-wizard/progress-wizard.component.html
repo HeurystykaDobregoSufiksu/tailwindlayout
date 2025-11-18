@@ -1,0 +1,61 @@
+<div
+  class="progress-wizard"
+  [ngClass]="{
+    'flex': orientation() === 'horizontal',
+    'flex-col': orientation() === 'vertical',
+    'items-center': orientation() === 'horizontal',
+    'items-start': orientation() === 'vertical',
+    'w-full': true
+  }"
+>
+  @for (step of steps(); track step.id; let i = $index; let isLast = $last) {
+    <!-- Step Container -->
+    <div
+      class="step-container"
+      [ngClass]="{
+        'flex flex-1': orientation() === 'horizontal' && !isLast,
+        'flex': orientation() === 'horizontal' && isLast,
+        'w-full': orientation() === 'vertical'
+      }"
+    >
+      <!-- Step Content -->
+      <div [ngClass]="getStepClasses(step)" class="step-content">
+        <!-- Step Marker (Circle with icon/number) -->
+        <div [ngClass]="getStepMarkerClasses(step)" class="step-marker">
+          @if (step.status === 'completed') {
+            <!-- Checkmark icon for completed steps -->
+            <svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+            </svg>
+          } @else if (hasCustomIcon(step)) {
+            <!-- Custom icon if provided -->
+            <div [innerHTML]="step.icon" class="flex items-center justify-center"></div>
+          } @else if (shouldShowNumber(step)) {
+            <!-- Step number -->
+            <span>{{ i + 1 }}</span>
+          }
+        </div>
+
+        <!-- Step Text Content -->
+        <div [ngClass]="getStepTextClasses(step)" class="step-text">
+          <!-- Step Label -->
+          <div [ngClass]="getStepLabelClasses(step)" class="step-label">
+            {{ step.label }}
+          </div>
+
+          <!-- Step Description (optional) -->
+          @if (step.description) {
+            <div [ngClass]="getStepDescriptionClasses(step)" class="step-description">
+              {{ step.description }}
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Connector Line -->
+      @if (showConnectors() && !isLast) {
+        <div [ngClass]="getConnectorClasses(i)" class="step-connector"></div>
+      }
+    </div>
+  }
+</div>
