@@ -13,6 +13,12 @@ export interface DropdownOption {
   icon?: string;
 }
 
+export interface ButtonConfig {
+  icon: string;
+  label?: string;
+  ariaLabel?: string;
+}
+
 @Component({
   selector: 'app-input',
   imports: [CommonModule],
@@ -29,6 +35,8 @@ export interface DropdownOption {
 export class InputComponent implements ControlValueAccessor {
   // Inputs
   label = input<string>('');
+  hiddenLabel = input<boolean>(false);
+  cornerHint = input<string>('');
   placeholder = input<string>('');
   helpText = input<string>('');
   errorMessage = input<string>('');
@@ -41,8 +49,11 @@ export class InputComponent implements ControlValueAccessor {
   // Leading and trailing add-ons
   leadingAddon = input<string>('');
   leadingIcon = input<string>('');
+  leadingDropdown = input<DropdownOption[]>([]);
+  trailingAddon = input<string>('');
   trailingIcon = input<string>('');
   trailingDropdown = input<DropdownOption[]>([]);
+  trailingButton = input<ButtonConfig | null>(null);
 
   // Input attributes
   name = input<string>('');
@@ -56,13 +67,17 @@ export class InputComponent implements ControlValueAccessor {
   valueChange = output<string>();
   inputFocus = output<void>();
   inputBlur = output<void>();
-  dropdownSelect = output<DropdownOption>();
+  leadingDropdownSelect = output<DropdownOption>();
+  trailingDropdownSelect = output<DropdownOption>();
+  buttonClick = output<void>();
 
   // Internal state
   value = signal<string>('');
   isFocused = signal<boolean>(false);
-  isDropdownOpen = signal<boolean>(false);
-  selectedDropdownOption = signal<DropdownOption | null>(null);
+  isLeadingDropdownOpen = signal<boolean>(false);
+  isTrailingDropdownOpen = signal<boolean>(false);
+  selectedLeadingDropdownOption = signal<DropdownOption | null>(null);
+  selectedTrailingDropdownOption = signal<DropdownOption | null>(null);
 
   // ControlValueAccessor implementation
   private onChange: (value: string) => void = () => {};
@@ -71,9 +86,16 @@ export class InputComponent implements ControlValueAccessor {
   constructor() {
     // Auto-select first dropdown option if available
     effect(() => {
-      const options = this.trailingDropdown();
-      if (options.length > 0 && !this.selectedDropdownOption()) {
-        this.selectedDropdownOption.set(options[0]);
+      const leadingOptions = this.leadingDropdown();
+      if (leadingOptions.length > 0 && !this.selectedLeadingDropdownOption()) {
+        this.selectedLeadingDropdownOption.set(leadingOptions[0]);
+      }
+    });
+
+    effect(() => {
+      const trailingOptions = this.trailingDropdown();
+      if (trailingOptions.length > 0 && !this.selectedTrailingDropdownOption()) {
+        this.selectedTrailingDropdownOption.set(trailingOptions[0]);
       }
     });
   }
@@ -123,21 +145,50 @@ export class InputComponent implements ControlValueAccessor {
   }
 
   /**
-   * Toggle dropdown visibility
+   * Toggle leading dropdown visibility
    */
-  toggleDropdown(): void {
+  toggleLeadingDropdown(): void {
     if (!this.disabled()) {
-      this.isDropdownOpen.set(!this.isDropdownOpen());
+      this.isLeadingDropdownOpen.set(!this.isLeadingDropdownOpen());
+      this.isTrailingDropdownOpen.set(false);
     }
   }
 
   /**
-   * Select dropdown option
+   * Toggle trailing dropdown visibility
    */
-  selectDropdownOption(option: DropdownOption): void {
-    this.selectedDropdownOption.set(option);
-    this.isDropdownOpen.set(false);
-    this.dropdownSelect.emit(option);
+  toggleTrailingDropdown(): void {
+    if (!this.disabled()) {
+      this.isTrailingDropdownOpen.set(!this.isTrailingDropdownOpen());
+      this.isLeadingDropdownOpen.set(false);
+    }
+  }
+
+  /**
+   * Select leading dropdown option
+   */
+  selectLeadingDropdownOption(option: DropdownOption): void {
+    this.selectedLeadingDropdownOption.set(option);
+    this.isLeadingDropdownOpen.set(false);
+    this.leadingDropdownSelect.emit(option);
+  }
+
+  /**
+   * Select trailing dropdown option
+   */
+  selectTrailingDropdownOption(option: DropdownOption): void {
+    this.selectedTrailingDropdownOption.set(option);
+    this.isTrailingDropdownOpen.set(false);
+    this.trailingDropdownSelect.emit(option);
+  }
+
+  /**
+   * Handle trailing button click
+   */
+  onButtonClick(): void {
+    if (!this.disabled()) {
+      this.buttonClick.emit();
+    }
   }
 
   /**
@@ -207,8 +258,8 @@ export class InputComponent implements ControlValueAccessor {
    * Get padding classes based on addons
    */
   getPaddingClasses(): string {
-    const hasLeading = this.leadingAddon() || this.leadingIcon();
-    const hasTrailing = this.trailingIcon() || this.trailingDropdown().length > 0;
+    const hasLeading = this.leadingAddon() || this.leadingIcon() || this.leadingDropdown().length > 0;
+    const hasTrailing = this.trailingAddon() || this.trailingIcon() || this.trailingDropdown().length > 0 || this.trailingButton();
 
     let padding = '';
 
@@ -324,6 +375,17 @@ export class InputComponent implements ControlValueAccessor {
   }
 
   /**
+   * Get trailing addon classes
+   */
+  getTrailingAddonClasses(): string {
+    const baseClasses = 'flex items-center px-3 text-ui-text-secondary dark:text-ui-text-secondary-dark border-l-2 border-ui-border dark:border-ui-border-dark';
+    const sizeClasses = this.size() === 'sm' ? 'text-sm' : this.size() === 'lg' ? 'text-lg' : 'text-base';
+    const disabledClasses = this.disabled() ? 'opacity-50' : '';
+
+    return `${baseClasses} ${sizeClasses} ${disabledClasses}`;
+  }
+
+  /**
    * Get icon classes
    */
   getIconClasses(): string {
@@ -335,9 +397,22 @@ export class InputComponent implements ControlValueAccessor {
   }
 
   /**
-   * Get dropdown button classes
+   * Get leading dropdown button classes
    */
-  getDropdownButtonClasses(): string {
+  getLeadingDropdownButtonClasses(): string {
+    const baseClasses = 'flex items-center gap-2 px-3 py-2 border-r-2 border-ui-border dark:border-ui-border-dark transition-colors';
+    const hoverClasses = !this.disabled()
+      ? 'hover:bg-ui-bg-secondary dark:hover:bg-ui-bg-secondary-dark cursor-pointer'
+      : 'cursor-not-allowed opacity-50';
+    const textClasses = 'text-ui-text-secondary dark:text-ui-text-secondary-dark';
+
+    return `${baseClasses} ${hoverClasses} ${textClasses}`;
+  }
+
+  /**
+   * Get trailing dropdown button classes
+   */
+  getTrailingDropdownButtonClasses(): string {
     const baseClasses = 'flex items-center gap-2 px-3 py-2 border-l-2 border-ui-border dark:border-ui-border-dark transition-colors';
     const hoverClasses = !this.disabled()
       ? 'hover:bg-ui-bg-secondary dark:hover:bg-ui-bg-secondary-dark cursor-pointer'
@@ -348,19 +423,52 @@ export class InputComponent implements ControlValueAccessor {
   }
 
   /**
-   * Get dropdown menu classes
+   * Get trailing button classes
    */
-  getDropdownMenuClasses(): string {
+  getTrailingButtonClasses(): string {
+    const baseClasses = 'flex items-center gap-2 px-3 py-2 border-l-2 border-ui-border dark:border-ui-border-dark transition-all duration-200';
+    const hoverClasses = !this.disabled()
+      ? 'hover:bg-brand-primary hover:text-white hover:border-brand-primary cursor-pointer'
+      : 'cursor-not-allowed opacity-50';
+    const textClasses = 'text-ui-text-secondary dark:text-ui-text-secondary-dark';
+
+    return `${baseClasses} ${hoverClasses} ${textClasses}`;
+  }
+
+  /**
+   * Get leading dropdown menu classes
+   */
+  getLeadingDropdownMenuClasses(): string {
+    return 'absolute left-0 mt-2 w-48 bg-ui-bg-primary dark:bg-ui-bg-primary-dark border-2 border-ui-border dark:border-ui-border-dark rounded-lg shadow-lg z-10 overflow-hidden';
+  }
+
+  /**
+   * Get trailing dropdown menu classes
+   */
+  getTrailingDropdownMenuClasses(): string {
     return 'absolute right-0 mt-2 w-48 bg-ui-bg-primary dark:bg-ui-bg-primary-dark border-2 border-ui-border dark:border-ui-border-dark rounded-lg shadow-lg z-10 overflow-hidden';
   }
 
   /**
-   * Get dropdown option classes
+   * Get leading dropdown option classes
    */
-  getDropdownOptionClasses(option: DropdownOption): string {
+  getLeadingDropdownOptionClasses(option: DropdownOption): string {
     const baseClasses = 'w-full px-4 py-2.5 text-left text-sm transition-colors flex items-center gap-2';
     const hoverClasses = 'hover:bg-ui-bg-secondary dark:hover:bg-ui-bg-secondary-dark';
-    const selectedClasses = this.selectedDropdownOption()?.id === option.id
+    const selectedClasses = this.selectedLeadingDropdownOption()?.id === option.id
+      ? 'bg-ui-active dark:bg-ui-active-dark text-brand-primary font-medium'
+      : 'text-ui-text-primary dark:text-ui-text-primary-dark';
+
+    return `${baseClasses} ${hoverClasses} ${selectedClasses}`;
+  }
+
+  /**
+   * Get trailing dropdown option classes
+   */
+  getTrailingDropdownOptionClasses(option: DropdownOption): string {
+    const baseClasses = 'w-full px-4 py-2.5 text-left text-sm transition-colors flex items-center gap-2';
+    const hoverClasses = 'hover:bg-ui-bg-secondary dark:hover:bg-ui-bg-secondary-dark';
+    const selectedClasses = this.selectedTrailingDropdownOption()?.id === option.id
       ? 'bg-ui-active dark:bg-ui-active-dark text-brand-primary font-medium'
       : 'text-ui-text-primary dark:text-ui-text-primary-dark';
 

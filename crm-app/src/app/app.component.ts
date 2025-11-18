@@ -22,7 +22,7 @@ import { DropdownOptionComponent } from "./components/dropdown-option/dropdown-o
 import { DashboardEventsComponent, Meeting } from "./components/dashboard-events/dashboard-events.component";
 import { CalendarDay } from "./components/calendar-widget/calendar-widget.component";
 import {ModalButton, StatusModalComponent} from './components/status-modal/status-modal.component';
-import { InputComponent, DropdownOption } from './components/input/input.component';
+import { InputComponent, DropdownOption, ButtonConfig } from './components/input/input.component';
 
 @Component({
   selector: 'app-root',
@@ -390,6 +390,20 @@ this.operatorOptions.update(options =>
 
   searchIcon = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>';
   mailIcon = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>';
+  sendIcon = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>';
+
+  // Protocol options for leading dropdown
+  protocolOptions = signal<DropdownOption[]>([
+    { id: 'http', label: 'http://', value: 'http' },
+    { id: 'https', label: 'https://', value: 'https' },
+    { id: 'ftp', label: 'ftp://', value: 'ftp' }
+  ]);
+
+  // Send button config
+  sendButton = signal<ButtonConfig>({
+    icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>',
+    ariaLabel: 'Send message'
+  });
 
   // Dashboard Events data
   upcomingMeetings = signal<Meeting[]>([
