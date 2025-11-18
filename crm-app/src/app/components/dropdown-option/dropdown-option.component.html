@@ -1,0 +1,23 @@
+<button
+  type="button"
+  (click)="onClick()"
+  [disabled]="disabled"
+  [ngClass]="{
+    'opacity-50 cursor-not-allowed': disabled,
+    'hover:bg-gray-100 dark:hover:bg-gray-700': !disabled
+  }"
+  class="w-full flex items-center gap-3 px-4 py-2.5 text-left transition-colors-base text-primary"
+>
+  @if (icon) {
+    <svg
+      class="size-icon-sm flex-shrink-0"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g [innerHTML]="safeIcon"></g>
+    </svg>
+  }
+  <span class="flex-1">{{ label }}</span>
+</button>

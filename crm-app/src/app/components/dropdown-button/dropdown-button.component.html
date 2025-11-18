@@ -1,0 +1,44 @@
+<div class="dropdown-container relative inline-block">
+  <!-- Main Button -->
+  <button
+    type="button"
+    (click)="toggleDropdown()"
+    [disabled]="disabled"
+    [ngClass]="buttonClasses"
+  >
+    @if (icon) {
+      <svg
+        class="size-icon-sm"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <g [innerHTML]="safeIcon"></g>
+      </svg>
+    }
+    <span>{{ label }}</span>
+    <svg
+      class="size-icon-sm transition-transform duration-200"
+      [ngClass]="{ 'rotate-180': isOpen() }"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g [innerHTML]="safeChevronIcon"></g>
+    </svg>
+  </button>
+
+  <!-- Dropdown Menu -->
+  @if (isOpen()) {
+    <div
+      [ngClass]="dropdownClasses"
+      class="animate-fadeIn"
+    >
+      <div class="py-1" (click)="closeDropdown()">
+        <ng-content></ng-content>
+      </div>
+    </div>
+  }
+</div>
