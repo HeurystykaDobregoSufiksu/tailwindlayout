@@ -1,0 +1,179 @@
+<div [ngClass]="getContainerClasses()">
+  <!-- Label with corner hint -->
+  @if (label()) {
+    <div class="flex items-center justify-between mb-1.5">
+      <label
+        [ngClass]="getLabelClasses()"
+        [class.sr-only]="hiddenLabel()"
+        [attr.for]="id() || name()"
+        class="mb-0"
+      >
+        {{ label() }}<span class="text-status-error ml-0.5">{{ requiredAsterisk }}</span>
+      </label>
+      @if (cornerHint()) {
+        <span class="text-sm text-ui-text-muted dark:text-ui-text-muted-dark">{{ cornerHint() }}</span>
+      }
+    </div>
+  }
+
+  <!-- Input Wrapper with addons -->
+  <div [ngClass]="getInputWrapperClasses()">
+    <!-- Leading Dropdown -->
+    @if (leadingDropdown().length > 0) {
+      <div class="relative">
+        <button
+          type="button"
+          [ngClass]="getLeadingDropdownButtonClasses()"
+          [disabled]="isInputDisabled()"
+          (click)="toggleLeadingDropdown()"
+        >
+          <span class="text-sm">{{ selectedLeadingDropdownOption()?.label || 'Select' }}</span>
+          <svg
+            class="size-4 transition-transform duration-200"
+            [class.rotate-180]="isLeadingDropdownOpen()"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </button>
+
+        <!-- Leading Dropdown Menu -->
+        @if (isLeadingDropdownOpen()) {
+          <div [ngClass]="getLeadingDropdownMenuClasses()">
+            @for (option of leadingDropdown(); track option.id) {
+              <button
+                type="button"
+                [ngClass]="getLeadingDropdownOptionClasses(option)"
+                (click)="selectLeadingDropdownOption(option)"
+              >
+                @if (option.icon) {
+                  <div [innerHTML]="option.icon" class="size-5"></div>
+                }
+                <span>{{ option.label }}</span>
+              </button>
+            }
+          </div>
+        }
+      </div>
+    }
+
+    <!-- Leading Addon (text) -->
+    @if (leadingAddon() && !leadingDropdown().length) {
+      <div [ngClass]="getLeadingAddonClasses()">
+        {{ leadingAddon() }}
+      </div>
+    }
+
+    <!-- Leading Icon -->
+    @if (leadingIcon() && !leadingAddon() && !leadingDropdown().length) {
+      <div [ngClass]="getIconClasses()" [innerHTML]="leadingIcon()"></div>
+    }
+
+    <!-- Input Field -->
+    <input
+      [ngClass]="getInputClasses()"
+      [type]="type()"
+      [placeholder]="placeholder()"
+      [disabled]="isInputDisabled()"
+      [required]="required()"
+      [name]="name()"
+      [id]="id() || name()"
+      [autocomplete]="autocomplete()"
+      [maxlength]="maxlength()"
+      [minlength]="minlength()"
+      [pattern]="pattern()"
+      [value]="value()"
+      (input)="onInputChange($event)"
+      (focus)="onFocus()"
+      (blur)="onBlur()"
+    />
+
+    <!-- Trailing Icon -->
+    @if (trailingIcon() && !trailingAddon() && !trailingDropdown().length && !trailingButton()) {
+      <div [ngClass]="getIconClasses()" [innerHTML]="trailingIcon()"></div>
+    }
+
+    <!-- Trailing Addon (text) -->
+    @if (trailingAddon() && !trailingDropdown().length && !trailingButton()) {
+      <div [ngClass]="getTrailingAddonClasses()">
+        {{ trailingAddon() }}
+      </div>
+    }
+
+    <!-- Trailing Button -->
+    @if (trailingButton() && !trailingDropdown().length) {
+      <button
+        type="button"
+        [ngClass]="getTrailingButtonClasses()"
+        [disabled]="isInputDisabled()"
+        [attr.aria-label]="trailingButton()?.ariaLabel || trailingButton()?.label"
+        (click)="onButtonClick()"
+      >
+        @if (trailingButton()?.icon) {
+          <div [innerHTML]="trailingButton()!.icon" class="size-5"></div>
+        }
+        @if (trailingButton()?.label) {
+          <span class="text-sm font-medium">{{ trailingButton()!.label }}</span>
+        }
+      </button>
+    }
+
+    <!-- Trailing Dropdown -->
+    @if (trailingDropdown().length > 0) {
+      <div class="relative">
+        <button
+          type="button"
+          [ngClass]="getTrailingDropdownButtonClasses()"
+          [disabled]="isInputDisabled()"
+          (click)="toggleTrailingDropdown()"
+        >
+          <span class="text-sm">{{ selectedTrailingDropdownOption()?.label || 'Select' }}</span>
+          <svg
+            class="size-4 transition-transform duration-200"
+            [class.rotate-180]="isTrailingDropdownOpen()"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </button>
+
+        <!-- Trailing Dropdown Menu -->
+        @if (isTrailingDropdownOpen()) {
+          <div [ngClass]="getTrailingDropdownMenuClasses()">
+            @for (option of trailingDropdown(); track option.id) {
+              <button
+                type="button"
+                [ngClass]="getTrailingDropdownOptionClasses(option)"
+                (click)="selectTrailingDropdownOption(option)"
+              >
+                @if (option.icon) {
+                  <div [innerHTML]="option.icon" class="size-5"></div>
+                }
+                <span>{{ option.label }}</span>
+              </button>
+            }
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Help Text -->
+  @if (helpText() && !errorMessage()) {
+    <p [ngClass]="getHelpTextClasses()">
+      {{ helpText() }}
+    </p>
+  }
+
+  <!-- Error Message -->
+  @if (errorMessage()) {
+    <div [ngClass]="getErrorMessageClasses()">
+      <div [innerHTML]="getErrorIcon()"></div>
+      <span>{{ errorMessage() }}</span>
+    </div>
+  }
+</div>

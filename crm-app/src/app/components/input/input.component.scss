@@ -1,0 +1,189 @@
+// Input Component Styles
+// Uses theme configuration variables from tailwind.config.js
+
+.input-container {
+  position: relative;
+
+  // Smooth transitions for all interactive elements
+  input,
+  button {
+    transition: all 0.2s ease-in-out;
+  }
+
+  // Custom focus styles
+  input:focus {
+    outline: none;
+  }
+
+  // Autofill styles for dark mode
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 1000px var(--input-bg) inset;
+    -webkit-text-fill-color: var(--input-text);
+    transition: background-color 5000s ease-in-out 0s;
+  }
+
+  // Number input spinner styles
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+
+  // Password input reveal button styles
+  input[type='password'] {
+    letter-spacing: 0.05em;
+  }
+
+  // Search input styles
+  input[type='search']::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+}
+
+// Dropdown animation
+.dropdown-menu {
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Focus ring animation
+@keyframes focusRing {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.input-wrapper:focus-within {
+  animation: focusRing 0.15s ease-out;
+}
+
+// Disabled state overlay
+.input-wrapper.disabled {
+  pointer-events: none;
+  user-select: none;
+}
+
+// Error shake animation (optional - can be triggered programmatically)
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-4px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(4px);
+  }
+}
+
+.input-error {
+  animation: shake 0.4s ease-in-out;
+}
+
+// Leading/Trailing addon animations
+.leading-addon,
+.trailing-addon {
+  flex-shrink: 0;
+}
+
+// Icon size consistency
+.input-icon {
+  flex-shrink: 0;
+
+  svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+// Dropdown button hover effect
+.dropdown-button {
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.5s;
+  }
+
+  &:hover::before {
+    left: 100%;
+  }
+}
+
+// Smooth color transitions for dark mode
+:host-context(.dark) {
+  .input-container {
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus {
+      -webkit-box-shadow: 0 0 0 1000px theme('colors.ui.bg-primary-dark') inset;
+      -webkit-text-fill-color: theme('colors.ui.text-primary-dark');
+    }
+  }
+}
+
+// Accessibility - High contrast mode support
+@media (prefers-contrast: high) {
+  .input-wrapper {
+    border-width: 3px;
+  }
+
+  .error-message {
+    font-weight: 600;
+  }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+// Print styles
+@media print {
+  .input-container {
+    input {
+      border: 1px solid #000;
+      background: white;
+      color: black;
+    }
+
+    .dropdown-button,
+    .trailing-icon {
+      display: none;
+    }
+  }
+}

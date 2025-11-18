@@ -175,6 +175,421 @@
             }
           </div>
 
+          <!-- Input Components Showcase -->
+          <div class="mb-8 bg-white dark:bg-slate-800/50 rounded-2xl p-8 shadow-sm border border-slate-100 dark:border-slate-700">
+            <h2 class="text-2xl font-bold text-ui-text-primary dark:text-ui-text-primary-dark mb-8">Input Components Showcase</h2>
+
+            <div class="space-y-12">
+              <!-- Basic Inputs Section -->
+              <div>
+                <h3 class="text-xl font-semibold text-ui-text-primary dark:text-ui-text-primary-dark mb-6 pb-2 border-b border-ui-border dark:border-ui-border-dark">Basic Inputs</h3>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  <!-- Input with Label -->
+                  <div>
+                    <h4 class="text-sm font-medium text-ui-text-secondary dark:text-ui-text-secondary-dark mb-3">Input with Label</h4>
+                    <app-input
+                      label="Full Name"
+                      placeholder="Enter your full name"
+                      [required]="true"
+                      (valueChange)="inputValue.set($event)"
+                    />
+                  </div>
+
+                  <!-- Input with Hidden Label -->
+                  <div>
+                    <h4 class="text-sm font-medium text-ui-text-secondary dark:text-ui-text-secondary-dark mb-3">Input with Hidden Label (sr-only)</h4>
+                    <app-input
+                      label="Search"
+                      [hiddenLabel]="true"
+                      placeholder="Search for anything..."
+                      [leadingIcon]="searchIcon"
+                    />
+                  </div>
+
+                  <!-- Input with Label and Help Text -->
+                  <div>
+                    <h4 class="text-sm font-medium text-ui-text-secondary dark:text-ui-text-secondary-dark mb-3">Input with Help Text</h4>
+                    <app-input
+                      label="Email Address"
+                      type="email"
+                      placeholder="you@example.com"
+                      helpText="We'll never share your email with anyone else."
+                      (valueChange)="emailValue.set($event)"
+                    />
+                  </div>
+
+                  <!-- Input with Corner Hint -->
+                  <div>
+                    <h4 class="text-sm font-medium text-ui-text-secondary dark:text-ui-text-secondary-dark mb-3">Input with Corner Hint</h4>
+                    <app-input
+                      label="Biography"
+                      placeholder="Write a short bio..."
+                      cornerHint="Max 280 chars"
+                      maxlength="280"
+                      helpText="This appears in your public profile"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Icon Inputs Section -->
+              <div>
+                <h3 class="text-xl font-semibold text-ui-text-primary dark:text-ui-text-primary-dark mb-6 pb-2 border-b border-ui-border dark:border-ui-border-dark">Icon Inputs</h3>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  <!-- Input with Leading Icon -->
+                  <div>
+                    <h4 class="text-sm font-medium text-ui-text-secondary dark:text-ui-text-secondary-dark mb-3">Input with Leading Icon</h4>
+                    <app-input
+                      label="Email"
+                      type="email"
+                      placeholder="you@example.com"
+                      [leadingIcon]="mailIcon"
+                    />
+                  </div>
+
+                  <!-- Input with Trailing Icon -->
+                  <div>
+                    <h4 class="text-sm font-medium text-ui-text-secondary dark:text-ui-text-secondary-dark mb-3">Input with Trailing Icon</h4>
+                    <app-input
+                      label="Search"
+                      placeholder="Search..."
+                      [trailingIcon]="searchIcon"
+                    />
+                  </div>
+
+                  <!-- Input with Leading Icon and Trailing Button -->
+                  <div class="lg:col-span-2">
+                    <h4 class="text-sm font-medium text-ui-text-secondary dark:text-ui-text-secondary-dark mb-3">Input with Leading Icon and Trailing Button</h4>
+                    <app-input
+                      label="Quick Message"
+                      placeholder="Type your message..."
+                      [leadingIcon]="mailIcon"
+                      [trailingButton]="sendButton()"
+                      (buttonClick)="onAddTaskClick()"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Add-on Inputs Section -->
+              <div>
+                <h3 class="text-xl font-semibold text-ui-text-primary dark:text-ui-text-primary-dark mb-6 pb-2 border-b border-ui-border dark:border-ui-border-dark">Add-on Inputs</h3>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  <!-- Input with Leading Add-on -->
+                  <div>
+                    <h4 class="text-sm font-medium text-ui-text-secondary dark:text-ui-text-secondary-dark mb-3">Input with Add-on (Leading)</h4>
+                    <app-input
+                      label="Website"
+                      placeholder="www.example.com"
+                      leadingAddon="https://"
+                    />
+                  </div>
+
+                  <!-- Input with Trailing Add-on -->
+                  <div>
+                    <h4 class="text-sm font-medium text-ui-text-secondary dark:text-ui-text-secondary-dark mb-3">Input with Add-on (Trailing)</h4>
+                    <app-input
+                      label="Weight"
+                      type="number"
+                      placeholder="0.00"
+                      trailingAddon="kg"
+                    />
+                  </div>
+
+                  <!-- Input with Inline Leading and Trailing Add-ons -->
+                  <div class="lg:col-span-2">
+                    <h4 class="text-sm font-medium text-ui-text-secondary dark:text-ui-text-secondary-dark mb-3">Input with Inline Leading and Trailing Add-ons</h4>
+                    <app-input
+                      label="Price Range"
+                      type="number"
+                      placeholder="0.00"
+                      leadingAddon="$"
+                      trailingAddon="USD"
+                      helpText="Enter price in US dollars"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Dropdown Inputs Section -->
+              <div>
+                <h3 class="text-xl font-semibold text-ui-text-primary dark:text-ui-text-primary-dark mb-6 pb-2 border-b border-ui-border dark:border-ui-border-dark">Dropdown Inputs</h3>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  <!-- Input with Inline Leading Dropdown -->
+                  <div>
+                    <h4 class="text-sm font-medium text-ui-text-secondary dark:text-ui-text-secondary-dark mb-3">Input with Inline Leading Dropdown</h4>
+                    <app-input
+                      label="Website URL"
+                      placeholder="example.com"
+                      [leadingDropdown]="protocolOptions()"
+                      helpText="Select protocol and enter domain"
+                    />
+                  </div>
+
+                  <!-- Input with Inline Trailing Dropdown -->
+                  <div>
+                    <h4 class="text-sm font-medium text-ui-text-secondary dark:text-ui-text-secondary-dark mb-3">Input with Inline Trailing Dropdown</h4>
+                    <app-input
+                      label="Price"
+                      type="number"
+                      placeholder="0.00"
+                      leadingAddon="$"
+                      [trailingDropdown]="currencyOptions()"
+                      helpText="Enter price and select currency"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- State Variants Section -->
+              <div>
+                <h3 class="text-xl font-semibold text-ui-text-primary dark:text-ui-text-primary-dark mb-6 pb-2 border-b border-ui-border dark:border-ui-border-dark">State Variants</h3>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  <!-- Input with Validation Error -->
+                  <div>
+                    <h4 class="text-sm font-medium text-ui-text-secondary dark:text-ui-text-secondary-dark mb-3">Input with Validation Error</h4>
+                    <app-input
+                      label="Username"
+                      placeholder="Choose a username"
+                      variant="error"
+                      errorMessage="This username is already taken"
+                      [value]="errorInputValue()"
+                      (valueChange)="errorInputValue.set($event)"
+                    />
+                  </div>
+
+                  <!-- Success State -->
+                  <div>
+                    <h4 class="text-sm font-medium text-ui-text-secondary dark:text-ui-text-secondary-dark mb-3">Success State</h4>
+                    <app-input
+                      label="Valid Email"
+                      type="email"
+                      value="user@example.com"
+                      variant="success"
+                      helpText="This email address is valid and available"
+                    />
+                  </div>
+
+                  <!-- Warning State -->
+                  <div>
+                    <h4 class="text-sm font-medium text-ui-text-secondary dark:text-ui-text-secondary-dark mb-3">Warning State</h4>
+                    <app-input
+                      label="Password Strength"
+                      type="password"
+                      placeholder="Enter password"
+                      variant="warning"
+                      helpText="Password strength: Weak. Consider adding numbers and symbols."
+                    />
+                  </div>
+
+                  <!-- Disabled State -->
+                  <div>
+                    <h4 class="text-sm font-medium text-ui-text-secondary dark:text-ui-text-secondary-dark mb-3">Disabled State</h4>
+                    <app-input
+                      label="Account Status"
+                      [value]="disabledValue()"
+                      [disabled]="true"
+                      helpText="This field cannot be edited by users"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Size Variants Section -->
+              <div>
+                <h3 class="text-xl font-semibold text-ui-text-primary dark:text-ui-text-primary-dark mb-6 pb-2 border-b border-ui-border dark:border-ui-border-dark">Size Variants</h3>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                  <!-- Small Size -->
+                  <div>
+                    <h4 class="text-sm font-medium text-ui-text-secondary dark:text-ui-text-secondary-dark mb-3">Small Size</h4>
+                    <app-input
+                      label="Tags"
+                      placeholder="Add tags"
+                      size="sm"
+                      helpText="Compact input"
+                    />
+                  </div>
+
+                  <!-- Medium Size -->
+                  <div>
+                    <h4 class="text-sm font-medium text-ui-text-secondary dark:text-ui-text-secondary-dark mb-3">Medium Size (Default)</h4>
+                    <app-input
+                      label="Name"
+                      placeholder="Enter name"
+                      size="md"
+                      helpText="Standard input"
+                    />
+                  </div>
+
+                  <!-- Large Size -->
+                  <div>
+                    <h4 class="text-sm font-medium text-ui-text-secondary dark:text-ui-text-secondary-dark mb-3">Large Size</h4>
+                    <app-input
+                      label="Title"
+                      placeholder="Enter title"
+                      size="lg"
+                      helpText="Prominent input"
+                      [leadingIcon]="searchIcon"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Reactive Forms Demo -->
+          <div class="mb-8 bg-white dark:bg-slate-800/50 rounded-2xl p-8 shadow-sm border border-slate-100 dark:border-slate-700">
+            <div class="flex items-center justify-between mb-8">
+              <div>
+                <h2 class="text-2xl font-bold text-ui-text-primary dark:text-ui-text-primary-dark">Reactive Forms Integration</h2>
+                <p class="text-ui-text-secondary dark:text-ui-text-secondary-dark mt-2">Full ControlValueAccessor implementation with validation</p>
+              </div>
+              <button
+                type="button"
+                class="px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-ui-bg-secondary dark:bg-ui-bg-secondary-dark hover:bg-ui-bg-tertiary dark:hover:bg-ui-bg-tertiary-dark text-ui-text-primary dark:text-ui-text-primary-dark"
+                (click)="toggleFormDisabled()"
+              >
+                {{ userForm.disabled ? 'Enable Form' : 'Disable Form' }}
+              </button>
+            </div>
+
+            <form [formGroup]="userForm" (ngSubmit)="onSubmitForm()" class="space-y-6">
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Full Name -->
+                <app-input
+                  label="Full Name"
+                  placeholder="John Doe"
+                  formControlName="fullName"
+                  [required]="true"
+                  [minlength]="3"
+                  [variant]="getFieldVariant('fullName')"
+                  [errorMessage]="getFieldError('fullName')"
+                  helpText="Minimum 3 characters"
+                />
+
+                <!-- Email -->
+                <app-input
+                  label="Email Address"
+                  type="email"
+                  placeholder="john@example.com"
+                  formControlName="email"
+                  [required]="true"
+                  [leadingIcon]="mailIcon"
+                  [variant]="getFieldVariant('email')"
+                  [errorMessage]="getFieldError('email')"
+                  helpText="We'll send confirmation to this email"
+                />
+
+                <!-- Phone -->
+                <app-input
+                  label="Phone Number"
+                  type="tel"
+                  placeholder="+1234567890"
+                  formControlName="phone"
+                  [required]="true"
+                  [pattern]="'^\\+?[1-9]\\d{1,14}$'"
+                  [variant]="getFieldVariant('phone')"
+                  [errorMessage]="getFieldError('phone')"
+                  helpText="Include country code (e.g., +1)"
+                />
+
+                <!-- Website -->
+                <app-input
+                  label="Website URL"
+                  type="url"
+                  placeholder="example.com"
+                  formControlName="website"
+                  [required]="true"
+                  [leadingDropdown]="protocolOptions()"
+                  [variant]="getFieldVariant('website')"
+                  [errorMessage]="getFieldError('website')"
+                  helpText="Select protocol and enter domain"
+                />
+
+                <!-- Age -->
+                <app-input
+                  label="Age"
+                  type="number"
+                  placeholder="18"
+                  formControlName="age"
+                  [required]="true"
+                  trailingAddon="years"
+                  [variant]="getFieldVariant('age')"
+                  [errorMessage]="getFieldError('age')"
+                  helpText="Must be between 18 and 120"
+                />
+
+                <!-- Biography -->
+                <app-input
+                  label="Biography"
+                  placeholder="Tell us about yourself..."
+                  formControlName="bio"
+                  [maxlength]="280"
+                  cornerHint="Max 280 chars"
+                  [variant]="getFieldVariant('bio')"
+                  [errorMessage]="getFieldError('bio')"
+                  helpText="Brief description for your profile"
+                />
+
+                <!-- Password -->
+                <app-input
+                  label="Password"
+                  type="password"
+                  placeholder="Enter password"
+                  formControlName="password"
+                  [required]="true"
+                  [minlength]="8"
+                  [variant]="getFieldVariant('password')"
+                  [errorMessage]="getFieldError('password')"
+                  helpText="Minimum 8 characters"
+                />
+
+                <!-- Confirm Password -->
+                <app-input
+                  label="Confirm Password"
+                  type="password"
+                  placeholder="Confirm password"
+                  formControlName="confirmPassword"
+                  [required]="true"
+                  [variant]="getFieldVariant('confirmPassword')"
+                  [errorMessage]="getFieldError('confirmPassword')"
+                  helpText="Must match password"
+                />
+              </div>
+
+              <!-- Form Actions -->
+              <div class="flex items-center gap-4 pt-6 border-t border-ui-border dark:border-ui-border-dark">
+                <button
+                  type="submit"
+                  class="px-6 py-3 rounded-lg font-medium text-white bg-brand-primary hover:bg-brand-primary-dark transition-colors shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+                  [disabled]="userForm.disabled"
+                >
+                  Submit Form
+                </button>
+                <button
+                  type="button"
+                  class="px-6 py-3 rounded-lg font-medium border-2 border-ui-border dark:border-ui-border-dark hover:bg-ui-bg-secondary dark:hover:bg-ui-bg-secondary-dark text-ui-text-primary dark:text-ui-text-primary-dark transition-colors"
+                  (click)="onResetForm()"
+                >
+                  Reset Form
+                </button>
+                <div class="ml-auto text-sm text-ui-text-muted dark:text-ui-text-muted-dark">
+                  Form Status: <span [class.text-status-success]="userForm.valid" [class.text-status-error]="userForm.invalid && formSubmitted()">
+                    {{ userForm.valid ? 'Valid ✓' : 'Invalid ✗' }}
+                  </span>
+                </div>
+              </div>
+
+              <!-- Form Data Display -->
+              @if (formData()) {
+                <div class="mt-6 p-6 rounded-lg bg-status-success-light dark:bg-status-success-dark/30 border-2 border-status-success">
+                  <h3 class="text-lg font-semibold text-status-success mb-3">Form Submitted Successfully! 🎉</h3>
+                  <pre class="text-sm text-ui-text-primary dark:text-ui-text-primary-dark overflow-x-auto">{{ formData() | json }}</pre>
+                </div>
+              }
+            </form>
+          </div>
+
           <!-- Dropdown Examples Section -->
           <div class="mb-8 hidden">
             <app-dashboard-events

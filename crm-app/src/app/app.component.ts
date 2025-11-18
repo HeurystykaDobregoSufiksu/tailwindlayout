@@ -1,6 +1,7 @@
 import { Component, OnInit, signal, computed } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { UserInfoCardComponent, UserInfo } from './components/user-info-card/user-info-card.component';
 import { NotificationCardComponent, Notification } from './components/notification-card/notification-card.component';
 import { QuickActionButtonComponent, QuickAction } from './components/quick-action-button/quick-action-button.component';
@@ -22,12 +23,14 @@ import { DropdownOptionComponent } from "./components/dropdown-option/dropdown-o
 import { DashboardEventsComponent, Meeting } from "./components/dashboard-events/dashboard-events.component";
 import { CalendarDay } from "./components/calendar-widget/calendar-widget.component";
 import {ModalButton, StatusModalComponent} from './components/status-modal/status-modal.component';
+import { InputComponent, DropdownOption, ButtonConfig } from './components/input/input.component';
 
 @Component({
   selector: 'app-root',
   imports: [
     RouterOutlet,
     CommonModule,
+    ReactiveFormsModule,
     UserInfoCardComponent,
     NotificationCardComponent,
     QuickActionButtonComponent,
@@ -41,23 +44,39 @@ import {ModalButton, StatusModalComponent} from './components/status-modal/statu
     EmptyStateInfo,
     KampaniaCardHeader,
     DashboardEventsComponent,
-    StatusModalComponent
+    StatusModalComponent,
+    InputComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class App implements OnInit {
-navigate(_t25: NavButton) {
-throw new Error('Method not implemented.');
-}
-onOperatorChange(option: ButtonGroupOption) {
-this.operatorOptions.update(options =>
+  constructor(private fb: FormBuilder) {
+    // Initialize reactive form
+    this.userForm = this.fb.group({
+      fullName: ['', [Validators.required, Validators.minLength(3)]],
+      email: ['', [Validators.required, Validators.email]],
+      phone: ['', [Validators.required, Validators.pattern(/^\+?[1-9]\d{1,14}$/)]],
+      website: ['', [Validators.required]],
+      age: ['', [Validators.required, Validators.min(18), Validators.max(120)]],
+      bio: ['', [Validators.maxLength(280)]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
+      confirmPassword: ['', [Validators.required]]
+    });
+  }
+
+  navigate(_t25: NavButton) {
+    throw new Error('Method not implemented.');
+  }
+
+  onOperatorChange(option: ButtonGroupOption) {
+    this.operatorOptions.update(options =>
       options.map(o => ({
         ...o,
         active: o.id === option.id
       }))
     );
-}
+  }
   // Signals for reactive state
   isMobileMenuOpen = signal(false);
   isDarkMode = signal(false);
@@ -353,6 +372,61 @@ this.operatorOptions.update(options =>
   settingsIcon = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>';
   actionsIcon = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>';
 
+  // Input component demo data
+  inputValue = signal<string>('');
+  emailValue = signal<string>('');
+  searchValue = signal<string>('');
+  disabledValue = signal<string>('Cannot edit this');
+  errorInputValue = signal<string>('invalid@');
+
+  currencyOptions = signal<DropdownOption[]>([
+    {
+      id: 'usd',
+      label: 'USD',
+      value: 'usd',
+      icon: '<svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>'
+    },
+    {
+      id: 'eur',
+      label: 'EUR',
+      value: 'eur',
+      icon: '<svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.121 15.536c-1.171 1.952-3.07 1.952-4.242 0-1.172-1.953-1.172-5.119 0-7.072 1.171-1.952 3.07-1.952 4.242 0M8 10.5h4m-4 3h4m9-1.5a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>'
+    },
+    {
+      id: 'gbp',
+      label: 'GBP',
+      value: 'gbp',
+      icon: '<svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 9a2 2 0 10-4 0v5a2 2 0 01-2 2h6m-6-4h4m8 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>'
+    },
+    {
+      id: 'pln',
+      label: 'PLN',
+      value: 'pln'
+    }
+  ]);
+
+  searchIcon = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>';
+  mailIcon = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>';
+  sendIcon = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>';
+
+  // Protocol options for leading dropdown
+  protocolOptions = signal<DropdownOption[]>([
+    { id: 'http', label: 'http://', value: 'http' },
+    { id: 'https', label: 'https://', value: 'https' },
+    { id: 'ftp', label: 'ftp://', value: 'ftp' }
+  ]);
+
+  // Send button config
+  sendButton = signal<ButtonConfig>({
+    icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>',
+    ariaLabel: 'Send message'
+  });
+
+  // Reactive Forms Demo
+  userForm!: FormGroup;
+  formSubmitted = signal<boolean>(false);
+  formData = signal<any>(null);
+
   // Dashboard Events data
   upcomingMeetings = signal<Meeting[]>([
     {
@@ -515,5 +589,81 @@ this.operatorOptions.update(options =>
 
   private performAction() {
 
+  }
+
+  // Reactive Forms Methods
+  onSubmitForm(): void {
+    this.formSubmitted.set(true);
+
+    if (this.userForm.valid) {
+      this.formData.set(this.userForm.value);
+      console.log('Form submitted successfully:', this.userForm.value);
+    } else {
+      console.log('Form is invalid:', this.userForm.errors);
+      this.markFormGroupTouched(this.userForm);
+    }
+  }
+
+  onResetForm(): void {
+    this.userForm.reset();
+    this.formSubmitted.set(false);
+    this.formData.set(null);
+  }
+
+  toggleFormDisabled(): void {
+    if (this.userForm.disabled) {
+      this.userForm.enable();
+    } else {
+      this.userForm.disable();
+    }
+  }
+
+  getFieldError(fieldName: string): string {
+    const field = this.userForm.get(fieldName);
+    if (!field || !field.errors || !field.touched) {
+      return '';
+    }
+
+    if (field.errors['required']) {
+      return 'This field is required';
+    }
+    if (field.errors['email']) {
+      return 'Please enter a valid email address';
+    }
+    if (field.errors['minlength']) {
+      return `Minimum length is ${field.errors['minlength'].requiredLength} characters`;
+    }
+    if (field.errors['maxlength']) {
+      return `Maximum length is ${field.errors['maxlength'].requiredLength} characters`;
+    }
+    if (field.errors['pattern']) {
+      return 'Please enter a valid format';
+    }
+    if (field.errors['min']) {
+      return `Minimum value is ${field.errors['min'].min}`;
+    }
+    if (field.errors['max']) {
+      return `Maximum value is ${field.errors['max'].max}`;
+    }
+
+    return 'Invalid value';
+  }
+
+  getFieldVariant(fieldName: string): 'default' | 'error' | 'success' {
+    const field = this.userForm.get(fieldName);
+    if (!field || !field.touched) {
+      return 'default';
+    }
+    return field.invalid ? 'error' : 'success';
+  }
+
+  private markFormGroupTouched(formGroup: FormGroup): void {
+    Object.keys(formGroup.controls).forEach(key => {
+      const control = formGroup.get(key);
+      control?.markAsTouched();
+      if (control instanceof FormGroup) {
+        this.markFormGroupTouched(control);
+      }
+    });
   }
 }
