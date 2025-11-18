@@ -1,0 +1,26 @@
+<div
+  [class]="itemClasses()"
+  (click)="onClick()"
+  role="option"
+  [attr.aria-selected]="isSelected()"
+  [attr.aria-disabled]="disabled()"
+>
+  <!-- Checkbox indicator -->
+  <div class="shrink-0 size-5 flex items-center justify-center border-2 rounded transition-all duration-200"
+       [class.bg-brand-primary]="isSelected()"
+       [class.border-brand-primary]="isSelected()"
+       [class.border-ui-border]="!isSelected()"
+       [class.dark:border-ui-border-dark]="!isSelected()">
+    @if (isSelected()) {
+      <svg class="size-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+      </svg>
+    }
+  </div>
+
+  @if (icon()) {
+    <div class="shrink-0 size-5 text-ui-text-secondary dark:text-ui-text-secondary-dark" [innerHTML]="safeIcon()"></div>
+  }
+
+  <span class="flex-1 truncate text-ui-text-primary dark:text-ui-text-primary-dark">{{ label() }}</span>
+</div>

@@ -1,0 +1,48 @@
+<div class="flex items-center gap-2">
+  <div class="relative inline-flex items-center">
+    <input
+      type="checkbox"
+      [id]="id() || name()"
+      [name]="name()"
+      [checked]="value()"
+      [disabled]="isDisabled()"
+      [attr.aria-checked]="value()"
+      [attr.aria-label]="label() || 'Checkbox'"
+      [class]="checkboxClasses()"
+      (change)="onCheckboxChange()"
+    />
+
+    @if (value()) {
+      <svg
+        [class]="checkIconClasses()"
+        class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+      </svg>
+    }
+
+    @if (indeterminate() && !value()) {
+      <svg
+        [class]="checkIconClasses()"
+        class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 12h14" />
+      </svg>
+    }
+  </div>
+
+  @if (label()) {
+    <label
+      [for]="id() || name()"
+      [class]="labelClasses()"
+    >
+      {{ label() }}
+    </label>
+  }
+</div>

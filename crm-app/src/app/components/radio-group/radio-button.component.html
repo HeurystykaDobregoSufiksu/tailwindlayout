@@ -1,0 +1,32 @@
+<div class="flex items-center gap-2">
+  <div class="relative inline-flex items-center">
+    <input
+      type="radio"
+      [id]="id() || value()"
+      [name]="name()"
+      [value]="value()"
+      [checked]="isChecked()"
+      [disabled]="isDisabled()"
+      [attr.aria-checked]="isChecked()"
+      [attr.aria-label]="label() || value()"
+      [class]="radioClasses()"
+      (change)="onChange()"
+    />
+
+    @if (isChecked()) {
+      <div
+        [class]="dotClasses()"
+        class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+      ></div>
+    }
+  </div>
+
+  @if (label()) {
+    <label
+      [for]="id() || value()"
+      [class]="labelClasses()"
+    >
+      {{ label() }}
+    </label>
+  }
+</div>

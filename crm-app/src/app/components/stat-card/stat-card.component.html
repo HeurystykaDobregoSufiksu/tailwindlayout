@@ -1,0 +1,23 @@
+<div [class]="cardClasses()">
+  <div class="flex items-start justify-between">
+    <div class="flex-1">
+      <p [class]="labelClasses()">{{ label() }}</p>
+      <p [class]="valueClasses()" class="mt-2">{{ value() }}</p>
+
+      @if (change()) {
+        <div class="mt-3">
+          <span [class]="changeClasses()">
+            <span [innerHTML]="safeChangeIcon()"></span>
+            <span>{{ change() }}</span>
+          </span>
+        </div>
+      }
+    </div>
+
+    @if (icon()) {
+      <div [class]="iconContainerClasses()">
+        <div [class]="iconClasses()" [innerHTML]="safeIcon()"></div>
+      </div>
+    }
+  </div>
+</div>

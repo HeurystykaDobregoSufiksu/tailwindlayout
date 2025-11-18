@@ -1,0 +1,47 @@
+<div class="multi-select-container relative inline-block w-full">
+  <button
+    type="button"
+    [class]="buttonClasses()"
+    [disabled]="isDisabled()"
+    (click)="toggleDropdown()"
+    [attr.aria-expanded]="isOpen()"
+    [attr.aria-haspopup]="true"
+  >
+    <div class="flex items-center gap-2 flex-1 min-w-0">
+      @if (icon()) {
+        <div class="shrink-0 size-5" [innerHTML]="safeIcon()"></div>
+      }
+      <span class="text-left truncate flex-1">{{ displayLabel() }}</span>
+
+      @if (selectedValuesArray().length > 0 && !isDisabled()) {
+        <button
+          type="button"
+          class="shrink-0 size-5 rounded-full hover:bg-ui-bg-secondary dark:hover:bg-ui-bg-secondary-dark flex items-center justify-center transition-colors-base"
+          (click)="clearSelection(); $event.stopPropagation()"
+          aria-label="Clear selection"
+        >
+          <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      }
+    </div>
+
+    <svg
+      class="size-5 transition-transform duration-200 shrink-0"
+      [class.rotate-180]="isOpen()"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      [innerHTML]="safeChevronIcon"
+    ></svg>
+  </button>
+
+  @if (isOpen()) {
+    <div [class]="dropdownClasses()">
+      <div class="py-1">
+        <ng-content></ng-content>
+      </div>
+    </div>
+  }
+</div>
