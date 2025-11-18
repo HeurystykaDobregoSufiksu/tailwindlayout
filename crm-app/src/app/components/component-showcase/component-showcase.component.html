@@ -1,0 +1,1013 @@
+<div class="min-h-screen bg-slate-50 dark:bg-slate-900">
+  <!-- Header -->
+  <header class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-10">
+    <div class="px-8 py-6">
+      <h1 class="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-2">
+        Component Showcase
+      </h1>
+      <p class="text-slate-600 dark:text-slate-400">
+        Explore all components with their features, variations, and states
+      </p>
+    </div>
+  </header>
+
+  <div class="flex">
+    <!-- Sidebar Navigation -->
+    <aside class="w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 sticky top-[109px] h-[calc(100vh-109px)] overflow-y-auto">
+      <nav class="p-4">
+        <div class="space-y-1">
+          @for (category of categories; track category.id) {
+            <button
+              (click)="setCategory(category.id)"
+              [class]="activeCategory() === category.id
+                ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 font-medium'
+                : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50'"
+              class="w-full text-left px-4 py-3 rounded-lg transition-colors flex items-start gap-3"
+            >
+              <span class="text-xl leading-none">{{ category.icon }}</span>
+              <div class="flex-1 min-w-0">
+                <div class="font-medium text-sm">{{ category.name }}</div>
+                <div class="text-xs opacity-75 mt-0.5 line-clamp-2">{{ category.description }}</div>
+              </div>
+            </button>
+          }
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-8">
+      <div class="max-w-7xl mx-auto space-y-12">
+
+        <!-- Form Controls Section -->
+        @if (shouldShowCategory('form-controls')) {
+          <section class="space-y-6">
+            <div class="flex items-center gap-3 mb-6">
+              <span class="text-3xl">📝</span>
+              <div>
+                <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100">Form Controls</h2>
+                <p class="text-slate-600 dark:text-slate-400">Input fields, checkboxes, toggles, and selectors</p>
+              </div>
+            </div>
+
+            <!-- Input Component -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+              <h3 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">Input</h3>
+
+              <!-- Sizes -->
+              <div class="mb-8">
+                <h4 class="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">Sizes</h4>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Small</label>
+                    <app-input
+                      [formControl]="textInput"
+                      label="Small Input"
+                      size="sm"
+                      placeholder="Small size"
+                    />
+                  </div>
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Medium (Default)</label>
+                    <app-input
+                      [formControl]="textInput"
+                      label="Medium Input"
+                      size="md"
+                      placeholder="Medium size"
+                    />
+                  </div>
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Large</label>
+                    <app-input
+                      [formControl]="textInput"
+                      label="Large Input"
+                      size="lg"
+                      placeholder="Large size"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Types -->
+              <div class="mb-8">
+                <h4 class="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">Input Types</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Text</label>
+                    <app-input
+                      [formControl]="textInput"
+                      type="text"
+                      label="Text Input"
+                      placeholder="Enter text"
+                    />
+                  </div>
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Email</label>
+                    <app-input
+                      [formControl]="emailInput"
+                      type="email"
+                      label="Email Input"
+                      placeholder="email@example.com"
+                    />
+                  </div>
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Password</label>
+                    <app-input
+                      [formControl]="passwordInput"
+                      type="password"
+                      label="Password Input"
+                      placeholder="Enter password"
+                    />
+                  </div>
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Number</label>
+                    <app-input
+                      [formControl]="numberInput"
+                      type="number"
+                      label="Number Input"
+                      placeholder="0"
+                    />
+                  </div>
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Search</label>
+                    <app-input
+                      [formControl]="searchInput"
+                      type="search"
+                      label="Search Input"
+                      placeholder="Search..."
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Variants -->
+              <div class="mb-8">
+                <h4 class="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">Variants (Visual States)</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Default</label>
+                    <app-input
+                      [formControl]="textInput"
+                      variant="default"
+                      label="Default Variant"
+                      placeholder="Default state"
+                    />
+                  </div>
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Success</label>
+                    <app-input
+                      [formControl]="textInput"
+                      variant="success"
+                      label="Success Variant"
+                      placeholder="Success state"
+                      helpText="This field is valid"
+                    />
+                  </div>
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Warning</label>
+                    <app-input
+                      [formControl]="textInput"
+                      variant="warning"
+                      label="Warning Variant"
+                      placeholder="Warning state"
+                      helpText="Please check this field"
+                    />
+                  </div>
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Error</label>
+                    <app-input
+                      [formControl]="textInput"
+                      variant="error"
+                      label="Error Variant"
+                      placeholder="Error state"
+                      errorMessage="This field has an error"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- With Icons & Addons -->
+              <div>
+                <h4 class="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">With Icons & Addons</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Leading Icon</label>
+                    <app-input
+                      [formControl]="searchInput"
+                      label="Search"
+                      placeholder="Search..."
+                      leadingIcon="🔍"
+                    />
+                  </div>
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Trailing Icon</label>
+                    <app-input
+                      [formControl]="textInput"
+                      label="Username"
+                      placeholder="Enter username"
+                      trailingIcon="👤"
+                    />
+                  </div>
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Leading Addon</label>
+                    <app-input
+                      [formControl]="textInput"
+                      label="Website"
+                      placeholder="your-site"
+                      leadingAddon="https://"
+                    />
+                  </div>
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Trailing Addon</label>
+                    <app-input
+                      [formControl]="emailInput"
+                      label="Email"
+                      placeholder="username"
+                      trailingAddon="&#64;company.com"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Checkbox Component -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+              <h3 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">Checkbox</h3>
+
+              <div class="mb-6">
+                <h4 class="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">Sizes</h4>
+                <div class="flex flex-wrap gap-8">
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Small</label>
+                    <app-checkbox
+                      [formControl]="checkboxValue"
+                      label="Small checkbox"
+                      size="sm"
+                    />
+                  </div>
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Medium</label>
+                    <app-checkbox
+                      [formControl]="checkboxValue"
+                      label="Medium checkbox"
+                      size="md"
+                    />
+                  </div>
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Large</label>
+                    <app-checkbox
+                      [formControl]="checkboxValue"
+                      label="Large checkbox"
+                      size="lg"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h4 class="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">States</h4>
+                <div class="flex flex-wrap gap-8">
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Unchecked</label>
+                    <app-checkbox
+                      label="Unchecked"
+                    />
+                  </div>
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Checked</label>
+                    <app-checkbox
+                      [formControl]="checkboxValue"
+                      label="Checked"
+                    />
+                  </div>
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Indeterminate</label>
+                    <app-checkbox
+                      label="Indeterminate"
+                      [indeterminate]="true"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Toggle Component -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+              <h3 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">Toggle</h3>
+
+              <div class="mb-6">
+                <h4 class="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">Sizes</h4>
+                <div class="flex flex-wrap gap-8">
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Small</label>
+                    <app-toggle
+                      [formControl]="toggleValue"
+                      label="Small toggle"
+                      size="sm"
+                    />
+                  </div>
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Medium</label>
+                    <app-toggle
+                      [formControl]="toggleValue"
+                      label="Medium toggle"
+                      size="md"
+                    />
+                  </div>
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Large</label>
+                    <app-toggle
+                      [formControl]="toggleValue"
+                      label="Large toggle"
+                      size="lg"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h4 class="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">States</h4>
+                <div class="flex flex-wrap gap-8">
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Off</label>
+                    <app-toggle
+                      label="Toggle off"
+                    />
+                  </div>
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">On</label>
+                    <app-toggle
+                      [formControl]="toggleValue"
+                      label="Toggle on"
+                    />
+                  </div>
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">With Icon</label>
+                    <app-toggle
+                      [formControl]="toggleValue"
+                      label="With icon"
+                      icon="✓"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Radio Group Component -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+              <h3 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">Radio Group</h3>
+
+              <div class="space-y-6">
+                <div>
+                  <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Horizontal Orientation</label>
+                  <app-radio-group
+                    [formControl]="radioValue"
+                    name="demo-horizontal"
+                    orientation="horizontal"
+                  >
+                    <app-radio-button value="option1" name="demo-horizontal" label="Option 1" />
+                    <app-radio-button value="option2" name="demo-horizontal" label="Option 2" />
+                    <app-radio-button value="option3" name="demo-horizontal" label="Option 3" />
+                  </app-radio-group>
+                </div>
+
+                <div>
+                  <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Vertical Orientation</label>
+                  <app-radio-group
+                    [formControl]="radioValue"
+                    name="demo-vertical"
+                    orientation="vertical"
+                  >
+                    <app-radio-button value="option1" name="demo-vertical" label="Option 1" />
+                    <app-radio-button value="option2" name="demo-vertical" label="Option 2" />
+                    <app-radio-button value="option3" name="demo-vertical" label="Option 3" />
+                  </app-radio-group>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dropdown Component -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+              <h3 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">Dropdown</h3>
+
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Small</label>
+                  <app-dropdown
+                    [formControl]="dropdownValue"
+                    label="Small Dropdown"
+                    placeholder="Select option"
+                    size="sm"
+                  >
+                    @for (option of dropdownOptions; track option) {
+                      <app-dropdown-item [value]="option" [label]="option" />
+                    }
+                  </app-dropdown>
+                </div>
+                <div>
+                  <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Medium</label>
+                  <app-dropdown
+                    [formControl]="dropdownValue"
+                    label="Medium Dropdown"
+                    placeholder="Select option"
+                    size="md"
+                  >
+                    @for (option of dropdownOptions; track option) {
+                      <app-dropdown-item [value]="option" [label]="option" />
+                    }
+                  </app-dropdown>
+                </div>
+                <div>
+                  <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Large</label>
+                  <app-dropdown
+                    [formControl]="dropdownValue"
+                    label="Large Dropdown"
+                    placeholder="Select option"
+                    size="lg"
+                  >
+                    @for (option of dropdownOptions; track option) {
+                      <app-dropdown-item [value]="option" [label]="option" />
+                    }
+                  </app-dropdown>
+                </div>
+              </div>
+            </div>
+
+            <!-- Multi-Select Component -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+              <h3 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">Multi-Select</h3>
+
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Small</label>
+                  <app-multi-select
+                    [formControl]="multiSelectValue"
+                    label="Small Multi-Select"
+                    placeholder="Select options"
+                    size="sm"
+                  >
+                    @for (option of multiSelectOptions; track option) {
+                      <app-multi-select-item [value]="option" [label]="option" />
+                    }
+                  </app-multi-select>
+                </div>
+                <div>
+                  <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Medium</label>
+                  <app-multi-select
+                    [formControl]="multiSelectValue"
+                    label="Medium Multi-Select"
+                    placeholder="Select options"
+                    size="md"
+                  >
+                    @for (option of multiSelectOptions; track option) {
+                      <app-multi-select-item [value]="option" [label]="option" />
+                    }
+                  </app-multi-select>
+                </div>
+                <div>
+                  <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Large</label>
+                  <app-multi-select
+                    [formControl]="multiSelectValue"
+                    label="Large Multi-Select"
+                    placeholder="Select options"
+                    size="lg"
+                  >
+                    @for (option of multiSelectOptions; track option) {
+                      <app-multi-select-item [value]="option" [label]="option" />
+                    }
+                  </app-multi-select>
+                </div>
+              </div>
+            </div>
+          </section>
+        }
+
+        <!-- Buttons Section -->
+        @if (shouldShowCategory('buttons')) {
+          <section class="space-y-6">
+            <div class="flex items-center gap-3 mb-6">
+              <span class="text-3xl">🔘</span>
+              <div>
+                <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100">Buttons</h2>
+                <p class="text-slate-600 dark:text-slate-400">Various button styles and variants</p>
+              </div>
+            </div>
+
+            <!-- Button Component -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+              <h3 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">Button</h3>
+
+              <!-- Variants -->
+              <div class="mb-8">
+                <h4 class="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">Variants</h4>
+                <div class="flex flex-wrap gap-4">
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Primary</label>
+                    <app-button
+                      variant="primary"
+                      label="Primary Button"
+                      (click)="handleButtonClick()"
+                    />
+                  </div>
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Secondary</label>
+                    <app-button
+                      variant="secondary"
+                      label="Secondary Button"
+                      (click)="handleButtonClick()"
+                    />
+                  </div>
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Outline</label>
+                    <app-button
+                      variant="outline"
+                      label="Outline Button"
+                      (click)="handleButtonClick()"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sizes -->
+              <div class="mb-8">
+                <h4 class="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">Sizes</h4>
+                <div class="flex flex-wrap items-center gap-4">
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Small</label>
+                    <app-button
+                      variant="primary"
+                      size="sm"
+                      label="Small"
+                      (click)="handleButtonClick()"
+                    />
+                  </div>
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Medium</label>
+                    <app-button
+                      variant="primary"
+                      size="md"
+                      label="Medium"
+                      (click)="handleButtonClick()"
+                    />
+                  </div>
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Large</label>
+                    <app-button
+                      variant="primary"
+                      size="lg"
+                      label="Large"
+                      (click)="handleButtonClick()"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- With Icons -->
+              <div class="mb-8">
+                <h4 class="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">With Icons</h4>
+                <div class="flex flex-wrap gap-4">
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">With Icon</label>
+                    <app-button
+                      variant="primary"
+                      label="Download"
+                      icon="⬇"
+                      (click)="handleButtonClick()"
+                    />
+                  </div>
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Icon Only</label>
+                    <app-button
+                      variant="primary"
+                      icon="+"
+                      (click)="handleButtonClick()"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- States -->
+              <div>
+                <h4 class="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">States</h4>
+                <div class="flex flex-wrap gap-4">
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Normal</label>
+                    <app-button
+                      variant="primary"
+                      label="Normal"
+                      (click)="handleButtonClick()"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Icon Button Component -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+              <h3 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">Icon Button</h3>
+
+              <div class="flex flex-wrap gap-4">
+                <div>
+                  <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Default</label>
+                  <app-icon-button
+                    [config]="{ icon: '⚙' }"
+                    variant="default"
+                  />
+                </div>
+                <div>
+                  <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Theme</label>
+                  <app-icon-button
+                    [config]="{ icon: '🌙' }"
+                    variant="theme"
+                  />
+                </div>
+                <div>
+                  <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Notifications</label>
+                  <app-icon-button
+                    [config]="{ icon: '🔔' }"
+                    variant="default"
+                  />
+                </div>
+                <div>
+                  <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">User Profile</label>
+                  <app-icon-button
+                    [config]="{ icon: '👤' }"
+                    variant="default"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- Button Group Component -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+              <h3 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">Button Group</h3>
+
+              <div>
+                <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Grouped Buttons</label>
+                <app-button-group>
+                  <app-button
+                    variant="outline"
+                    label="Left"
+                    (click)="handleButtonClick()"
+                  />
+                  <app-button
+                    variant="outline"
+                    label="Center"
+                    (click)="handleButtonClick()"
+                  />
+                  <app-button
+                    variant="outline"
+                    label="Right"
+                    (click)="handleButtonClick()"
+                  />
+                </app-button-group>
+              </div>
+            </div>
+          </section>
+        }
+
+        <!-- Badges & Status Section -->
+        @if (shouldShowCategory('badges')) {
+          <section class="space-y-6">
+            <div class="flex items-center gap-3 mb-6">
+              <span class="text-3xl">🏷️</span>
+              <div>
+                <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100">Badges & Status</h2>
+                <p class="text-slate-600 dark:text-slate-400">Badges, notifications, and status indicators</p>
+              </div>
+            </div>
+
+            <!-- Badge Component -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+              <h3 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">Badge</h3>
+
+              <!-- Colors -->
+              <div class="mb-8">
+                <h4 class="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">Colors (Default Variant)</h4>
+                <div class="flex flex-wrap gap-3">
+                  <app-badge color="red" label="Red" />
+                  <app-badge color="amber" label="Amber" />
+                  <app-badge color="emerald" label="Emerald" />
+                  <app-badge color="blue" label="Blue" />
+                  <app-badge color="slate" label="Slate" />
+                  <app-badge color="indigo" label="Indigo" />
+                  <app-badge color="white" label="White" />
+                </div>
+              </div>
+
+              <!-- Variants -->
+              <div class="mb-8">
+                <h4 class="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">Variants</h4>
+                <div class="flex flex-wrap gap-3">
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Default</label>
+                    <app-badge
+                      variant="default"
+                      color="indigo"
+                      label="Default Badge"
+                    />
+                  </div>
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Pill</label>
+                    <app-badge
+                      variant="pill"
+                      color="indigo"
+                      label="Pill Badge"
+                    />
+                  </div>
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Status</label>
+                    <app-badge
+                      variant="status"
+                      color="emerald"
+                      label="Active"
+                      [animated]="true"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sizes -->
+              <div class="mb-8">
+                <h4 class="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">Sizes</h4>
+                <div class="flex flex-wrap items-center gap-3">
+                  <app-badge
+                    size="sm"
+                    color="indigo"
+                    label="Small"
+                  />
+                  <app-badge
+                    size="md"
+                    color="indigo"
+                    label="Medium"
+                  />
+                  <app-badge
+                    size="lg"
+                    color="indigo"
+                    label="Large"
+                  />
+                </div>
+              </div>
+
+              <!-- With Features -->
+              <div>
+                <h4 class="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">Features</h4>
+                <div class="flex flex-wrap gap-3">
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">With Icon</label>
+                    <app-badge
+                      color="blue"
+                      label="Info"
+                      icon="ℹ"
+                    />
+                  </div>
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Animated Status</label>
+                    <app-badge
+                      color="emerald"
+                      label="Online"
+                      [animated]="true"
+                    />
+                  </div>
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Bold Text</label>
+                    <app-badge
+                      color="red"
+                      label="Important"
+                      [bold]="true"
+                    />
+                  </div>
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Transparent</label>
+                    <app-badge
+                      color="indigo"
+                      label="Transparent"
+                      [transparent]="true"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Notification Card Component -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+              <h3 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">Notification Card</h3>
+
+              <div class="space-y-4 max-w-md">
+                <div>
+                  <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Error</label>
+                  <app-notification-card
+                    type="error"
+                    title="Error Notification"
+                    message="Something went wrong with your request."
+                    time="2 minutes ago"
+                  />
+                </div>
+                <div>
+                  <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Warning</label>
+                  <app-notification-card
+                    type="warning"
+                    title="Warning Notification"
+                    message="Please review your settings."
+                    time="5 minutes ago"
+                  />
+                </div>
+                <div>
+                  <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Info</label>
+                  <app-notification-card
+                    type="info"
+                    title="Info Notification"
+                    message="New features are now available."
+                    time="10 minutes ago"
+                  />
+                </div>
+                <div>
+                  <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Success</label>
+                  <app-notification-card
+                    type="success"
+                    title="Success Notification"
+                    message="Your changes have been saved successfully."
+                    time="15 minutes ago"
+                  />
+                </div>
+              </div>
+            </div>
+          </section>
+        }
+
+        <!-- Data Display Section -->
+        @if (shouldShowCategory('data-display')) {
+          <section class="space-y-6">
+            <div class="flex items-center gap-3 mb-6">
+              <span class="text-3xl">📊</span>
+              <div>
+                <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100">Data Display</h2>
+                <p class="text-slate-600 dark:text-slate-400">Cards, stats, and data visualization</p>
+              </div>
+            </div>
+
+            <!-- Stat Card Component -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+              <h3 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">Stat Card</h3>
+
+              <!-- Variants -->
+              <div class="mb-8">
+                <h4 class="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">Variants</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Default</label>
+                    <app-stat-card
+                      icon="👥"
+                      value="1,234"
+                      label="Total Users"
+                      change="+12.5%"
+                      variant="default"
+                    />
+                  </div>
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Gradient</label>
+                    <app-stat-card
+                      icon="💰"
+                      value="$45,678"
+                      label="Revenue"
+                      change="+23.1%"
+                      variant="gradient"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sizes -->
+              <div class="mb-8">
+                <h4 class="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">Sizes</h4>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Small</label>
+                    <app-stat-card
+                      icon="📈"
+                      value="567"
+                      label="Active Projects"
+                      change="+5.2%"
+                      size="sm"
+                    />
+                  </div>
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Medium</label>
+                    <app-stat-card
+                      icon="📈"
+                      value="567"
+                      label="Active Projects"
+                      change="+5.2%"
+                      size="md"
+                    />
+                  </div>
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Large</label>
+                    <app-stat-card
+                      icon="📈"
+                      value="567"
+                      label="Active Projects"
+                      change="+5.2%"
+                      size="lg"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- With Different Changes -->
+              <div>
+                <h4 class="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">Change Indicators</h4>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Positive Change</label>
+                    <app-stat-card
+                      icon="📈"
+                      value="1,234"
+                      label="Conversions"
+                      change="+15.3%"
+                    />
+                  </div>
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Negative Change</label>
+                    <app-stat-card
+                      icon="📉"
+                      value="89"
+                      label="Bounce Rate"
+                      change="-8.2%"
+                    />
+                  </div>
+                  <div>
+                    <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">No Change</label>
+                    <app-stat-card
+                      icon="⏱"
+                      value="2.5s"
+                      label="Avg. Load Time"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Kanban Card Component -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+              <h3 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">Kanban Card</h3>
+
+              <div class="space-y-4">
+                <div>
+                  <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">High Priority - In Progress</label>
+                  <div class="max-w-sm">
+                    <app-kanban-card [data]="kanbanCardData" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        }
+
+        <!-- Complex Components Section -->
+        @if (shouldShowCategory('complex')) {
+          <section class="space-y-6">
+            <div class="flex items-center gap-3 mb-6">
+              <span class="text-3xl">🎨</span>
+              <div>
+                <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100">Complex Components</h2>
+                <p class="text-slate-600 dark:text-slate-400">Advanced multi-part components</p>
+              </div>
+            </div>
+
+            <!-- Progress Wizard Component -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+              <h3 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">Progress Wizard</h3>
+
+              <div class="space-y-8">
+                <div>
+                  <label class="text-xs text-slate-500 dark:text-slate-400 mb-3 block">Horizontal Orientation</label>
+                  <app-progress-wizard
+                    [steps]="wizardSteps"
+                    orientation="horizontal"
+                  />
+                </div>
+                <div>
+                  <label class="text-xs text-slate-500 dark:text-slate-400 mb-3 block">Vertical Orientation</label>
+                  <app-progress-wizard
+                    [steps]="wizardSteps"
+                    orientation="vertical"
+                  />
+                </div>
+                <div>
+                  <label class="text-xs text-slate-500 dark:text-slate-400 mb-3 block">Compact Mode</label>
+                  <app-progress-wizard
+                    [steps]="wizardSteps"
+                    orientation="horizontal"
+                    [compact]="true"
+                  />
+                </div>
+              </div>
+            </div>
+          </section>
+        }
+
+      </div>
+    </main>
+  </div>
+</div>
