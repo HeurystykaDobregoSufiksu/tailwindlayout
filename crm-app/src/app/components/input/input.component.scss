@@ -146,8 +146,8 @@
     input:-webkit-autofill,
     input:-webkit-autofill:hover,
     input:-webkit-autofill:focus {
-      -webkit-box-shadow: 0 0 0 1000px theme('colors.ui.bg-primary-dark') inset;
-      -webkit-text-fill-color: theme('colors.ui.text-primary-dark');
+      -webkit-box-shadow: 0 0 0 1000px #1e293b inset;
+      -webkit-text-fill-color: #f1f5f9;
     }
   }
 }

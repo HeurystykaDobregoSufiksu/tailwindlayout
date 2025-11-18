@@ -14,7 +14,7 @@ import { NavButton } from './components/nav-button/nav-button.component';
 import { IconButtonConfig } from './components/icon-button/icon-button.component';
 import { PageHeaderComponent } from './components/page-header/page-header.component';
 import { ButtonGroupOption, ButtonGroupComponent } from './components/button-group/button-group.component';
-import { ButtonComponent } from './components/button/button.component';
+import { ButtonComponent, ButtonConfig } from './components/button/button.component';
 import { BadgeComponent } from "./components/badge/badge.component";
 import { EmptyStateInfo } from "./components/empty-state-info/empty-state-info";
 import { KampaniaCardHeader } from "./components/kampania-card-header/kampania-card-header";
@@ -23,7 +23,7 @@ import { DropdownOptionComponent } from "./components/dropdown-option/dropdown-o
 import { DashboardEventsComponent, Meeting } from "./components/dashboard-events/dashboard-events.component";
 import { CalendarDay } from "./components/calendar-widget/calendar-widget.component";
 import {ModalButton, StatusModalComponent} from './components/status-modal/status-modal.component';
-import { InputComponent, DropdownOption, ButtonConfig } from './components/input/input.component';
+import { InputComponent, DropdownOption, ButtonConfig as InputButtonConfig } from './components/input/input.component';
 
 @Component({
   selector: 'app-root',
@@ -417,7 +417,7 @@ export class App implements OnInit {
   ]);
 
   // Send button config
-  sendButton = signal<ButtonConfig>({
+  sendButton = signal<InputButtonConfig>({
     icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>',
     ariaLabel: 'Send message'
   });
