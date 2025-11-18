@@ -1,0 +1,48 @@
+@if (isOpen()) {
+  <div
+    class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fade-in"
+    (click)="onBackdropClick($event)"
+  >
+    <div [class]="modalClasses()" class="w-full" (click)="$event.stopPropagation()">
+      <!-- Close button -->
+      @if (showCloseButton()) {
+        <button
+          type="button"
+          class="absolute top-4 right-4 text-ui-text-muted dark:text-ui-text-muted-dark hover:text-ui-text-primary dark:hover:text-ui-text-primary-dark transition-colors-base"
+          (click)="closeDialog()"
+          aria-label="Close dialog"
+        >
+          <svg class="size-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      }
+
+      <div class="p-6">
+        <!-- Status icon -->
+        <div [class]="iconContainerClasses()">
+          @if (customIcon()) {
+            <div class="status-icon-svg" [innerHTML]="safeCustomIcon()"></div>
+          } @else {
+            <div [innerHTML]="safeStatusIcon()"></div>
+          }
+        </div>
+
+        <!-- Title -->
+        @if (title()) {
+          <h2 [class]="titleClasses()" class="mt-4">{{ title() }}</h2>
+        }
+
+        <!-- Message -->
+        @if (message()) {
+          <p [class]="messageClasses()" class="mt-2">{{ message() }}</p>
+        }
+
+        <!-- Action buttons (content projection) -->
+        <div class="mt-6">
+          <ng-content></ng-content>
+        </div>
+      </div>
+    </div>
+  </div>
+}
