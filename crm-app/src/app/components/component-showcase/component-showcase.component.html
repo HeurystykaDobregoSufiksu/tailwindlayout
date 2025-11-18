@@ -610,28 +610,28 @@
                 <div>
                   <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Default</label>
                   <app-icon-button
-                    [config]="{ icon: '⚙' }"
+                    [config]="{ id: 'settings', icon: '⚙', ariaLabel: 'Settings' }"
                     variant="default"
                   />
                 </div>
                 <div>
                   <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Theme</label>
                   <app-icon-button
-                    [config]="{ icon: '🌙' }"
+                    [config]="{ id: 'theme', icon: '🌙', ariaLabel: 'Toggle theme' }"
                     variant="theme"
                   />
                 </div>
                 <div>
                   <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">Notifications</label>
                   <app-icon-button
-                    [config]="{ icon: '🔔' }"
+                    [config]="{ id: 'notifications', icon: '🔔', ariaLabel: 'Notifications' }"
                     variant="default"
                   />
                 </div>
                 <div>
                   <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">User Profile</label>
                   <app-icon-button
-                    [config]="{ icon: '👤' }"
+                    [config]="{ id: 'user-profile', icon: '👤', ariaLabel: 'User profile' }"
                     variant="default"
                   />
                 </div>
@@ -956,7 +956,7 @@
                 <div>
                   <label class="text-xs text-slate-500 dark:text-slate-400 mb-2 block">High Priority - In Progress</label>
                   <div class="max-w-sm">
-                    <app-kanban-card [data]="kanbanCardData" />
+                    <app-kanban-card [task]="kanbanCardData" />
                   </div>
                 </div>
               </div>

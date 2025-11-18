@@ -136,11 +136,11 @@ export class ComponentShowcaseComponent {
 
   // Sample data for complex components
   wizardSteps = [
-    { label: 'Personal Info', icon: '👤', status: 'completed' as const },
-    { label: 'Contact Details', icon: '📧', status: 'completed' as const },
-    { label: 'Preferences', icon: '⚙️', status: 'current' as const },
-    { label: 'Review', icon: '✓', status: 'upcoming' as const },
-    { label: 'Complete', icon: '🎉', status: 'upcoming' as const }
+    { id: 'personal-info', label: 'Personal Info', icon: '👤', status: 'completed' as const },
+    { id: 'contact-details', label: 'Contact Details', icon: '📧', status: 'completed' as const },
+    { id: 'preferences', label: 'Preferences', icon: '⚙️', status: 'current' as const },
+    { id: 'review', label: 'Review', icon: '✓', status: 'upcoming' as const },
+    { id: 'complete', label: 'Complete', icon: '🎉', status: 'upcoming' as const }
   ];
 
   kanbanCardData = {
@@ -148,14 +148,14 @@ export class ComponentShowcaseComponent {
     title: 'Implement new feature',
     description: 'Add dark mode support to the application',
     assignee: {
+      initials: 'JD',
       name: 'John Doe',
-      avatar: 'https://i.pravatar.cc/150?img=1'
+      color: 'linear-gradient(to bottom right, #3b82f6, #2563eb)'
     },
     priority: 'high' as const,
     status: 'in-progress' as const,
-    dueDate: new Date('2025-12-31'),
-    tags: ['Feature', 'UI'],
-    timeSpent: '4h 30m'
+    dueDate: 'Dec 31',
+    progressTime: '4h 30m'
   };
 
   // Set active category
