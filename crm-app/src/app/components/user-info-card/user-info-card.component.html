@@ -1,31 +1,31 @@
-<div class="bg-white dark:bg-slate-800 rounded-2xl  shadow-sm border border-slate-100 dark:border-slate-700 mb-6">
+<div class="bg-card rounded-card-large shadow-card border border-default mb-6">
   <div class="flex flex-col items-center">
-   <div class=" w-full rounded-b-none border-b-none bg-gradient-to-br  from-indigo-100 to-purple-100 dark:from-slate-900/40 dark:border-none dark:to-slate-900/30 rounded-2xl p-5 mb-3 border border-indigo-100 ">
+   <div class=" w-full rounded-b-none border-b-none bg-gradient-to-br  from-indigo-100 to-purple-100 dark:from-slate-900/40 dark:border-none dark:to-slate-900/30 rounded-card-large p-5 mb-3 border border-indigo-100 ">
               <div class="flex items-center justify-center">
-                <div class="w-20 h-20 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-2xl flex items-center justify-center text-2xl font-bold text-white shadow-lg  ring-4 ring-indigo-100">
+                <div class="size-avatar-xl bg-gradient-to-br from-indigo-600 to-purple-600 rounded-card-large flex items-center justify-center text-2xl font-bold text-white shadow-lg  ring-4 ring-indigo-100">
                   {{ userInfo.initials }}
                 </div>
                 <div class="flex flex-col ml-4">
-<h3 class="text-lg font-bold text-slate-800 dark:text-slate-100">{{ userInfo.name }}</h3>
+<h3 class="text-lg font-bold text-primary">{{ userInfo.name }}</h3>
                 <p class="text-sm text-indigo-600 dark:text-indigo-300 font-medium">{{ userInfo.role }}</p>
-                <p class="text-xs text-slate-500 dark:text-slate-200">{{ userInfo.location }}</p>
+                <p class="text-xs text-muted">{{ userInfo.location }}</p>
                 </div>
-                
+
               </div>
             </div>
     <div class="grid grid-cols-3 gap-4 w-full p-6">
       <div class="text-center">
-        <p class="text-2xl font-bold text-slate-800 dark:text-slate-100">{{ userInfo.stats.clients }}</p>
-        <p class="text-xs text-slate-500 dark:text-slate-400">Klienci</p>
+        <p class="text-2xl font-bold text-primary">{{ userInfo.stats.clients }}</p>
+        <p class="text-xs text-muted">Klienci</p>
       </div>
-      
-      <div class="text-center border-x border-slate-100 dark:border-slate-700">
-        <p class="text-2xl font-bold text-slate-800 dark:text-slate-100">{{ userInfo.stats.tasks }}</p>
-        <p class="text-xs text-slate-500 dark:text-slate-400">Zadania</p>
+
+      <div class="text-center border-x border-default">
+        <p class="text-2xl font-bold text-primary">{{ userInfo.stats.tasks }}</p>
+        <p class="text-xs text-muted">Zadania</p>
       </div>
       <div class="text-center">
         <p class="text-2xl font-bold text-emerald-600 dark:text-emerald-400">{{ userInfo.stats.performance }}%</p>
-        <p class="text-xs text-slate-500 dark:text-slate-400">Wynik</p>
+        <p class="text-xs text-muted">Wynik</p>
       </div>
     </div>
   </div>
