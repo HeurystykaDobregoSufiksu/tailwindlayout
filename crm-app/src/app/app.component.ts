@@ -21,6 +21,7 @@ import { DropdownButtonComponent } from "./components/dropdown-button/dropdown-b
 import { DropdownOptionComponent } from "./components/dropdown-option/dropdown-option.component";
 import { DashboardEventsComponent, Meeting } from "./components/dashboard-events/dashboard-events.component";
 import { CalendarDay } from "./components/calendar-widget/calendar-widget.component";
+import {ModalButton, StatusModalComponent} from './components/status-modal/status-modal.component';
 
 @Component({
   selector: 'app-root',
@@ -39,10 +40,9 @@ import { CalendarDay } from "./components/calendar-widget/calendar-widget.compon
     BadgeComponent,
     EmptyStateInfo,
     KampaniaCardHeader,
-    DropdownButtonComponent,
-    DropdownOptionComponent,
-    DashboardEventsComponent
-],
+    DashboardEventsComponent,
+    StatusModalComponent
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -65,6 +65,25 @@ this.operatorOptions.update(options =>
   randomArr = signal<string[]>(['dsa','sad','zxc','xzcv','dsa','sad','zxc','xzcv']);
   btnConfig = signal<IconButtonConfig[]>([]);
   // Navigation buttons
+  isModalOpen = signal(false);
+
+  modalButtons: ModalButton[] = [
+    {
+      id: 'confirm',
+      label: 'Confirm',
+      variant: 'primary',
+      action: () => {
+        this.performAction();
+        this.isModalOpen.set(false);
+      }
+    },
+    {
+      id: 'cancel',
+      label: 'Cancel',
+      variant: 'outline',
+      action: () => this.isModalOpen.set(false)
+    }
+  ];
   navButtons = signal<NavButton[]>([
     {
       id: 'user',
@@ -118,7 +137,7 @@ this.operatorOptions.update(options =>
 
   // Page header config
   pageTitle = signal('Tablica Zadań');
-  
+
   pageSubtitle = signal('Zarządzaj swoimi zadaniami i projektami');
 
   // View options
@@ -140,7 +159,7 @@ this.operatorOptions.update(options =>
     variant: 'primary',
     size: 'md'
   }));
- 
+
   // User data
   userInfo = signal<UserInfo>({
     initials: 'JK',
@@ -162,7 +181,7 @@ this.operatorOptions.update(options =>
       title: 'Pilny kontakt',
       message: 'Klient wymaga kontaktu',
       time: '5 min temu',
-      icon: '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"> <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" /> </svg>'
+      icon: '<svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"> <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" /> </svg>'
     },
     {
       id: '2',
@@ -170,7 +189,7 @@ this.operatorOptions.update(options =>
       title: 'Nowa kampania',
       message: 'Rozpoczyna się jutro',
       time: '1 godz. temu',
-      icon: '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"> <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" /> </svg>'
+      icon: '<svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"> <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" /> </svg>'
     }
   ]);
 
@@ -492,5 +511,9 @@ this.operatorOptions.update(options =>
 
   onDropdownOptionClick(optionId: string) {
     console.log('Dropdown option clicked:', optionId);
+  }
+
+  private performAction() {
+
   }
 }

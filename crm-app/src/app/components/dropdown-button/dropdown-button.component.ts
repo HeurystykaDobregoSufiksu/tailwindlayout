@@ -35,7 +35,7 @@ export class DropdownButtonComponent {
   }
 
   get buttonClasses(): string {
-    const baseClasses = 'inline-flex items-center gap-2 font-medium transition-colors-base rounded-button focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-2';
+    const baseClasses = 'inline-flex items-center gap-2 font-medium transition-colors-base rounded-button';
 
     const sizeClasses = {
       sm: 'px-3 py-1.5 text-sm',
@@ -44,8 +44,8 @@ export class DropdownButtonComponent {
     };
 
     const variantClasses = {
-      primary: 'bg-brand-gradient text-white hover:bg-brand-gradient shadow-button hover:shadow-button-hover',
-      secondary: 'border bg-white border-slate-200 dark:bg-state-900 dark:border-state-600 text-primary hover:bg-slate-50 dark:hover:bg-slate-800 shadow-button',
+      primary: 'focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-2 bg-brand-gradient text-white hover:bg-brand-gradient shadow-button hover:shadow-button-hover',
+      secondary: 'focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-2 border bg-white border-slate-200 dark:bg-state-900 dark:border-state-600 text-primary hover:bg-slate-50 dark:hover:bg-slate-800 shadow-button',
       text: 'text-primary hover:font-semibold'
     };
 

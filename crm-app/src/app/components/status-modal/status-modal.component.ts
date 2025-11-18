@@ -1,6 +1,6 @@
 import { Component, input, output, effect, signal, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { trigger, state, style, transition, animate } from '@angular/animations';
+
 
 export type ModalStatus = 'success' | 'error' | 'warning' | 'info';
 export type ModalSize = 'sm' | 'md' | 'lg';
@@ -19,26 +19,7 @@ export interface ModalButton {
   imports: [CommonModule],
   templateUrl: './status-modal.component.html',
   styleUrl: './status-modal.component.scss',
-  animations: [
-    trigger('modalAnimation', [
-      state('void', style({
-        opacity: 0,
-        transform: 'scale(0.95) translateY(-10px)'
-      })),
-      state('*', style({
-        opacity: 1,
-        transform: 'scale(1) translateY(0)'
-      })),
-      transition('void => *', animate('200ms cubic-bezier(0.4, 0, 0.2, 1)')),
-      transition('* => void', animate('150ms cubic-bezier(0.4, 0, 1, 1)'))
-    ]),
-    trigger('backdropAnimation', [
-      state('void', style({ opacity: 0 })),
-      state('*', style({ opacity: 1 })),
-      transition('void => *', animate('200ms ease-out')),
-      transition('* => void', animate('150ms ease-in'))
-    ])
-  ]
+
 })
 export class StatusModalComponent {
   // Inputs
@@ -222,19 +203,7 @@ export class StatusModalComponent {
     }
   }
 
-  /**
-   * Handle escape key press
-   */
-  @HostListener('document:keydown.escape', ['$event'])
-  handleEscapeKey(event: KeyboardEvent): void {
-    if (this.isOpen() && this.closeOnEscape()) {
-      this.closeModal();
-    }
-  }
 
-  /**
-   * Prevent body scroll when modal is open
-   */
   @HostListener('window:load')
   ngOnInit(): void {
     effect(() => {

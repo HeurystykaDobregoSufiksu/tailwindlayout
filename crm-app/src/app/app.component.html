@@ -148,7 +148,7 @@
             </h4>
             <div class="flex space-x-2">
               @for (action of quickActions(); track action.id) {
-              <app-quick-action-button [action]="action" (actionClick)="onQuickActionClick($event)">
+              <app-quick-action-button [action]="action" (actionClick)="isModalOpen.set(true)">
               </app-quick-action-button>
               }
             </div>
@@ -176,130 +176,25 @@
           </div>
 
           <!-- Dropdown Examples Section -->
-          <div class="bg-white dark:bg-slate-800/50 rounded-2xl  shadow-sm border border-slate-100 dark:border-slate-700 p-6 mb-8">
-            <h3 class="text-lg font-semibold mb-4 text-slate-800 dark:text-slate-200">
-              Dropdown Button Examples
-            </h3>
-
-            <div class="flex flex-wrap gap-4">
-              <!-- Primary Dropdown with Icon -->
-              <app-dropdown-button
-                [label]="'Actions'"
-                [icon]="actionsIcon"
-                [variant]="'primary'"
-                [size]="'md'"
-                [position]="'right'"
-              >
-                <app-dropdown-option
-                  [label]="'Edit'"
-                  [icon]="editIcon"
-                  [id]="'edit'"
-                  (optionClick)="onDropdownOptionClick($event)"
-                ></app-dropdown-option>
-                <app-dropdown-option
-                  [label]="'Share'"
-                  [icon]="shareIcon"
-                  [id]="'share'"
-                  (optionClick)="onDropdownOptionClick($event)"
-                ></app-dropdown-option>
-                <app-dropdown-option
-                  [label]="'Download'"
-                  [icon]="downloadIcon"
-                  [id]="'download'"
-                  (optionClick)="onDropdownOptionClick($event)"
-                ></app-dropdown-option>
-                <app-dropdown-option
-                  [label]="'Delete'"
-                  [icon]="deleteIcon"
-                  [id]="'delete'"
-                  (optionClick)="onDropdownOptionClick($event)"
-                ></app-dropdown-option>
-              </app-dropdown-button>
-
-              <!-- Secondary Dropdown without Main Icon -->
-              <app-dropdown-button
-                [label]="'Settings'"
-                [variant]="'secondary'"
-                [size]="'md'"
-                [position]="'right'"
-              >
-                <app-dropdown-option
-                  [label]="'Account Settings'"
-                  [icon]="settingsIcon"
-                  [id]="'account'"
-                  (optionClick)="onDropdownOptionClick($event)"
-                ></app-dropdown-option>
-                <app-dropdown-option
-                  [label]="'Privacy'"
-                  [id]="'privacy'"
-                  (optionClick)="onDropdownOptionClick($event)"
-                ></app-dropdown-option>
-                <app-dropdown-option
-                  [label]="'Notifications'"
-                  [id]="'notifications'"
-                  (optionClick)="onDropdownOptionClick($event)"
-                ></app-dropdown-option>
-              </app-dropdown-button>
-
-              <!-- Outline Dropdown Small Size -->
-              <app-dropdown-button
-                [label]="'More'"
-                [variant]="'text'"
-                [size]="'sm'"
-                [position]="'right'"
-              >
-                <app-dropdown-option
-                  [label]="'Option 1'"
-                  [id]="'option1'"
-                  (optionClick)="onDropdownOptionClick($event)"
-                ></app-dropdown-option>
-                <app-dropdown-option
-                  [label]="'Option 2'"
-                  [id]="'option2'"
-                  (optionClick)="onDropdownOptionClick($event)"
-                ></app-dropdown-option>
-                <app-dropdown-option
-                  [label]="'Disabled Option'"
-                  [id]="'disabled'"
-                  [disabled]="true"
-                  (optionClick)="onDropdownOptionClick($event)"
-                ></app-dropdown-option>
-              </app-dropdown-button>
-
-              <!-- Large Primary Dropdown -->
-              <app-dropdown-button
-                [label]="'Large Dropdown'"
-                [icon]="settingsIcon"
-                [variant]="'primary'"
-                [size]="'lg'"
-                [position]="'left'"
-              >
-                <app-dropdown-option
-                  [label]="'View Details'"
-                  [id]="'details'"
-                  (optionClick)="onDropdownOptionClick($event)"
-                ></app-dropdown-option>
-                <app-dropdown-option
-                  [label]="'Export Data'"
-                  [icon]="downloadIcon"
-                  [id]="'export'"
-                  (optionClick)="onDropdownOptionClick($event)"
-                ></app-dropdown-option>
-              </app-dropdown-button>
-            </div>
-          </div>
-
-          <!-- Dashboard Events Widget -->
-          <div class="mb-8">
+          <div class="mb-8 hidden">
             <app-dashboard-events
               [meetings]="upcomingMeetings()"
               [currentMonthName]="currentMonth()"
               [calendarDays]="calendarDaysData()"
             />
           </div>
+          <app-status-modal
+            [isOpen]="isModalOpen()"
+            status="success"
+            title="Payment Successful!"
+            description="Your payment has been processed successfully."
+            [buttons]="modalButtons"
+            (modalClose)="isModalOpen.set(false)"
+          />
+
 
           <div class="flex flex-col  lg:flex-row  mt-5 gap-4">
-            
+
             <div
               class=" h-fit w-full lg:w-1/2 sm:block bg-white dark:bg-slate-800/50 rounded-2xl overflow-hidden shadow-sm border border-slate-100 dark:border-slate-700"
             >
