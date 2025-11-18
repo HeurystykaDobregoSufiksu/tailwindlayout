@@ -1,0 +1,92 @@
+<!-- Modal Backdrop -->
+@if (isOpen()) {
+  <div
+    class="modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 dark:bg-slate-950/70 backdrop-blur-sm"
+    [@backdropAnimation]
+    (click)="onBackdropClick($event)"
+  >
+    <!-- Modal Container -->
+    <div
+      [ngClass]="getModalClasses()"
+      [@modalAnimation]
+      class="w-full overflow-hidden"
+      role="dialog"
+      aria-modal="true"
+      [attr.aria-labelledby]="'modal-title'"
+      [attr.aria-describedby]="description() ? 'modal-description' : null"
+    >
+      <!-- Close Button (Top Right) -->
+      @if (showCloseButton()) {
+        <button
+          type="button"
+          class="absolute top-4 right-4 text-ui-text-muted dark:text-ui-text-muted-dark hover:text-ui-text-primary dark:hover:text-ui-text-primary-dark transition-colors duration-200 rounded-lg p-1 hover:bg-ui-bg-secondary dark:hover:bg-ui-bg-secondary-dark"
+          (click)="closeModal()"
+          aria-label="Close modal"
+        >
+          <svg class="size-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      }
+
+      <!-- Modal Content -->
+      <div class="p-6 sm:p-8">
+        <!-- Animated Status Icon -->
+        <div
+          [ngClass]="getIconContainerClasses()"
+          [class.animate-icon]="animateIcon()"
+          [class.icon-success]="status() === 'success'"
+          [class.icon-error]="status() === 'error'"
+          [class.icon-warning]="status() === 'warning'"
+          [class.icon-info]="status() === 'info'"
+        >
+          <div [innerHTML]="getStatusIcon()" class="flex items-center justify-center"></div>
+        </div>
+
+        <!-- Title -->
+        <h2
+          id="modal-title"
+          [ngClass]="getTitleClasses()"
+          class="mt-6 mb-3"
+        >
+          {{ title() }}
+        </h2>
+
+        <!-- Description -->
+        @if (description()) {
+          <p
+            id="modal-description"
+            [ngClass]="getDescriptionClasses()"
+            class="mt-2"
+          >
+            {{ description() }}
+          </p>
+        }
+
+        <!-- Action Buttons -->
+        @if (buttons().length > 0) {
+          <div
+            class="mt-8 flex flex-col sm:flex-row gap-3 justify-center"
+            [class.flex-col]="buttons().length > 2"
+            [class.sm:flex-row]="buttons().length <= 2"
+          >
+            @for (button of buttons(); track button.id) {
+              <button
+                type="button"
+                [ngClass]="getButtonClasses(button)"
+                [disabled]="button.disabled"
+                (click)="onButtonClick(button)"
+                class="min-w-[120px]"
+              >
+                @if (button.icon) {
+                  <div [innerHTML]="button.icon" class="size-5"></div>
+                }
+                <span>{{ button.label }}</span>
+              </button>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+}
