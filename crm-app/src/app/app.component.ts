@@ -19,6 +19,8 @@ import { EmptyStateInfo } from "./components/empty-state-info/empty-state-info";
 import { KampaniaCardHeader } from "./components/kampania-card-header/kampania-card-header";
 import { DropdownButtonComponent } from "./components/dropdown-button/dropdown-button.component";
 import { DropdownOptionComponent } from "./components/dropdown-option/dropdown-option.component";
+import { DashboardEventsComponent, Meeting } from "./components/dashboard-events/dashboard-events.component";
+import { CalendarDay } from "./components/calendar-widget/calendar-widget.component";
 
 @Component({
   selector: 'app-root',
@@ -38,7 +40,8 @@ import { DropdownOptionComponent } from "./components/dropdown-option/dropdown-o
     EmptyStateInfo,
     KampaniaCardHeader,
     DropdownButtonComponent,
-    DropdownOptionComponent
+    DropdownOptionComponent,
+    DashboardEventsComponent
 ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
@@ -330,6 +333,82 @@ this.operatorOptions.update(options =>
   downloadIcon = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>';
   settingsIcon = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>';
   actionsIcon = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>';
+
+  // Dashboard Events data
+  upcomingMeetings = signal<Meeting[]>([
+    {
+      id: '1',
+      avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop',
+      personName: 'Anna Kowalska',
+      dateTimeLabel: 'Nov 18, 2:00 PM',
+      locationLabel: 'Conference Room A'
+    },
+    {
+      id: '2',
+      avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop',
+      personName: 'Piotr Wiśniewski',
+      dateTimeLabel: 'Nov 18, 4:30 PM',
+      locationLabel: 'Virtual Meeting'
+    },
+    {
+      id: '3',
+      avatarUrl: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop',
+      personName: 'Maria Nowak',
+      dateTimeLabel: 'Nov 19, 10:00 AM',
+      locationLabel: 'Main Office'
+    },
+    {
+      id: '4',
+      avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop',
+      personName: 'Jan Kowalczyk',
+      dateTimeLabel: 'Nov 19, 3:00 PM',
+      locationLabel: 'Client Site'
+    }
+  ]);
+
+  currentMonth = signal<string>('November');
+
+  calendarDaysData = signal<CalendarDay[]>([
+    // Previous month (muted)
+    { day: 29, state: 'muted' },
+    { day: 30, state: 'muted' },
+    { day: 31, state: 'muted' },
+    // Current month
+    { day: 1, state: 'standard' },
+    { day: 2, state: 'standard' },
+    { day: 3, state: 'standard' },
+    { day: 4, state: 'standard' },
+    { day: 5, state: 'standard' },
+    { day: 6, state: 'standard' },
+    { day: 7, state: 'standard' },
+    { day: 8, state: 'standard' },
+    { day: 9, state: 'standard' },
+    { day: 10, state: 'standard' },
+    { day: 11, state: 'standard' },
+    { day: 12, state: 'standard' },
+    { day: 13, state: 'standard' },
+    { day: 14, state: 'standard' },
+    { day: 15, state: 'standard' },
+    { day: 16, state: 'standard' },
+    { day: 17, state: 'standard' },
+    { day: 18, state: 'selected' },
+    { day: 19, state: 'standard' },
+    { day: 20, state: 'standard' },
+    { day: 21, state: 'standard' },
+    { day: 22, state: 'standard' },
+    { day: 23, state: 'standard' },
+    { day: 24, state: 'standard' },
+    { day: 25, state: 'standard' },
+    { day: 26, state: 'standard' },
+    { day: 27, state: 'standard' },
+    { day: 28, state: 'standard' },
+    { day: 29, state: 'standard' },
+    { day: 30, state: 'standard' },
+    // Next month (muted)
+    { day: 1, state: 'muted' },
+    { day: 2, state: 'muted' },
+    { day: 3, state: 'muted' },
+  ]);
 
   ngOnInit() {
     // Check for saved theme preference or default to light mode

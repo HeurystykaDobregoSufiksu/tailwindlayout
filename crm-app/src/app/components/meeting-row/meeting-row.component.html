@@ -1,0 +1,67 @@
+<div class="flex items-center gap-4 py-3 border-b border-default">
+  <!-- Avatar -->
+  <img
+    [src]="avatarUrl()"
+    [alt]="personName()"
+    class="w-12 h-12 rounded-full object-cover flex-shrink-0"
+  />
+
+  <!-- Text Content -->
+  <div class="flex-1 min-w-0">
+    <!-- Person Name -->
+    <h3 class="text-base font-medium text-primary truncate">
+      {{ personName() }}
+    </h3>
+
+    <!-- Metadata Row -->
+    <div class="flex items-center gap-2 mt-1 text-sm text-secondary">
+      <!-- Calendar Icon -->
+      <svg
+        class="size-icon-xs flex-shrink-0"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <g [innerHTML]="safeCalendarIcon"></g>
+      </svg>
+
+      <!-- Date/Time -->
+      <span class="truncate">{{ dateTimeLabel() }}</span>
+
+      <!-- Separator -->
+      <span class="text-gray-400 dark:text-gray-600">|</span>
+
+      <!-- Map Pin Icon -->
+      <svg
+        class="size-icon-xs flex-shrink-0"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <g [innerHTML]="safeMapPinIcon"></g>
+      </svg>
+
+      <!-- Location -->
+      <span class="truncate">{{ locationLabel() }}</span>
+    </div>
+  </div>
+
+  <!-- Actions Menu -->
+  <button
+    type="button"
+    class="flex-shrink-0 p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors-base text-secondary"
+    aria-label="Meeting options"
+  >
+    <svg
+      class="size-icon-sm rotate-90"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g [innerHTML]="safeEllipsisIcon"></g>
+    </svg>
+  </button>
+</div>
