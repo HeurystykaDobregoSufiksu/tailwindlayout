@@ -6,6 +6,97 @@ module.exports = {
   ],
   theme: {
     extend: {
+      // Semantic color system for consistent theming
+      colors: {
+        // Brand colors
+        brand: {
+          primary: '#6366f1',      // indigo-500
+          'primary-dark': '#4f46e5', // indigo-600
+          'primary-darker': '#4338ca', // indigo-700
+          secondary: '#a855f7',    // purple-500
+          'secondary-dark': '#9333ea', // purple-600
+        },
+
+        // Semantic UI colors with dark mode support
+        ui: {
+          // Primary text
+          'text-primary': '#0f172a',           // slate-900
+          'text-primary-dark': '#f1f5f9',      // slate-100
+
+          // Secondary text
+          'text-secondary': '#475569',         // slate-600
+          'text-secondary-dark': '#cbd5e1',    // slate-300
+
+          // Tertiary/muted text
+          'text-muted': '#64748b',             // slate-500
+          'text-muted-dark': '#94a3b8',        // slate-400
+
+          // Background colors
+          'bg-primary': '#ffffff',             // white
+          'bg-primary-dark': '#1e293b',        // slate-800
+
+          'bg-secondary': '#f8fafc',           // slate-50
+          'bg-secondary-dark': '#0f172a',      // slate-900
+
+          'bg-tertiary': '#f1f5f9',            // slate-100
+          'bg-tertiary-dark': '#334155',       // slate-700
+
+          // Border colors
+          'border': '#e2e8f0',                 // slate-200
+          'border-dark': '#334155',            // slate-700
+
+          'border-strong': '#cbd5e1',          // slate-300
+          'border-strong-dark': '#475569',     // slate-600
+
+          // Interactive states
+          'hover': '#f8fafc',                  // slate-50
+          'hover-dark': '#334155',             // slate-700
+
+          'active': '#e0e7ff',                 // indigo-100
+          'active-dark': '#312e81',            // indigo-900/30 equivalent
+        },
+
+        // Status colors with dark mode variants
+        status: {
+          'success': '#10b981',        // emerald-500
+          'success-light': '#d1fae5',  // emerald-100
+          'success-dark': '#064e3b',   // emerald-900
+
+          'warning': '#f59e0b',        // amber-500
+          'warning-light': '#fef3c7',  // amber-100
+          'warning-dark': '#78350f',   // amber-900
+
+          'error': '#ef4444',          // red-500
+          'error-light': '#fee2e2',    // red-100
+          'error-dark': '#7f1d1d',     // red-900
+
+          'info': '#3b82f6',           // blue-500
+          'info-light': '#dbeafe',     // blue-100
+          'info-dark': '#1e3a8a',      // blue-900
+        },
+
+        // Keep existing custom colors
+        violet: {
+          50: '#f5f3ff',
+          100: '#ede9fe',
+          500: '#8b5cf6',
+          600: '#7c3aed',
+        },
+        purple: {
+          50: '#faf5ff',
+          500: '#a855f7',
+          600: '#9333ea',
+        },
+        indigo: {
+          100: '#e0e7ff',
+        },
+        pink: {
+          100: '#fce7f3',
+          500: '#ec4899',
+          600: '#db2777',
+        },
+      },
+
       // Custom animations
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',
@@ -86,27 +177,85 @@ module.exports = {
         95: '0.95',
       },
 
-      // Border radius
+      // Border radius - Semantic naming for consistency
       borderRadius: {
-        '4xl': '2rem',
+        'sm': '0.25rem',     // 4px - small elements
+        'DEFAULT': '0.375rem', // 6px - default
+        'md': '0.5rem',      // 8px - cards, buttons (most common)
+        'lg': '0.75rem',     // 12px - cards, containers (very common)
+        'xl': '1rem',        // 16px - large cards
+        '2xl': '1.5rem',     // 24px - hero elements
+        '3xl': '1.75rem',    // 28px - extra large
+        '4xl': '2rem',       // 32px - maximum
+        'full': '9999px',    // full circle/pill
+
+        // Component-specific aliases
+        'button': '0.75rem',    // lg - standard button radius
+        'card': '0.75rem',      // lg - standard card radius
+        'card-large': '1rem',   // xl - large card radius
+        'input': '0.5rem',      // md - input field radius
+        'badge': '0.375rem',    // default - badge radius
+        'avatar': '9999px',     // full - avatar radius
       },
 
-      // Box shadows
+      // Box shadows - Elevation system
       boxShadow: {
+        'none': 'none',
+        'xs': '0 1px 2px 0 rgb(0 0 0 / 0.05)',
+        'sm': '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
+        'DEFAULT': '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
+        'md': '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+        'lg': '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
+        'xl': '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
+        '2xl': '0 25px 50px -12px rgb(0 0 0 / 0.25)',
+        'inner': 'inset 0 2px 4px 0 rgb(0 0 0 / 0.05)',
+
+        // Custom shadows
         'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.15)',
+        'card': '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)', // sm
+        'card-hover': '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)', // md
+        'button': '0 1px 2px 0 rgb(0 0 0 / 0.05)', // xs
+        'button-hover': '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)', // md
       },
 
-      // Custom widths
+      // Custom widths (including icon sizes)
       width: {
         72: '18rem',
         80: '20rem',
       },
 
-      // Custom spacing
+      // Custom spacing - Common values from analysis
       spacing: {
-        '0.5': '0.125rem',
-        '1.5': '0.375rem',
-        '2.5': '0.625rem',
+        '0.5': '0.125rem',   // 2px
+        '1.5': '0.375rem',   // 6px
+        '2.5': '0.625rem',   // 10px
+        '3.5': '0.875rem',   // 14px
+        '4.5': '1.125rem',   // 18px
+        '5.5': '1.375rem',   // 22px
+      },
+
+      // Size utilities for consistent icon and element sizing
+      size: {
+        '3': '0.75rem',      // 12px - tiny icons
+        '4': '1rem',         // 16px - small icons (w-4 h-4)
+        '5': '1.25rem',      // 20px - standard icons (w-5 h-5) - MOST COMMON
+        '6': '1.5rem',       // 24px - medium icons
+        '7': '1.75rem',      // 28px - avatar/icon container (w-7 h-7)
+        '8': '2rem',         // 32px - large icons
+        '10': '2.5rem',      // 40px - avatar/icon container (w-10 h-10)
+        '12': '3rem',        // 48px - extra large icons
+
+        // Semantic aliases
+        'icon-xs': '1rem',   // 16px
+        'icon-sm': '1.25rem', // 20px - standard
+        'icon-md': '1.5rem',  // 24px
+        'icon-lg': '2rem',    // 32px
+        'icon-xl': '2.5rem',  // 40px
+
+        'avatar-sm': '1.75rem',  // 28px (w-7 h-7)
+        'avatar-md': '2.5rem',   // 40px (w-10 h-10)
+        'avatar-lg': '3rem',     // 48px
+        'avatar-xl': '4rem',     // 64px
       },
 
       // Typography - Font sizes based on modular scale (1.25 - Major Third)
@@ -193,6 +342,89 @@ module.exports = {
     },
   },
   plugins: [
+    // Plugin for semantic color utilities
+    function({ addUtilities }) {
+      const semanticColors = {
+        // Text color utilities
+        '.text-primary': {
+          '@apply text-slate-900 dark:text-slate-100': {},
+        },
+        '.text-secondary': {
+          '@apply text-slate-600 dark:text-slate-300': {},
+        },
+        '.text-muted': {
+          '@apply text-slate-500 dark:text-slate-400': {},
+        },
+
+        // Background utilities
+        '.bg-card': {
+          '@apply bg-white dark:bg-slate-800': {},
+        },
+        '.bg-card-secondary': {
+          '@apply bg-slate-50 dark:bg-slate-700': {},
+        },
+
+        // Border utilities
+        '.border-default': {
+          '@apply border-slate-200 dark:border-slate-700': {},
+        },
+        '.border-strong': {
+          '@apply border-slate-300 dark:border-slate-600': {},
+        },
+
+        // Interactive state utilities
+        '.hover-bg': {
+          '@apply hover:bg-slate-50 dark:hover:bg-slate-700': {},
+        },
+        '.hover-bg-brand': {
+          '@apply hover:bg-indigo-50 dark:hover:bg-indigo-900/30': {},
+        },
+
+        // Status backgrounds
+        '.bg-success': {
+          '@apply bg-emerald-50 dark:bg-emerald-900/30': {},
+        },
+        '.bg-warning': {
+          '@apply bg-amber-50 dark:bg-amber-900/30': {},
+        },
+        '.bg-error': {
+          '@apply bg-red-50 dark:bg-red-900/30': {},
+        },
+        '.bg-info': {
+          '@apply bg-blue-50 dark:bg-blue-900/30': {},
+        },
+
+        // Status text colors
+        '.text-success': {
+          '@apply text-emerald-700 dark:text-emerald-300': {},
+        },
+        '.text-warning': {
+          '@apply text-amber-700 dark:text-amber-300': {},
+        },
+        '.text-error': {
+          '@apply text-red-700 dark:text-red-300': {},
+        },
+        '.text-info': {
+          '@apply text-blue-700 dark:text-blue-300': {},
+        },
+
+        // Status borders
+        '.border-success': {
+          '@apply border-emerald-200 dark:border-emerald-700': {},
+        },
+        '.border-warning': {
+          '@apply border-amber-200 dark:border-amber-700': {},
+        },
+        '.border-error': {
+          '@apply border-red-200 dark:border-red-800': {},
+        },
+        '.border-info': {
+          '@apply border-blue-200 dark:border-blue-700': {},
+        },
+      }
+      addUtilities(semanticColors)
+    },
+
     // Plugin for custom utilities
     function({ addUtilities }) {
       const newUtilities = {
@@ -209,7 +441,17 @@ module.exports = {
           'background-clip': 'text',
           '-webkit-text-fill-color': 'transparent',
         },
-        // Sidebar transition
+        // Brand gradient background
+        '.bg-brand-gradient': {
+          background: 'linear-gradient(to right, #6366f1, #4f46e5)',
+        },
+        // Transitions
+        '.transition-base': {
+          transition: 'all 0.2s ease-in-out',
+        },
+        '.transition-colors-base': {
+          transition: 'background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out',
+        },
         '.sidebar-transition': {
           transition: 'transform 0.3s ease-in-out',
         },
